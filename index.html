@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leahpar Code - Portfólio de Desenvolvimento Web</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fontes Google (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Ícones Lucide (com 'onload' para garantir o carregamento) -->
+    <script>
+        function initIcons() {
+            // Esta função é chamada pelo atributo 'onload' do script do Lucide
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            } else {
+                console.error("Callback 'initIcons' foi chamado, mas 'lucide' ainda não está definido.");
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest/dist/lucide.min.js" onload="initIcons()"></script>
+
+
+    <style>
+        /* Estilo base */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Estilo do Header com gradiente animado */
+        header {
+            /* Gradiente estendido para o loop */
+            background: linear-gradient(to right, #0033A0, #1E90FF, #0033A0); /* de brand-blue-700 para brand-blue-500 e volta */
+            /* Tamanho do background duplicado */
+            background-size: 200% auto;
+            /* Animação aplicada */
+            animation: animatedGradient 10s ease infinite;
+
+            transition: background-color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+        }
+        
+        /* Lightbox (Modal da Galeria) */
+        .lightbox-backdrop {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .lightbox {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Keyframes para a animação do gradiente */
+        @keyframes animatedGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animação de reveal-on-scroll */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.17, 0.55, 0.55, 1), transform 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+        }
+
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Paleta de Azuis (Cruzeiro/Logo)
+                        'brand-blue-50': '#E6F0FF',  // Azul muito claro (para fundos suaves)
+                        'brand-blue-100': '#B0D1FF', // Azul claro
+                        'brand-blue-200': '#8AB9FF', // Azul claro (para gradiente)
+                        'brand-blue-300': '#4D8FFF', // Azul médio (gradiente mais intenso)
+                        'brand-blue-500': '#1E90FF', // Azul (DodgerBlue - Próximo do tom médio)
+                        'brand-blue-700': '#0033A0', // Azul escuro (Próximo do Cruzeiro)
+                        
+                        // Paleta de Cinzas Neutros
+                        'brand-gray-100': '#F7F7F7', // Fundo alternativo
+                        'brand-gray-500': '#6B7280', // Texto secundário
+                        'brand-gray-800': '#1F2937', // Texto principal
+                        'brand-gray-900': '#111827', // Títulos
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-brand-gray-800">
+
+    <!-- HEADER -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <!-- Logo e Título -->
+            <a href="#hero" class="flex-shrink-0 flex items-center">
+                <!-- Imagem da Logo -->
+                <img class="h-14 w-14" src="LeahparCode.png" alt="[Logo da Leahpar Code]">
+                <!-- Texto (visível em telas médias e maiores) -->
+                <span class="text-white font-bold text-2xl ml-3 hidden md:inline">Leahpar Code</span>
+            </a>
+            
+            <!-- Navegação Desktop -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#sobre" class="text-white hover:text-brand-blue-100 transition-colors duration-300 font-medium">Sobre</a>
+                <a href="#projetos" class="text-white hover:text-brand-blue-100 transition-colors duration-300 font-medium">Projetos</a>
+                <a href="#contato" class="text-white hover:text-brand-blue-100 transition-colors duration-300 font-medium">Contato</a>
+                <a href="#contato" class="bg-white text-brand-blue-700 px-5 py-2 rounded-full font-semibold hover:bg-brand-blue-50 transition-transform duration-300 hover:scale-105">
+                    Vamos Conversar
+                </a>
+            </div>
+
+            <!-- Botão Menu Mobile -->
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-white focus:outline-none">
+                    <i data-lucide="menu" class="h-7 w-7"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Menu Dropdown Mobile -->
+        <div id="menu-dropdown" class="hidden md:hidden bg-white shadow-xl">
+            <a href="#sobre" class="block px-6 py-4 text-brand-gray-800 hover:bg-brand-gray-100 font-medium">Sobre</a>
+            <a href="#projetos" class="block px-6 py-4 text-brand-gray-800 hover:bg-brand-gray-100 font-medium">Projetos</a>
+            <a href="#contato" class="block px-6 py-4 text-brand-gray-800 hover:bg-brand-gray-100 font-medium">Contato</a>
+            <a href="#contato" class="block px-6 py-5 bg-brand-blue-50 text-brand-blue-700 text-center font-semibold">
+                Vamos Conversar
+            </a>
+        </div>
+    </header>
+
+    <!-- SEÇÃO HERO -->
+    <section id="hero" class="pt-32 pb-16 md:pt-48 md:pb-32 bg-gradient-to-b from-brand-blue-300 to-white">
+        <div class="container mx-auto px-6 text-center flex flex-col items-center">
+            
+            <!-- Logo Principal -->
+            <div class="relative inline-block mb-8 reveal-on-scroll">
+                <!-- Imagem da Logo -->
+                <img src="LeahparCode.png" alt="[Logo da Leahpar Code]" class="h-40 w-40 md:h-56 md:w-56 object-contain">
+            </div>
+
+            <h1 class="text-4xl md:text-7xl font-bold text-brand-blue-700 mb-4 reveal-on-scroll" style="transition-delay: 0.2s;">
+                Leahpar Code
+            </h1>
+            <p class="text-lg md:text-2xl text-brand-gray-500 max-w-2xl mx-auto reveal-on-scroll" style="transition-delay: 0.4s;">
+                Soluções revolucionárias em códigos e assistência técnica. Criando ecossistemas digitais fluidos e eficientes.
+            </p>
+        </div>
+    </section>
+
+    <!-- SEÇÃO SOBRE -->
+    <section id="sobre" class="py-20 md:py-32 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">
+                    Minha Jornada
+                </h2>
+                <p class="mt-4 text-3xl md:text-5xl font-bold text-brand-gray-900 reveal-on-scroll" style="transition-delay: 0.2s;">
+                    Da Ideia à Inovação.
+                </p>
+                
+                <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-left">
+                    <!-- Coluna da Foto e Sobre o Fundador -->
+                    <div class="flex flex-col items-center lg:items-start text-center lg:text-left reveal-on-scroll" style="transition-delay: 0.4s;">
+                        <!-- Foto do Raphael -->
+                        <div class="mb-8 p-1.5 bg-brand-blue-500 rounded-full inline-block shadow-lg">
+                            <img src="eu.jpg" alt="Raphael Barbosa, Fundador da Leahpar Code" class="h-48 w-48 md:h-64 md:w-64 rounded-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-4">Sobre mim, Raphael Barbosa</h3>
+                        <p class="text-brand-gray-500 leading-relaxed max-w-lg">
+                            Desde 1998, quando nasci, sempre tive a visão tecnológica em minhas veias. Comecei como um entusiasta de jogos online e evoluí para um criador, buscando desenvolver meu próprio caminho na área. Me especializei em Front-end e criação de sites e, em seguida, aprofundei meus conhecimentos no universo Back-end para construir soluções completas e robustas. Essa paixão me tornou independente e se concretizou na Leahpar Code.
+                        </p>
+                    </div>
+
+                    <!-- Coluna Sobre a Leahpar Code -->
+                    <div class="space-y-6 text-left lg:pl-8 reveal-on-scroll" style="transition-delay: 0.6s;">
+                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-4">Minha Visão para a Leahpar Code</h3>
+                        <p class="text-brand-gray-500 leading-relaxed">
+                            A Leahpar Code nasceu da minha visão de transformar a complexidade do desenvolvimento web em soluções intuitivas e poderosas. Minha missão é criar ferramentas que não apenas resolvem problemas, mas que impulsionam a organização e a eficiência das empresas.
+                        </p>
+                        <p class="text-brand-gray-500 leading-relaxed">
+                            Vejo a Leahpar Code como uma empresa revolucionária, focada em códigos robustos e assistência técnica de excelência. Cada projeto que desenvolvo é um ecossistema pensado para integração total, fluidez e performance, refletindo a essência do meu modo de desenvolvimento.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO PROJETOS -->
+    <section id="projetos" class="py-20 md:py-32 bg-brand-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center mb-16">
+                <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">
+                    Meus Produtos
+                </h2>
+                <p class="mt-4 text-3xl md:text-5xl font-bold text-brand-gray-900 reveal-on-scroll" style="transition-delay: 0.2s;">
+                    Soluções Reais para Desafios Reais.
+                </p>
+            </div>
+
+            <!-- Cards de Projetos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+                <!-- Projeto 1: Portal EDT -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden reveal-on-scroll" style="transition-delay: 0.1s;">
+                    <img src="portal_edt.png" alt="[Captura de tela do Portal EDT]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="portal_edt.png" data-title="Portal EDT">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-3">Portal EDT</h3>
+                        <p class="text-brand-gray-500 mb-6">
+                            Um modelo de intranet solo para conectar áreas da empresa. Um ecossistema conciso de integração com painéis, hub de notícias e muito mais.
+                        </p>
+                        <a href="https://portaledt.fly.dev/" target="_blank" class="font-medium text-brand-blue-500 hover:text-brand-blue-700 transition-colors duration-300 inline-flex items-center">
+                            Ver Projeto
+                            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Projeto 2: Painel Disparos -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden reveal-on-scroll" style="transition-delay: 0.2s;">
+                    <img src="painel_disparos.png" alt="[Captura de tela do Painel Disparos]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="painel_disparos.png" data-title="Painel Disparos">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-3">Painel Disparos</h3>
+                        <p class="text-brand-gray-500 mb-6">
+                            A solução completa para acompanhamento massivo de disparos. Dashboard com integração Blip, tempo real, interatividade e background analítico.
+                        </p>
+                        <a href="https://paineldisparos.fly.dev/" target="_blank" class="font-medium text-brand-blue-500 hover:text-brand-blue-700 transition-colors duration-300 inline-flex items-center">
+                            Ver Projeto
+                            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Projeto 3: Helpdesk Pro -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden reveal-on-scroll" style="transition-delay: 0.3s;">
+                    <img src="help_desk.png" alt="[Captura de tela do Helpdesk Pro]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="help_desk.png" data-title="Helpdesk Pro">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-3">Helpdesk Pro</h3>
+                        <p class="text-brand-gray-500 mb-6">
+                            Sistema modular e profissional para organizar demandas. SLA, inteligência de informações em tempo real e criação de tickets únicos.
+                        </p>
+                        <a href="https://helpdeskpro.fly.dev/" target="_blank" class="font-medium text-brand-blue-500 hover:text-brand-blue-700 transition-colors duration-300 inline-flex items-center">
+                            Ver Projeto
+                            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Galeria -->
+            <div class="max-w-4xl mx-auto text-center mt-20 mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-gray-900 reveal-on-scroll">
+                    Galeria de Projetos
+                </h2>
+                <p class="mt-4 text-lg text-brand-gray-500 reveal-on-scroll" style="transition-delay: 0.2s;">
+                    Veja mais detalhes e telas das soluções que desenvolvi.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                
+                <div class="reveal-on-scroll" style="transition-delay: 0.1s;">
+                    <img src="painel_disparos.png" alt="[Painel Disparos - Dashboard]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="painel_disparos.png" data-title="Painel Disparos - Dashboard">
+                </div>
+                <div class="reveal-on-scroll" style="transition-delay: 0.2s;">
+                    <img src="painel_disparos2.png" alt="[Painel Disparos - Gráficos]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="painel_disparos2.png" data-title="Painel Disparos - Gráficos">
+                </div>
+                <div class="reveal-on-scroll" style="transition-delay: 0.3s;">
+                    <img src="portal_edt.png" alt="[Portal EDT - Página Inicial]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="portal_edt.png" data-title="Portal EDT - Página Inicial">
+                </div>
+                <div class="reveal-on-scroll" style="transition-delay: 0.4s;">
+                    <img src="portal_edt2.png" alt="[Portal EDT - Acesso Administrativo]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="portal_edt2.png" data-title="Portal EDT - Acesso Administrativo">
+                </div>
+                <div class="reveal-on-scroll" style="transition-delay: 0.5s;">
+                    <img src="help_desk.png" alt="[Helpdesk Pro - Painel]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="help_desk.png" data-title="Helpdesk Pro - Painel de Controle">
+                </div>
+                <div class="reveal-on-scroll" style="transition-delay: 0.6s;">
+                    <img src="help_desk2.png" alt="[Helpdesk Pro - Abertura de Chamado]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="help_desk2.png" data-title="Helpdesk Pro - Abertura de Chamado">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO CONTATO -->
+    <section id="contato" class="py-20 md:py-32 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">
+                    Contato
+                </h2>
+                <p class="mt-4 text-3xl md:text-5xl font-bold text-brand-gray-900 reveal-on-scroll" style="transition-delay: 0.2s;">
+                    Vamos construir algo incrível.
+                </p>
+                <p class="mt-6 text-lg text-brand-gray-500 max-w-2xl mx-auto reveal-on-scroll" style="transition-delay: 0.4s;">
+                    Estou disponível para novos projetos, colaborações ou apenas para trocar uma ideia. Entre em contato e vamos transformar sua visão em realidade.
+                </p>
+
+                <div class="mt-12 flex flex-col md:flex-row justify-center items-center gap-8 reveal-on-scroll" style="transition-delay: 0.6s;">
+                    
+                    <!-- WhatsApp -->
+                    <a href="https://api.whatsapp.com/send?phone=5531992434398" target="_blank" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
+                        <i data-lucide="smartphone" class="w-6 h-6 mr-3 text-brand-blue-500"></i>
+                        (31) 99243-4398
+                    </a>
+
+                    <!-- Email -->
+                    <a href="mailto:leahparcode@outlook.com" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
+                        <i data-lucide="mail" class="w-6 h-6 mr-3 text-brand-blue-500"></i>
+                        leahparcode@outlook.com
+                    </a>
+
+                    <!-- LinkedIn -->
+                    <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
+                        <i data-lucide="linkedin" class="w-6 h-6 mr-3 text-brand-blue-500"></i>
+                        Leahpar Code
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 bg-gradient-to-r from-brand-blue-700 to-brand-blue-500">
+        <div class="container mx-auto px-6 text-center text-brand-blue-100">
+            <p>&copy; 2025 Leahpar Code. Todos os direitos reservados.</p>
+            <p class="text-sm mt-2">Desenvolvido com muita dedicação e código.</p>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX (MODAL DA GALERIA) -->
+    <div id="lightbox" class="lightbox fixed inset-0 z-50 flex items-center justify-center p-4 hidden opacity-0">
+        
+        <!-- Fundo do Lightbox -->
+        <div id="lightbox-backdrop" class="lightbox-backdrop fixed inset-0"></div>
+
+        <!-- Conteúdo do Lightbox -->
+        <div class="relative z-10 max-w-4xl max-h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden">
+            <img id="lightbox-img" src="" alt="[Imagem do projeto ampliada]" class="w-full h-auto object-contain max-h-[80vh]">
+            <p id="lightbox-title" class="py-3 px-6 text-center font-medium text-brand-gray-800 bg-gray-50"></p>
+        </div>
+
+        <!-- Botão de Fechar -->
+        <button id="lightbox-close" class="absolute top-6 right-6 z-20 text-white rounded-full bg-black/30 hover:bg-black/60 p-2 transition-colors duration-300">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+    </div>
+
+
+    <!-- SCRIPTS JS -->
+    <script>
+        // Aguarda o DOM estar pronto para o resto da lógica
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Script do Menu Mobile ---
+            const menuBtn = document.getElementById('menu-btn');
+            const menuDropdown = document.getElementById('menu-dropdown');
+            menuBtn.addEventListener('click', () => {
+                menuDropdown.classList.toggle('hidden');
+                // Troca o ícone do menu
+                const icon = menuBtn.querySelector('i');
+                if (menuDropdown.classList.contains('hidden')) {
+                    icon.setAttribute('data-lucide', 'menu');
+                } else {
+                    icon.setAttribute('data-lucide', 'x');
+                }
+                
+                // Recria o ícone específico do botão, caso tenha mudado
+                // É FUNDAMENTAL verificar se 'lucide' já carregou (o 'onload' pode demorar)
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons({
+                        attrs: {
+                            'stroke-width': 2.5
+                        },
+                        nodes: [icon]
+                    });
+                } else {
+                    console.warn("Menu icon toggled, but 'lucide' is not ready yet.");
+                }
+            });
+
+            // --- Script de Animação ao Rolar (Scroll Reveal) ---
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1 // Revela quando 10% do elemento está visível
+            });
+
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+
+            // --- Script do Lightbox (Galeria) ---
+            const lightbox = document.getElementById('lightbox');
+            const lightboxBackdrop = document.getElementById('lightbox-backdrop');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxTitle = document.getElementById('lightbox-title');
+            const lightboxClose = document.getElementById('lightbox-close');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const src = item.dataset.src;
+                    const title = item.dataset.title;
+                    
+                    lightboxImg.src = src;
+                    lightboxTitle.textContent = title;
+                    
+                    lightbox.classList.remove('hidden');
+                    setTimeout(() => lightbox.classList.remove('opacity-0'), 10); // Fade in
+                });
+            });
+
+            const closeLightbox = () => {
+                lightbox.classList.add('opacity-0');
+                setTimeout(() => lightbox.classList.add('hidden'), 300); // Fade out
+            }
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxBackdrop.addEventListener('click', closeLightbox);
+
+            // Fechar com a tecla Esc
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                    closeLightbox();
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
+
+
+
