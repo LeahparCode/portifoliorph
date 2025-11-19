@@ -33,12 +33,13 @@
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            background: linear-gradient(180deg, rgba(0, 36, 94, 0.08), rgba(0, 82, 181, 0.04));
         }
 
         /* Estilo do Header com gradiente animado */
         header {
-            /* Gradiente estendido para o loop */
-            background: linear-gradient(to right, #0033A0, #1E90FF, #0033A0); /* de brand-blue-700 para brand-blue-500 e volta */
+            /* Gradiente inspirado nas cores do Cruzeiro */
+            background: linear-gradient(120deg, #001B5D, #0052B5, #1E90FF, #001B5D);
             /* Tamanho do background duplicado */
             background-size: 200% auto;
             /* Animação aplicada */
@@ -85,12 +86,14 @@
                 extend: {
                     colors: {
                         // Paleta de Azuis (Cruzeiro/Logo)
+                        'brand-blue-25': '#F2F6FF',
                         'brand-blue-50': '#E6F0FF',  // Azul muito claro (para fundos suaves)
                         'brand-blue-100': '#B0D1FF', // Azul claro
                         'brand-blue-200': '#8AB9FF', // Azul claro (para gradiente)
                         'brand-blue-300': '#4D8FFF', // Azul médio (gradiente mais intenso)
                         'brand-blue-500': '#1E90FF', // Azul (DodgerBlue - Próximo do tom médio)
                         'brand-blue-700': '#0033A0', // Azul escuro (Próximo do Cruzeiro)
+                        'brand-blue-900': '#001B5D',
                         
                         // Paleta de Cinzas Neutros
                         'brand-gray-100': '#F7F7F7', // Fundo alternativo
@@ -112,7 +115,7 @@
             <!-- Logo e Título -->
             <a href="#hero" class="flex-shrink-0 flex items-center">
                 <!-- Imagem da Logo -->
-                <img class="h-14 w-14" src="LeahparCode.png" alt="[Logo da Leahpar Code]">
+                <img class="h-16 w-16" src="LeahparCode.png" alt="[Logo da Leahpar Code]">
                 <!-- Texto (visível em telas médias e maiores) -->
                 <span class="text-white font-bold text-2xl ml-3 hidden md:inline">Leahpar Code</span>
             </a>
@@ -121,7 +124,6 @@
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#sobre" class="text-white hover:text-brand-blue-100 transition-colors duration-300 font-medium">Sobre</a>
                 <a href="#projetos" class="text-white hover:text-brand-blue-100 transition-colors duration-300 font-medium">Projetos</a>
-                <a href="#contato" class="text-white hover:text-brand-blue-100 transition-colors duration-300 font-medium">Contato</a>
                 <a href="#contato" class="bg-white text-brand-blue-700 px-5 py-2 rounded-full font-semibold hover:bg-brand-blue-50 transition-transform duration-300 hover:scale-105">
                     Vamos Conversar
                 </a>
@@ -139,7 +141,6 @@
         <div id="menu-dropdown" class="hidden md:hidden bg-white shadow-xl">
             <a href="#sobre" class="block px-6 py-4 text-brand-gray-800 hover:bg-brand-gray-100 font-medium">Sobre</a>
             <a href="#projetos" class="block px-6 py-4 text-brand-gray-800 hover:bg-brand-gray-100 font-medium">Projetos</a>
-            <a href="#contato" class="block px-6 py-4 text-brand-gray-800 hover:bg-brand-gray-100 font-medium">Contato</a>
             <a href="#contato" class="block px-6 py-5 bg-brand-blue-50 text-brand-blue-700 text-center font-semibold">
                 Vamos Conversar
             </a>
@@ -147,7 +148,7 @@
     </header>
 
     <!-- SEÇÃO HERO -->
-    <section id="hero" class="pt-32 pb-16 md:pt-48 md:pb-32 bg-gradient-to-b from-brand-blue-300 to-white">
+    <section id="hero" class="pt-32 pb-16 md:pt-48 md:pb-32 bg-gradient-to-b from-brand-blue-900 via-brand-blue-500 to-brand-blue-25 text-white">
         <div class="container mx-auto px-6 text-center flex flex-col items-center">
             
             <!-- Logo Principal -->
@@ -156,17 +157,113 @@
                 <img src="LeahparCode.png" alt="[Logo da Leahpar Code]" class="h-40 w-40 md:h-56 md:w-56 object-contain">
             </div>
 
-            <h1 class="text-4xl md:text-7xl font-bold text-brand-blue-700 mb-4 reveal-on-scroll" style="transition-delay: 0.2s;">
+            <h1 class="text-4xl md:text-7xl font-bold text-white drop-shadow-lg mb-4 reveal-on-scroll" style="transition-delay: 0.2s;">
                 Leahpar Code
             </h1>
-            <p class="text-lg md:text-2xl text-brand-gray-500 max-w-2xl mx-auto reveal-on-scroll" style="transition-delay: 0.4s;">
+            <p class="text-lg md:text-2xl text-brand-blue-50 max-w-2xl mx-auto reveal-on-scroll" style="transition-delay: 0.4s;">
                 Soluções revolucionárias em códigos e assistência técnica. Criando ecossistemas digitais fluidos e eficientes.
             </p>
         </div>
     </section>
 
+    <!-- SEÇÃO TECNOLOGIAS -->
+    <section id="tecnologias" class="py-16 md:py-24 bg-gradient-to-b from-brand-blue-25 via-white to-brand-blue-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">Ferramentas</h2>
+                <p class="mt-4 text-3xl md:text-5xl font-bold text-brand-gray-900 reveal-on-scroll" style="transition-delay: 0.2s;">
+                    Tecnologias que aplico nos projetos.
+                </p>
+                <p class="mt-4 text-lg text-brand-gray-500 reveal-on-scroll" style="transition-delay: 0.4s;">
+                    Cada solução combina interfaces responsivas, estruturas modernas e bancos de dados flexíveis para atender ao cenário de negócio.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- JavaScript -->
+                <div class="bg-white/80 border border-brand-blue-100 rounded-3xl p-6 shadow-lg backdrop-blur reveal-on-scroll" style="transition-delay: 0.1s;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-300 to-yellow-400 flex items-center justify-center mb-4">
+                        <svg viewBox="0 0 64 64" class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                            <rect width="64" height="64" rx="14" fill="#F7DF1E"></rect>
+                            <text x="50%" y="58%" text-anchor="middle" font-size="28" font-weight="700" fill="#1A1A1A" font-family="'Inter', sans-serif">JS</text>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">JavaScript</h3>
+                    <p class="text-brand-gray-500">Automação, interações dinâmicas e integrações que levam a experiência do usuário ao próximo nível.</p>
+                </div>
+
+                <!-- HTML -->
+                <div class="bg-white/80 border border-brand-blue-100 rounded-3xl p-6 shadow-lg backdrop-blur reveal-on-scroll" style="transition-delay: 0.2s;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 to-orange-400 flex items-center justify-center mb-4">
+                        <svg viewBox="0 0 64 64" class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                            <rect width="64" height="64" rx="14" fill="#E44D26"></rect>
+                            <path fill="#F16529" d="M32 54L15 49.3 12 10h40l-3 39.3z"></path>
+                            <path fill="#fff" d="M32 47.2l12.1-3.4.9-9.6H32v-7.4h14.1l.5-5.7H32v-7.4h20.4L50 45.2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">HTML</h3>
+                    <p class="text-brand-gray-500">Estruturo layouts semânticos e acessíveis, garantindo SEO e performance desde a base.</p>
+                </div>
+
+                <!-- CSS -->
+                <div class="bg-white/80 border border-brand-blue-100 rounded-3xl p-6 shadow-lg backdrop-blur reveal-on-scroll" style="transition-delay: 0.3s;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center mb-4">
+                        <svg viewBox="0 0 64 64" class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                            <rect width="64" height="64" rx="14" fill="#1572B6"></rect>
+                            <path fill="#33A9DC" d="M32 54L15 49.3 12 10h40l-3 39.3z"></path>
+                            <path fill="#fff" d="M32 47.2l12.1-3.4.9-9.6H32v-7.4h14.1l.5-5.7H32v-7.4h20.4L50 45.2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">CSS & Tailwind</h3>
+                    <p class="text-brand-gray-500">Componentes responsivos, animações suaves e gradientes que traduzem a identidade Cruzeirense.</p>
+                </div>
+
+                <!-- Bootstrap -->
+                <div class="bg-white/80 border border-brand-blue-100 rounded-3xl p-6 shadow-lg backdrop-blur reveal-on-scroll" style="transition-delay: 0.4s;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-500 flex items-center justify-center mb-4">
+                        <svg viewBox="0 0 64 64" class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                            <rect width="64" height="64" rx="14" fill="#563D7C"></rect>
+                            <text x="50%" y="58%" text-anchor="middle" font-size="26" font-weight="700" fill="#FFFFFF" font-family="'Inter', sans-serif">B</text>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">Bootstrap</h3>
+                    <p class="text-brand-gray-500">Design system rápido para MVPs e painéis internos com consistência visual.</p>
+                </div>
+
+                <!-- SQL -->
+                <div class="bg-white/80 border border-brand-blue-100 rounded-3xl p-6 shadow-lg backdrop-blur reveal-on-scroll" style="transition-delay: 0.5s;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mb-4">
+                        <svg viewBox="0 0 64 64" class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                            <ellipse cx="32" cy="16" rx="18" ry="7" fill="#0F9D58"></ellipse>
+                            <path d="M14 16v20c0 3.87 8.05 7 18 7s18-3.13 18-7V16" fill="#34A853"></path>
+                            <ellipse cx="32" cy="36" rx="18" ry="7" fill="#0F9D58" opacity="0.85"></ellipse>
+                            <text x="50%" y="58%" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF" font-family="'Inter', sans-serif">SQL</text>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">SQL</h3>
+                    <p class="text-brand-gray-500">Modelagem relacional para relatórios confiáveis e integrações entre sistemas.</p>
+                </div>
+
+                <!-- NoSQL -->
+                <div class="bg-white/80 border border-brand-blue-100 rounded-3xl p-6 shadow-lg backdrop-blur reveal-on-scroll" style="transition-delay: 0.6s;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-lime-300 to-emerald-500 flex items-center justify-center mb-4">
+                        <svg viewBox="0 0 64 64" class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                            <circle cx="20" cy="20" r="8" fill="#00A76F"></circle>
+                            <circle cx="44" cy="20" r="8" fill="#00C389"></circle>
+                            <circle cx="32" cy="44" r="8" fill="#009059"></circle>
+                            <path d="M20 20l12 24 12-24" stroke="#E5FFEF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <text x="50%" y="90%" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF" font-family="'Inter', sans-serif">NoSQL</text>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">NoSQL</h3>
+                    <p class="text-brand-gray-500">Estruturas flexíveis para aplicações em tempo real e dados semi-estruturados.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- SEÇÃO SOBRE -->
-    <section id="sobre" class="py-20 md:py-32 bg-white">
+    <section id="sobre" class="py-20 md:py-32 bg-gradient-to-b from-white via-brand-blue-25 to-white">
         <div class="container mx-auto px-6">
             <div class="max-w-6xl mx-auto text-center">
                 <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">
@@ -205,7 +302,7 @@
     </section>
 
     <!-- SEÇÃO PROJETOS -->
-    <section id="projetos" class="py-20 md:py-32 bg-brand-gray-100">
+    <section id="projetos" class="py-20 md:py-32 bg-gradient-to-b from-brand-blue-50 via-white to-brand-blue-25">
         <div class="container mx-auto px-6">
             <div class="max-w-4xl mx-auto text-center mb-16">
                 <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">
@@ -300,7 +397,7 @@
     </section>
 
     <!-- SEÇÃO CONTATO -->
-    <section id="contato" class="py-20 md:py-32 bg-white">
+    <section id="contato" class="py-20 md:py-32 bg-gradient-to-b from-white via-brand-blue-25 to-white">
         <div class="container mx-auto px-6">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">
@@ -317,19 +414,28 @@
                     
                     <!-- WhatsApp -->
                     <a href="https://api.whatsapp.com/send?phone=5531992434398" target="_blank" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
-                        <i data-lucide="smartphone" class="w-6 h-6 mr-3 text-brand-blue-500"></i>
+                        <svg class="w-7 h-7 mr-3 flex-shrink-0" viewBox="0 0 32 32" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="16" fill="#25D366" />
+                            <path fill="#FFFFFF" d="M21.57 18.39c-.34-.17-2.02-.99-2.33-1.1-.31-.11-.53-.17-.75.17-.22.34-.86 1.1-1.05 1.32-.19.22-.39.25-.73.08-.34-.17-1.41-.52-2.68-1.66-.99-.88-1.66-1.97-1.86-2.3-.19-.34-.02-.52.15-.69.16-.16.34-.39.5-.58.17-.19.22-.34.34-.56.11-.22.06-.41-.03-.58-.09-.17-.75-1.8-1.03-2.47-.27-.64-.55-.55-.75-.56-.19-.01-.41-.01-.63-.01-.22 0-.58.08-.88.41-.3.34-1.16 1.13-1.16 2.76 0 1.63 1.19 3.21 1.35 3.44.17.22 2.33 3.56 5.63 4.99.79.34 1.41.54 1.89.69.79.25 1.51.22 2.08.13.64-.09 2.02-.83 2.31-1.64.28-.81.28-1.5.19-1.64-.09-.13-.31-.22-.64-.39z" />
+                        </svg>
                         (31) 99243-4398
                     </a>
 
                     <!-- Email -->
                     <a href="mailto:leahparcode@outlook.com" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
-                        <i data-lucide="mail" class="w-6 h-6 mr-3 text-brand-blue-500"></i>
+                        <svg class="w-7 h-7 mr-3 flex-shrink-0" viewBox="0 0 32 32" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="32" height="32" rx="6" fill="#0F6CBD" />
+                            <path fill="#FFFFFF" d="M7 10.5c0-.83.67-1.5 1.5-1.5h15c.83 0 1.5.67 1.5 1.5v11c0 .83-.67 1.5-1.5 1.5h-15A1.5 1.5 0 0 1 7 21.5v-11Zm16.5-.5h-15c-.28 0-.5.22-.5.5v.33l8 4.94 8-4.94V10.5c0-.28-.22-.5-.5-.5Zm.5 2.12-7.45 4.6a1 1 0 0 1-1.1 0L8.5 12.12V21.5c0 .28.22.5.5.5h15c.28 0 .5-.22.5-.5v-8.88Z" />
+                        </svg>
                         leahparcode@outlook.com
                     </a>
 
                     <!-- LinkedIn -->
                     <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
-                        <i data-lucide="linkedin" class="w-6 h-6 mr-3 text-brand-blue-500"></i>
+                        <svg class="w-7 h-7 mr-3 flex-shrink-0" viewBox="0 0 32 32" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="16" fill="#0A66C2" />
+                            <path fill="#FFFFFF" d="M12.19 13.03h-2.7V21h2.7v-7.97Zm-.14-2.51c0-.78-.58-1.41-1.5-1.41-.92 0-1.51.63-1.51 1.41 0 .78.58 1.41 1.48 1.41h.02c.92 0 1.51-.63 1.51-1.41ZM22 21v-4.21c0-2.25-1.2-3.3-2.81-3.3-1.29 0-1.88.71-2.21 1.21v-1.04h-2.7c.04.69 0 7.34 0 7.34h2.7v-4.1c0-.22.02-.44.08-.6.17-.44.55-.89 1.2-.89.85 0 1.19.67 1.19 1.66V21H22Z" />
+                        </svg>
                         Leahpar Code
                     </a>
                 </div>
