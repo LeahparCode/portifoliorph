@@ -319,17 +319,23 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- JavaScript -->
                 <div class="bg-white/85 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll" style="transition-delay: 0.1s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-200 via-amber-300 to-orange-500 flex items-center justify-center mb-4 shadow-inner">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-100 via-amber-300 to-orange-500 flex items-center justify-center mb-4 shadow-lg ring-2 ring-amber-200/70">
                         <svg viewBox="0 0 64 64" class="w-12 h-12 drop-shadow" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
                             <defs>
-                                <linearGradient id="jsBeam" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#FFE066"></stop>
-                                    <stop offset="100%" stop-color="#F7C325"></stop>
+                                <radialGradient id="jsGlow" cx="50%" cy="35%" r="60%">
+                                    <stop offset="0%" stop-color="#FFF4BF" />
+                                    <stop offset="100%" stop-color="#F7B500" />
+                                </radialGradient>
+                                <linearGradient id="jsStroke" x1="0%" y1="0%" x2="100%" y2="120%">
+                                    <stop offset="0%" stop-color="#FFE28A" />
+                                    <stop offset="100%" stop-color="#FF9F1C" />
                                 </linearGradient>
                             </defs>
-                            <rect x="6" y="6" width="52" height="52" rx="14" fill="#111"/>
-                            <path fill="url(#jsBeam)" d="M24 18h8v19.6c0 6.8-3.9 10.6-10.5 10.6-3 0-6-.9-8.6-2.7l3.2-5.6c1.7 1.2 3.3 1.9 4.9 1.9 1.9 0 3.1-1.1 3.1-3.7z"/>
-                            <path fill="url(#jsBeam)" d="M37.5 18h8l4.1 6.7 4.1-6.7h8.1L53 29.8l8.7 12.4h-8.4l-4.8-7-4.7 7h-8.2l8.5-12.3z" transform="translate(-10 -1)"/>
+                            <rect x="8" y="8" width="48" height="48" rx="14" fill="#1A1A1A" opacity="0.95" />
+                            <rect x="12" y="12" width="40" height="40" rx="12" fill="url(#jsGlow)" opacity="0.95" />
+                            <path fill="#1A1A1A" d="M21 18h22c2.2 0 3.9 1.7 3.9 3.9v20.2c0 2.2-1.7 3.9-3.9 3.9H21c-2.2 0-3.9-1.7-3.9-3.9V21.9C17.1 19.7 18.8 18 21 18z" opacity="0.12" />
+                            <path fill="url(#jsStroke)" d="M26 20h6v16.6c0 5.7-3.1 8.3-8.3 8.3-2.4 0-5-.7-7.2-2.1l2.5-4.5c1.4 1 2.8 1.6 4.1 1.6 1.6 0 2.9-.8 2.9-3.2z" />
+                            <path fill="url(#jsStroke)" d="M34.5 20h6l3.4 5.9 3.6-5.9h6.5L47 30.3l6.8 10H47l-3.7-5.8L39.7 40h-6.6l6.8-9.9z" />
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">JavaScript</h3>
@@ -338,19 +344,24 @@
 
                 <!-- HTML -->
                 <div class="bg-white/85 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll" style="transition-delay: 0.2s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 via-red-500 to-rose-500 flex items-center justify-center mb-4 shadow-inner">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-200 via-orange-400 to-rose-500 flex items-center justify-center mb-4 shadow-lg ring-2 ring-orange-200/70">
                         <svg viewBox="0 0 64 64" class="w-12 h-12 drop-shadow" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
                             <defs>
-                                <linearGradient id="htmlGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#FFDFD3"></stop>
-                                    <stop offset="100%" stop-color="#FF7A59"></stop>
+                                <linearGradient id="htmlFront" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FFD7C2" />
+                                    <stop offset="100%" stop-color="#FF6A3D" />
+                                </linearGradient>
+                                <linearGradient id="htmlInner" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FFE7DC" />
+                                    <stop offset="100%" stop-color="#FF9A7A" />
                                 </linearGradient>
                             </defs>
-                            <path fill="#E44D26" d="M7 5l4.5 50.8L32 59l20.5-3.2L57 5z"/>
-                            <path fill="#F16529" d="M32 53.1l16.6-2.6L52.5 9.4H32z"/>
-                            <path fill="#EBEBEB" d="M32 26.6h-8.6l-.6-6.7H32v-6.6H16.5l.2 2.3 1.6 18.2H32z"/>
-                            <path fill="#fff" d="M32 42.8l-.1.1-7.2-1.6-.5-5.8h-6.6l.9 11.4L32 49.6l.1-.1z"/>
-                            <path fill="url(#htmlGlow)" d="M32 26.6V33h7.9l-.7 8.3-7.2 1.6v6.9l14.4-3.2.1-.7 1.6-18.5.2-2.4H32z"/>
+                            <path fill="#E34C26" d="M8 6h48l-4.8 50.2L32 60l-19.2-3.8z" />
+                            <path fill="#EF652A" d="M32 54.4 43.7 52l3.8-40H32z" />
+                            <path fill="#ffffff" d="M32 33.2h-9.5l-.6-6.5H32v-6.2H16.7l.2 2.2 1.6 18.5H32z" opacity="0.95" />
+                            <path fill="url(#htmlInner)" d="M32 44.7 24.9 43l-.5-4.9h-6.2l.8 10L32 50.7z" />
+                            <path fill="#F0F0F0" d="M31.9 33.2V27h9.3l-.4 4.9z" />
+                            <path fill="url(#htmlFront)" d="M31.9 44.7v6l12.3-2.7.2-2.1 1.1-12.8.2-2.7H31.9v6.2h6.6l-.5 5.1z" />
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">HTML</h3>
@@ -359,20 +370,26 @@
 
                 <!-- CSS & Tailwind -->
                 <div class="bg-white/85 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll" style="transition-delay: 0.3s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-300 via-blue-500 to-indigo-700 flex items-center justify-center mb-4 shadow-inner">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-200 via-blue-400 to-indigo-700 flex items-center justify-center mb-4 shadow-lg ring-2 ring-sky-200/70">
                         <svg viewBox="0 0 64 64" class="w-12 h-12 drop-shadow" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
                             <defs>
-                                <linearGradient id="tailwindSweep" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#38BDF8"></stop>
-                                    <stop offset="100%" stop-color="#6366F1"></stop>
+                                <linearGradient id="cssShield" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#4CA9FF" />
+                                    <stop offset="100%" stop-color="#1A52C5" />
+                                </linearGradient>
+                                <linearGradient id="tailwindWave" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#38BDF8" />
+                                    <stop offset="100%" stop-color="#0EA5E9" />
                                 </linearGradient>
                             </defs>
-                            <rect x="8" y="8" width="48" height="48" rx="14" fill="#0B3D91" opacity="0.08"/>
-                            <path fill="#264DE4" d="M6 5l5.1 50.8L32 59l20.9-3.2L58 5z" opacity="0.9"/>
-                            <path fill="#2965F1" d="M32 53.1l16.9-2.6L51.9 9.4H32z" opacity="0.95"/>
-                            <path fill="#EBEBEB" d="M32 33h-8.6l-.6-6.4H32v-6.6H16.5l.2 2.3 1.6 18.2H32z"/>
-                            <path fill="#fff" d="M32 42.8l-.1.1-7.2-1.6-.5-5.6h-6.6l.9 11.2L32 49.6l.1-.1z"/>
-                            <path fill="url(#tailwindSweep)" d="M41 22.8c-1.2-2-4.2-3-8.5-2.2-2 .4-4.1 1.5-6.4 3.4 1.5-1.3 3-1.9 4.5-1.9 3 0 4.1 1.6 3.2 4.5-.8 2.6-2.8 4.9-5.8 6.9 1.8-1 3.5-1.4 5.3-1.1 2.6.4 4.4 2 5.4 5 4.1-3.4 6.4-7 7-10.8.3-1.6.1-3-.7-3.8z"/>
+                            <rect x="9" y="7" width="46" height="50" rx="13" fill="#0F172A" opacity="0.08" />
+                            <path fill="url(#cssShield)" d="M10 7h44l-4.6 47.2L32 57l-17.4-2.8z" />
+                            <path fill="#2234AE" opacity="0.95" d="M32 52.1 42.8 50l3.4-35.7H32z" />
+                            <path fill="#F3F4F6" d="M32 32h-8.4l-.5-5.8H32v-5.9H16.5l1.6 18H32z" />
+                            <path fill="#E5E7EB" d="M31.9 41.5 25.2 40l-.4-4.3h-5.9l.8 9.5L32 47.3z" />
+                            <path fill="#DBEAFE" d="M31.9 20.2h8l-.4 5.9h-7.6z" />
+                            <path fill="#C7D2FE" d="M31.9 32v9.5l6.5-1.4.7-8.1z" />
+                            <path fill="url(#tailwindWave)" d="M21 22c1.7-2.2 4.7-3.7 7.6-3.6 3.6.1 5.2 2.2 4.4 5.6-.7 3-3 5.6-6.9 7.7 2.1-.7 4.2-.7 6.3.2 2.5 1 4.1 3 4.7 6.2 4.5-3.1 6.8-6.4 6.8-9.9.1-5.2-4.5-8.7-11.6-8.7-4.1 0-8.4 1.6-10.9 3.9z" />
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">CSS & Tailwind</h3>
@@ -381,17 +398,22 @@
 
                 <!-- Bootstrap -->
                 <div class="bg-white/85 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll" style="transition-delay: 0.4s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-300 via-violet-500 to-purple-700 flex items-center justify-center mb-4 shadow-inner">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-200 via-violet-500 to-purple-800 flex items-center justify-center mb-4 shadow-lg ring-2 ring-purple-200/70">
                         <svg viewBox="0 0 64 64" class="w-12 h-12 drop-shadow" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
                             <defs>
-                                <linearGradient id="bGlass" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#DCC7FF"></stop>
-                                    <stop offset="100%" stop-color="#7C3AED"></stop>
+                                <linearGradient id="bootstrapBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#C7B5FF" />
+                                    <stop offset="100%" stop-color="#6D28D9" />
+                                </linearGradient>
+                                <linearGradient id="bootstrapGlow" x1="0%" y1="0%" x2="0%" y2="120%">
+                                    <stop offset="0%" stop-color="#F5EDFF" />
+                                    <stop offset="100%" stop-color="#C4A0FF" />
                                 </linearGradient>
                             </defs>
-                            <rect x="8" y="8" width="48" height="48" rx="14" fill="#4C1D95"/>
-                            <path fill="url(#bGlass)" d="M21 16h16.5c6.3 0 10 3.4 10 8.3 0 3.5-2.1 6.3-5.4 7.5v.1c4 .8 6.5 4 6.5 7.9 0 5.8-4.5 9.6-11.8 9.6H21z"/>
-                            <path fill="#4C1D95" d="M28.5 28.7h7.3c2.6 0 4.2-1.3 4.2-3.6 0-2.3-1.6-3.6-4.2-3.6h-7.3zM28.5 44.9h8c2.8 0 4.6-1.5 4.6-3.9s-1.8-3.9-4.6-3.9h-8z"/>
+                            <rect x="8" y="10" width="48" height="44" rx="13" fill="url(#bootstrapBody)" />
+                            <rect x="14" y="16" width="36" height="32" rx="10" fill="#2E1065" opacity="0.18" />
+                            <path fill="url(#bootstrapGlow)" d="M23 17.5h18.6c6.2 0 9.9 3.4 9.9 8.2 0 3.6-2 6.1-5.5 7.3v.1c3.8.9 6.2 3.9 6.2 7.9 0 5.9-4.5 9.5-11.7 9.5H23z" />
+                            <path fill="#4C1D95" d="M29.2 29h7.1c2.5 0 4-1.2 4-3.4s-1.5-3.4-4-3.4h-7.1zm0 14.8H37c2.7 0 4.4-1.4 4.4-3.7 0-2.3-1.6-3.7-4.4-3.7h-7.8z" />
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">Bootstrap</h3>
@@ -400,18 +422,23 @@
 
                 <!-- SQL -->
                 <div class="bg-white/85 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll" style="transition-delay: 0.5s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-200 via-teal-400 to-emerald-600 flex items-center justify-center mb-4 shadow-inner">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-100 via-teal-300 to-emerald-600 flex items-center justify-center mb-4 shadow-lg ring-2 ring-emerald-100/70">
                         <svg viewBox="0 0 64 64" class="w-12 h-12 drop-shadow" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
                             <defs>
-                                <linearGradient id="sqlDepth" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#A7F3D0"></stop>
-                                    <stop offset="100%" stop-color="#047857"></stop>
+                                <linearGradient id="sqlCylinder" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#B9F5D0" />
+                                    <stop offset="100%" stop-color="#0F9D58" />
+                                </linearGradient>
+                                <linearGradient id="sqlHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#E5FFEF" />
+                                    <stop offset="100%" stop-color="#C7F9CC" />
                                 </linearGradient>
                             </defs>
-                            <ellipse cx="32" cy="16" rx="18" ry="7" fill="#0F9D58"/>
-                            <path d="M14 16v22c0 3.8 8.1 7 18 7s18-3.2 18-7V16" fill="url(#sqlDepth)"/>
-                            <ellipse cx="32" cy="38" rx="18" ry="7" fill="#0F9D58" opacity="0.92"/>
-                            <path d="M18 31h28M18 38h28M18 45h28" stroke="#E5FFEF" stroke-width="2" stroke-linecap="round"/>
+                            <ellipse cx="32" cy="14" rx="18" ry="7" fill="#0D8A4B" />
+                            <path d="M14 14v24c0 4 8.1 7.3 18 7.3s18-3.3 18-7.3V14" fill="url(#sqlCylinder)" />
+                            <ellipse cx="32" cy="38" rx="18" ry="7" fill="#0D8A4B" opacity="0.94" />
+                            <path d="M18 24h28M18 32h28M18 40h28" stroke="url(#sqlHighlight)" stroke-width="2.2" stroke-linecap="round" />
+                            <path d="M28 18.5c1.2.5 2.6.7 4 .7s2.8-.2 4-.7" stroke="#E5FFEF" stroke-width="1.6" stroke-linecap="round" />
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">SQL</h3>
@@ -420,19 +447,24 @@
 
                 <!-- NoSQL -->
                 <div class="bg-white/85 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll" style="transition-delay: 0.6s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-lime-200 via-emerald-400 to-green-700 flex items-center justify-center mb-4 shadow-inner">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-lime-100 via-emerald-300 to-green-700 flex items-center justify-center mb-4 shadow-lg ring-2 ring-lime-100/70">
                         <svg viewBox="0 0 64 64" class="w-12 h-12 drop-shadow" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
                             <defs>
-                                <linearGradient id="mongoLeaf" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#C7F9CC"></stop>
-                                    <stop offset="100%" stop-color="#10B981"></stop>
+                                <linearGradient id="nosqlLeaf" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#D7FFEA" />
+                                    <stop offset="100%" stop-color="#10B981" />
                                 </linearGradient>
+                                <radialGradient id="nosqlAura" cx="50%" cy="40%" r="60%">
+                                    <stop offset="0%" stop-color="#E5FFEF" stop-opacity="0.9" />
+                                    <stop offset="100%" stop-color="#34D399" stop-opacity="0.4" />
+                                </radialGradient>
                             </defs>
-                            <path d="M32 10c3 5.2 6 11.5 6 18.6 0 9-4.5 16.6-6 19.1-1.5-2.5-6-10.1-6-19.1C26 21.5 29 15.2 32 10z" fill="url(#mongoLeaf)" stroke="#065F46" stroke-width="1.4" stroke-linecap="round"/>
-                            <path d="M32 16c-1 3.2-1.5 6.3-1.5 9.3 0 6.4 2.1 12.1 3.5 15.8" stroke="#065F46" stroke-width="1.6" stroke-linecap="round"/>
-                            <circle cx="21" cy="45" r="4" fill="#E5FFEF" opacity="0.8"/>
-                            <circle cx="45" cy="23" r="5" fill="#E5FFEF" opacity="0.8"/>
-                            <circle cx="42" cy="48" r="6" fill="#E5FFEF" opacity="0.8"/>
+                            <circle cx="32" cy="32" r="22" fill="url(#nosqlAura)" />
+                            <path d="M32 9.5c3.3 5.6 6.5 12.3 6.5 20 0 9.6-4.7 17.8-6.5 20.5-1.8-2.7-6.5-10.9-6.5-20.5 0-7.7 3.2-14.4 6.5-20z" fill="url(#nosqlLeaf)" stroke="#065F46" stroke-width="1.4" stroke-linecap="round" />
+                            <path d="M32 16.5c-1.1 3.2-1.6 6.5-1.6 9.7 0 6.6 2.1 12.3 3.6 16" stroke="#065F46" stroke-width="1.6" stroke-linecap="round" />
+                            <circle cx="22" cy="46" r="4.2" fill="#ECFDF3" opacity="0.85" />
+                            <circle cx="46" cy="23" r="5.5" fill="#ECFDF3" opacity="0.82" />
+                            <circle cx="41" cy="49" r="6.2" fill="#ECFDF3" opacity="0.82" />
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">NoSQL</h3>
