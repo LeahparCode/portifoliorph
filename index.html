@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leahpar Code - Portfólio de Desenvolvimento Web</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/LeahparCode.png">
+
+    <!-- Favicon agora local -->
+    <link rel="icon" type="image/png" href="LeahparCode.png">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,7 +29,6 @@
     </script>
     <script src="https://unpkg.com/lucide@latest/dist/lucide.min.js" onload="initIcons()"></script>
 
-
     <style>
         /* Estilo base */
         body {
@@ -39,13 +40,9 @@
 
         /* Estilo do Header com gradiente animado */
         header {
-            /* Gradiente inspirado nas cores do Cruzeiro */
             background: linear-gradient(120deg, #001B5D, #0052B5, #1E90FF, #001B5D);
-            /* Tamanho do background duplicado */
             background-size: 200% auto;
-            /* Animação aplicada */
             animation: animatedGradient 10s ease infinite;
-
             transition: background-color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
         }
         
@@ -86,21 +83,18 @@
             theme: {
                 extend: {
                     colors: {
-                        // Paleta de Azuis (Cruzeiro/Logo)
                         'brand-blue-25': '#F2F6FF',
-                        'brand-blue-50': '#E6F0FF',  // Azul muito claro (para fundos suaves)
-                        'brand-blue-100': '#B0D1FF', // Azul claro
-                        'brand-blue-200': '#8AB9FF', // Azul claro (para gradiente)
-                        'brand-blue-300': '#4D8FFF', // Azul médio (gradiente mais intenso)
-                        'brand-blue-500': '#1E90FF', // Azul (DodgerBlue - Próximo do tom médio)
-                        'brand-blue-700': '#0033A0', // Azul escuro (Próximo do Cruzeiro)
+                        'brand-blue-50': '#E6F0FF',
+                        'brand-blue-100': '#B0D1FF',
+                        'brand-blue-200': '#8AB9FF',
+                        'brand-blue-300': '#4D8FFF',
+                        'brand-blue-500': '#1E90FF',
+                        'brand-blue-700': '#0033A0',
                         'brand-blue-900': '#001B5D',
-                        
-                        // Paleta de Cinzas Neutros
-                        'brand-gray-100': '#F7F7F7', // Fundo alternativo
-                        'brand-gray-500': '#6B7280', // Texto secundário
-                        'brand-gray-800': '#1F2937', // Texto principal
-                        'brand-gray-900': '#111827', // Títulos
+                        'brand-gray-100': '#F7F7F7',
+                        'brand-gray-500': '#6B7280',
+                        'brand-gray-800': '#1F2937',
+                        'brand-gray-900': '#111827',
                     }
                 }
             }
@@ -115,9 +109,8 @@
             
             <!-- Logo e Título -->
             <a href="#hero" class="flex-shrink-0 flex items-center">
-                <!-- Imagem da Logo -->
-                <img class="h-16 w-16" src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/LeahparCode.png" alt="[Logo da Leahpar Code]">
-                <!-- Texto (visível em telas médias e maiores) -->
+                <!-- Imagem da Logo (local) -->
+                <img class="h-16 w-16" src="LeahparCode.png" alt="[Logo da Leahpar Code]">
                 <span class="text-white font-bold text-2xl ml-3 hidden md:inline">Leahpar Code</span>
             </a>
             
@@ -154,10 +147,9 @@
     <section id="hero" class="pt-32 pb-16 md:pt-48 md:pb-32 bg-gradient-to-b from-brand-blue-900 via-brand-blue-500 to-brand-blue-25 text-white">
         <div class="container mx-auto px-6 text-center flex flex-col items-center">
             
-            <!-- Logo Principal -->
+            <!-- Logo Principal (local) -->
             <div class="relative inline-block mb-8 reveal-on-scroll">
-                <!-- Imagem da Logo -->
-                <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/LeahparCode.png" alt="[Logo da Leahpar Code]" class="h-40 w-40 md:h-56 md:w-56 object-contain">
+                <img src="LeahparCode.png" alt="[Logo da Leahpar Code]" class="h-40 w-40 md:h-56 md:w-56 object-contain">
             </div>
 
             <h1 class="text-4xl md:text-7xl font-bold text-white drop-shadow-lg mb-4 reveal-on-scroll" style="transition-delay: 0.2s;">
@@ -183,9 +175,9 @@
                 <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-left">
                     <!-- Coluna da Foto e Sobre o Fundador -->
                     <div class="flex flex-col items-center lg:items-start text-center lg:text-left reveal-on-scroll" style="transition-delay: 0.4s;">
-                        <!-- Foto do Raphael -->
+                        <!-- Foto do Raphael (assumindo eu.jpg local) -->
                         <div class="mb-8 p-1.5 bg-brand-blue-500 rounded-full inline-block shadow-lg">
-                            <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/eu.jpg" alt="Raphael Barbosa, Fundador da Leahpar Code" class="h-48 w-48 md:h-64 md:w-64 rounded-full object-cover">
+                            <img src="eu.jpg" alt="Raphael Barbosa, Fundador da Leahpar Code" class="h-48 w-48 md:h-64 md:w-64 rounded-full object-cover">
                         </div>
                         <h3 class="text-2xl font-bold text-brand-gray-900 mb-4">Sobre mim, Raphael Barbosa</h3>
                         <p class="text-brand-gray-500 leading-relaxed max-w-lg">
@@ -225,7 +217,7 @@
                 <!-- JavaScript -->
                 <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white" style="transition-delay: 0.1s;">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-50 via-amber-200 to-orange-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-amber-200/70 overflow-hidden">
-                        <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/js.png" alt="Logo JavaScript" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
+                        <img src="js.png" alt="Logo JavaScript" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">JavaScript</h3>
                     <p class="text-brand-gray-500">Interações dinâmicas, automações e integrações usando a logo js.png como assinatura do front-end.</p>
@@ -234,7 +226,7 @@
                 <!-- HTML -->
                 <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white" style="transition-delay: 0.2s;">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-50 via-orange-200 to-rose-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-orange-200/70 overflow-hidden">
-                        <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/html-5.png" alt="Logo HTML5" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
+                        <img src="html-5.png" alt="Logo HTML5" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">HTML</h3>
                     <p class="text-brand-gray-500">Estruturas semânticas e acessíveis, sustentadas pela marca visual da html-5.png.</p>
@@ -243,7 +235,7 @@
                 <!-- CSS & Tailwind -->
                 <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white" style="transition-delay: 0.3s;">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-50 via-blue-200 to-indigo-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-sky-200/70 overflow-hidden">
-                        <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/css.png" alt="Logo CSS e Tailwind" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
+                        <img src="css.png" alt="Logo CSS e Tailwind" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">CSS & Tailwind</h3>
                     <p class="text-brand-gray-500">Visual polido com gradientes e animações suaves, carregando a identidade da css.png.</p>
@@ -252,7 +244,7 @@
                 <!-- Bootstrap -->
                 <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white" style="transition-delay: 0.4s;">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-50 via-violet-200 to-purple-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-purple-200/70 overflow-hidden">
-                        <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/bootstrap.png" alt="Logo Bootstrap" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
+                        <img src="bootstrap.png" alt="Logo Bootstrap" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">Bootstrap</h3>
                     <p class="text-brand-gray-500">Protótipos e dashboards rápidos com consistência de design system.</p>
@@ -261,7 +253,7 @@
                 <!-- GitHub -->
                 <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white" style="transition-delay: 0.5s;">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-50 via-slate-200 to-slate-400 flex items-center justify-center mb-4 shadow-lg ring-2 ring-slate-200/70 overflow-hidden">
-                        <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/github.png" alt="Logo GitHub" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
+                        <img src="github.png" alt="Logo GitHub" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">GitHub</h3>
                     <p class="text-brand-gray-500">Versionamento com fluxos colaborativos e CI/CD, guiados pela logo github.png.</p>
@@ -270,7 +262,7 @@
                 <!-- NoSQL -->
                 <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white" style="transition-delay: 0.6s;">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-lime-50 via-emerald-200 to-green-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-lime-200/70 overflow-hidden">
-                        <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/database.png" alt="Logo NoSQL" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
+                        <img src="database.png" alt="Logo NoSQL" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
                     </div>
                     <h3 class="text-xl font-bold text-brand-gray-900 mb-2">NoSQL</h3>
                     <p class="text-brand-gray-500">Armazenamento flexível para dados em tempo real, eventos e documentos, destacado com a database.png.</p>
@@ -278,6 +270,7 @@
             </div>
         </div>
     </section>
+
     <!-- SEÇÃO PROJETOS -->
     <section id="projetos" class="py-20 md:py-32 bg-gradient-to-b from-brand-blue-50 via-white to-brand-blue-25">
         <div class="container mx-auto px-6">
@@ -295,7 +288,7 @@
 
                 <!-- Projeto 1: Intranet -->
                 <div class="bg-white rounded-3xl shadow-xl overflow-hidden reveal-on-scroll" style="transition-delay: 0.1s;">
-                    <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/portal_edt.png" alt="[Captura de tela do Portal EDT]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/portal_edt.png" data-title="Portal EDT">
+                    <img src="portal_edt.png" alt="[Captura de tela do Portal EDT]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="portal_edt.png" data-title="Portal EDT">
                     <div class="p-8">
                         <h3 class="text-2xl font-bold text-brand-gray-900 mb-3">Sistemas de Intranet</h3>
                         <p class="text-brand-gray-500 mb-6">
@@ -310,7 +303,7 @@
 
                 <!-- Projeto 2: Painel Disparos -->
                 <div class="bg-white rounded-3xl shadow-xl overflow-hidden reveal-on-scroll" style="transition-delay: 0.2s;">
-                    <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/painel_disparos.png" alt="[Captura de tela do Painel Disparos]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/painel_disparos.png" data-title="Painel Disparos">
+                    <img src="painel_disparos.png" alt="[Captura de tela do Painel Disparos]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="painel_disparos.png" data-title="Painel Disparos">
                     <div class="p-8">
                         <h3 class="text-2xl font-bold text-brand-gray-900 mb-3">Painel Disparos</h3>
                         <p class="text-brand-gray-500 mb-6">
@@ -325,7 +318,7 @@
 
                 <!-- Projeto 3: Helpdesk Pro -->
                 <div class="bg-white rounded-3xl shadow-xl overflow-hidden reveal-on-scroll" style="transition-delay: 0.3s;">
-                    <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/help_desk.png" alt="[Captura de tela do Helpdesk Pro]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/help_desk.png" data-title="Helpdesk Pro">
+                    <img src="help_desk.png" alt="[Captura de tela do Helpdesk Pro]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="help_desk.png" data-title="Helpdesk Pro">
                     <div class="p-8">
                         <h3 class="text-2xl font-bold text-brand-gray-900 mb-3">Helpdesk Pro</h3>
                         <p class="text-brand-gray-500 mb-6">
@@ -352,22 +345,22 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 
                 <div class="reveal-on-scroll" style="transition-delay: 0.1s;">
-                    <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/painel_disparos.png" alt="[Painel Disparos - Dashboard]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/painel_disparos.png" data-title="Painel Disparos - Dashboard">
+                    <img src="painel_disparos.png" alt="[Painel Disparos - Dashboard]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="painel_disparos.png" data-title="Painel Disparos - Dashboard">
                 </div>
                 <div class="reveal-on-scroll" style="transition-delay: 0.2s;">
-                    <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/painel_disparos2.png" alt="[Painel Disparos - Gráficos]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/painel_disparos2.png" data-title="Painel Disparos - Gráficos">
+                    <img src="painel_disparos2.png" alt="[Painel Disparos - Gráficos]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="painel_disparos2.png" data-title="Painel Disparos - Gráficos">
                 </div>
                 <div class="reveal-on-scroll" style="transition-delay: 0.3s;">
-                    <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/portal_edt.png" alt="[Portal EDT - Página Inicial]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/portal_edt.png" data-title="Portal EDT - Página Inicial">
+                    <img src="portal_edt.png" alt="[Portal EDT - Página Inicial]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="portal_edt.png" data-title="Portal EDT - Página Inicial">
                 </div>
                 <div class="reveal-on-scroll" style="transition-delay: 0.4s;">
-                    <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/portal_edt2.png" alt="[Portal EDT - Acesso Administrativo]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/portal_edt2.png" data-title="Portal EDT - Acesso Administrativo">
+                    <img src="portal_edt2.png" alt="[Portal EDT - Acesso Administrativo]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="portal_edt2.png" data-title="Portal EDT - Acesso Administrativo">
                 </div>
                 <div class="reveal-on-scroll" style="transition-delay: 0.5s;">
-                    <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/help_desk.png" alt="[Helpdesk Pro - Painel]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/help_desk.png" data-title="Helpdesk Pro - Painel de Controle">
+                    <img src="help_desk.png" alt="[Helpdesk Pro - Painel]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="help_desk.png" data-title="Helpdesk Pro - Painel de Controle">
                 </div>
                 <div class="reveal-on-scroll" style="transition-delay: 0.6s;">
-                    <img src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/help_desk2.png" alt="[Helpdesk Pro - Abertura de Chamado]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="https://raw.githubusercontent.com/LeahparCode/portifoliorph/main/help_desk2.png" data-title="Helpdesk Pro - Abertura de Chamado">
+                    <img src="help_desk2.png" alt="[Helpdesk Pro - Abertura de Chamado]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="help_desk2.png" data-title="Helpdesk Pro - Abertura de Chamado">
                 </div>
             </div>
         </div>
@@ -408,7 +401,7 @@
                     </a>
 
                     <!-- LinkedIn -->
-                    <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
+                    <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duração-300">
                         <svg class="w-7 h-7 mr-3 flex-shrink-0" viewBox="0 0 32 32" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="16" cy="16" r="16" fill="#0A66C2" />
                             <path fill="#FFFFFF" d="M12.19 13.03h-2.7V21h2.7v-7.97Zm-.14-2.51c0-.78-.58-1.41-1.5-1.41-.92 0-1.51.63-1.51 1.41 0 .78.58 1.41 1.48 1.41h.02c.92 0 1.51-.63 1.51-1.41ZM22 21v-4.21c0-2.25-1.2-3.3-2.81-3.3-1.29 0-1.88.71-2.21 1.21v-1.04h-2.7c.04.69 0 7.34 0 7.34h2.7v-4.1c0-.22.02-.44.08-.6.17-.44.55-.89 1.2-.89.85 0 1.19.67 1.19 1.66V21H22Z" />
@@ -446,32 +439,22 @@
         </button>
     </div>
 
-
     <!-- SCRIPTS JS -->
     <script>
-        // Aguarda o DOM estar pronto para o resto da lógica
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- Script do Menu Mobile ---
             const menuBtn = document.getElementById('menu-btn');
             const menuDropdown = document.getElementById('menu-dropdown');
             menuBtn.addEventListener('click', () => {
                 menuDropdown.classList.toggle('hidden');
-                // Troca o ícone do menu
                 const icon = menuBtn.querySelector('i');
                 if (menuDropdown.classList.contains('hidden')) {
                     icon.setAttribute('data-lucide', 'menu');
                 } else {
                     icon.setAttribute('data-lucide', 'x');
                 }
-                
-                // Recria o ícone específico do botão, caso tenha mudado
-                // É FUNDAMENTAL verificar se 'lucide' já carregou (o 'onload' pode demorar)
                 if (typeof lucide !== 'undefined') {
                     lucide.createIcons({
-                        attrs: {
-                            'stroke-width': 2.5
-                        },
+                        attrs: { 'stroke-width': 2.5 },
                         nodes: [icon]
                     });
                 } else {
@@ -479,24 +462,20 @@
                 }
             });
 
-            // --- Evita seção duplicada de Ferramentas e garante ordem após "Minha Jornada" ---
             const ferramentasSections = Array.from(document.querySelectorAll('[data-section="ferramentas"]'));
             if (ferramentasSections.length > 1) {
                 ferramentasSections.slice(1).forEach(section => section.remove());
             }
-
             const jornadaSection = document.getElementById('jornada');
             const ferramentasSection = ferramentasSections[0];
 
             if (jornadaSection && ferramentasSection) {
                 const ferramentasAntesDaJornada = jornadaSection.compareDocumentPosition(ferramentasSection) & Node.DOCUMENT_POSITION_PRECEDING;
-
                 if (ferramentasAntesDaJornada) {
                     jornadaSection.insertAdjacentElement('afterend', ferramentasSection);
                 }
             }
 
-            // --- Script de Animação ao Rolar (Scroll Reveal) ---
             const revealElements = document.querySelectorAll('.reveal-on-scroll');
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -505,15 +484,10 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, {
-                threshold: 0.1 // Revela quando 10% do elemento está visível
-            });
+            }, { threshold: 0.1 });
 
-            revealElements.forEach(el => {
-                observer.observe(el);
-            });
+            revealElements.forEach(el => observer.observe(el));
 
-            // --- Script do Lightbox (Galeria) ---
             const lightbox = document.getElementById('lightbox');
             const lightboxBackdrop = document.getElementById('lightbox-backdrop');
             const lightboxImg = document.getElementById('lightbox-img');
@@ -525,34 +499,27 @@
                 item.addEventListener('click', () => {
                     const src = item.dataset.src;
                     const title = item.dataset.title;
-                    
                     lightboxImg.src = src;
                     lightboxTitle.textContent = title;
-                    
                     lightbox.classList.remove('hidden');
-                    setTimeout(() => lightbox.classList.remove('opacity-0'), 10); // Fade in
+                    setTimeout(() => lightbox.classList.remove('opacity-0'), 10);
                 });
             });
 
             const closeLightbox = () => {
                 lightbox.classList.add('opacity-0');
-                setTimeout(() => lightbox.classList.add('hidden'), 300); // Fade out
+                setTimeout(() => lightbox.classList.add('hidden'), 300);
             }
 
             lightboxClose.addEventListener('click', closeLightbox);
             lightboxBackdrop.addEventListener('click', closeLightbox);
 
-            // Fechar com a tecla Esc
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
                     closeLightbox();
                 }
             });
-
         });
     </script>
 </body>
 </html>
-
-
-
