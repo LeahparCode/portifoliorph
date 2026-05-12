@@ -52,12 +52,12 @@
         }
         ::-webkit-scrollbar-thumb:hover { background: var(--brand-dark); }
 
-        /* Efeito de Vidro (Glassmorphism) */
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
+        /* Efeito de Vidro Azul Suave (Navbar) */
+        .glass-blue {
+            background: linear-gradient(90deg, rgba(239, 246, 255, 0.85) 0%, rgba(219, 234, 254, 0.85) 100%);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         /* Gradientes de Texto */
@@ -171,7 +171,7 @@
                         Ver Projetos
                         <i data-lucide="arrow-down" class="ml-2 w-5 h-5 group-hover:translate-y-1 transition-transform"></i>
                     </a>
-                    <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" class="border-2 border-brand-dark text-brand-dark px-8 py-4 rounded-xl font-bold hover:bg-brand-dark hover:text-white transition-all">
+                    <a href="#contato" class="border-2 border-brand-dark text-brand-dark px-8 py-4 rounded-xl font-bold hover:bg-brand-dark hover:text-white transition-all">
                         Falar agora
                     </a>
                 </div>
@@ -192,7 +192,7 @@
                     <div class="relative inline-block">
                         <img src="eu.jpg" alt="Raphael Barbosa" class="rounded-3xl shadow-2xl w-full max-w-md grayscale hover:grayscale-0 transition-all duration-700">
                         <div class="absolute -bottom-6 -right-6 bg-brand-blue text-white p-8 rounded-2xl shadow-xl hidden md:block">
-                            <span class="text-4xl font-black block">5</span>
+                            <span class="text-4xl font-black block">25+</span>
                             <span class="text-sm font-medium">Anos vivendo tecnologia</span>
                         </div>
                     </div>
@@ -227,7 +227,7 @@
         </div>
         <div class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
             <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal">
-                <img src="js.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <img src="https://i.imgur.com/321YoZO.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
                 <span class="font-bold">JavaScript</span>
             </div>
             <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 100ms">
@@ -287,12 +287,12 @@
 
                 <div class="bg-white rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group" style="transition-delay: 100ms">
                     <div class="rounded-2xl overflow-hidden mb-6 h-64">
-                        <img src="painel_disparos.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item" data-src="painel_disparos.png" data-title="Painel Disparos">
+                        <img src="intranet.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item" data-src="intranet.png" data-title="Sistemas de Intranet">
                     </div>
                     <div class="px-4 pb-4">
-                        <h3 class="text-2xl font-bold mb-3">Painel Disparos</h3>
-                        <p class="text-slate-500 mb-6 line-clamp-2">Controle absoluto sobre campanhas de mensagens em massa com métricas em tempo real.</p>
-                        <a href="https://paineldisparos.fly.dev/" target="_blank" class="text-brand-blue font-bold inline-flex items-center group">
+                        <h3 class="text-2xl font-bold mb-3">Sistemas de Intranet</h3>
+                        <p class="text-slate-500 mb-6 line-clamp-2">Uma intranet enxuta para conectar áreas, centralizar informações e facilitar o dia a dia das equipas.</p>
+                        <a href="https://hiddenmodel.fly.dev/" target="_blank" class="text-brand-blue font-bold inline-flex items-center group">
                             Ver Online <i data-lucide="external-link" class="ml-2 w-4 h-4"></i>
                         </a>
                     </div>
@@ -323,8 +323,8 @@
             
             <div class="flex flex-col md:flex-row justify-center items-center gap-6">
                 <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" class="w-full md:w-auto bg-[#25D366] text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-green-500/20">
-                    <i data-lucide="message-circle" class="mr-3"></i>
-                    (31) 97503-0149
+                    <img src="https://i.imgur.com/jCQb3Xg.png" alt="Logo WhatsApp" class="h-6 w-auto mr-3 object-contain">
+                    <span class="text-lg">(31) 97503-0149</span>
                 </a>
                 <a href="mailto:leahparcode@outlook.com" class="w-full md:w-auto bg-brand-dark text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-blue-900/20">
                     <i data-lucide="mail" class="mr-3"></i>
@@ -341,8 +341,7 @@
                 <span class="ml-3 font-bold">Leahpar Code &copy; 2026</span>
             </div>
             <div class="flex space-x-6">
-                <a href="https://www.linkedin.com/company/leahpar-code/" class="hover:text-brand-blue transition-colors">LinkedIn</a>
-                <a href="#" class="hover:text-brand-blue transition-colors">Instagram</a>
+                <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" class="hover:text-brand-blue transition-colors">LinkedIn</a>
             </div>
         </div>
     </footer>
@@ -366,7 +365,7 @@
         // Inicializar ícones
         lucide.createIcons();
 
-        // Barra de progresso e scroll do header
+        // Barra de progresso e scroll do header com Navbar Azul Suave
         window.onscroll = function() {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -377,11 +376,12 @@
             const backToTop = document.getElementById('back-to-top');
 
             if (winScroll > 50) {
-                navbar.classList.add('glass', 'shadow-lg', 'py-3');
+                // Adiciona o gradiente azul suave e reduz o padding
+                navbar.classList.add('glass-blue', 'shadow-lg', 'py-3');
                 navbar.classList.remove('py-6');
                 backToTop.classList.remove('opacity-0', 'translate-y-10');
             } else {
-                navbar.classList.remove('glass', 'shadow-lg', 'py-3');
+                navbar.classList.remove('glass-blue', 'shadow-lg', 'py-3');
                 navbar.classList.add('py-6');
                 backToTop.classList.add('opacity-0', 'translate-y-10');
             }
@@ -423,13 +423,6 @@
         // Voltar ao topo
         document.getElementById('back-to-top').addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        mobileMenuBtn.addEventListener('click', () => {
-            // Lógica simples para alerta ou expansão se desejar
-            alert('Menu mobile acionado! Implemente seu dropdown aqui.');
         });
     </script>
 </body>
