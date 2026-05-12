@@ -3,519 +3,433 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leahpar Code - Portfólio de Desenvolvimento Web</title>
+    <title>Leahpar Code | Portfólio Tech</title>
 
-    <!-- Favicon agora local -->
     <link rel="icon" type="image/png" href="LeahparCode.png">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fontes Google (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Sora:wght@400;700;800&display=swap" rel="stylesheet">
 
-    <!-- Ícones Lucide (com 'onload' para garantir o carregamento) -->
-    <script>
-        function initIcons() {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            } else {
-                console.error("Callback 'initIcons' foi chamado, mas 'lucide' ainda não está definido.");
-            }
-        }
-    </script>
-    <script src="https://unpkg.com/lucide@latest/dist/lucide.min.js" onload="initIcons()"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* Estilo base */
+        :root {
+            --brand-blue: #1E90FF;
+            --brand-dark: #001B5D;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background: linear-gradient(180deg, rgba(0, 36, 94, 0.08), rgba(0, 82, 181, 0.04));
+            background-color: #fcfcfc;
+            overflow-x: hidden;
         }
 
-        /* Header com gradiente animado */
-        header {
-            background: linear-gradient(120deg, #001B5D, #0052B5, #1E90FF, #001B5D);
-            background-size: 200% auto;
-            animation: animatedGradient 10s ease infinite;
-            transition: background-color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
-        }
-        
-        /* Lightbox (Modal da Galeria) */
-        .lightbox-backdrop {
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        h1, h2, h3, .font-sora {
+            font-family: 'Sora', sans-serif;
         }
 
-        .lightbox {
-            transition: opacity 0.3s ease-in-out;
+        /* Barra de leitura */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(to right, var(--brand-blue), #60A5FA);
+            z-index: 100;
         }
 
-        /* Animação gradiente header */
-        @keyframes animatedGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Scrollbar customizada */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { 
+            background: var(--brand-blue); 
+            border-radius: 10px;
+            border: 2px solid #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-dark); }
+
+        /* Efeito de Vidro (Glassmorphism) */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        /* Animação de reveal-on-scroll */
-        .reveal-on-scroll {
+        /* Gradientes de Texto */
+        .text-gradient {
+            background: linear-gradient(135deg, #001B5D 0%, #1E90FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Animações */
+        .reveal {
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.17, 0.55, 0.55, 1), transform 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .reveal-on-scroll.is-visible {
+        .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Animação de hover nos cards de stack */
-        .tech-card {
-            transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
-        .tech-card:hover {
-            transform: translateY(-8px) scale(1.03);
-            box-shadow: 0 20px 35px rgba(15, 23, 42, 0.18);
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        /* Card Leahpar Note Special */
+        .special-border {
+            position: relative;
+            background: white;
+            padding: 2px;
+            border-radius: 2rem;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .special-border::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, var(--brand-blue), transparent, transparent);
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .lightbox-backdrop {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
         }
     </style>
 
-    <!-- Configuração do Tailwind -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'brand-blue-25': '#F2F6FF',
-                        'brand-blue-50': '#E6F0FF',
-                        'brand-blue-100': '#B0D1FF',
-                        'brand-blue-200': '#8AB9FF',
-                        'brand-blue-300': '#4D8FFF',
-                        'brand-blue-500': '#1E90FF',
-                        'brand-blue-700': '#0033A0',
-                        'brand-blue-900': '#001B5D',
-                        'brand-gray-100': '#F7F7F7',
-                        'brand-gray-500': '#6B7280',
-                        'brand-gray-800': '#1F2937',
-                        'brand-gray-900': '#111827',
+                        'brand-blue': '#1E90FF',
+                        'brand-dark': '#001B5D',
+                        'brand-soft': '#F0F7FF',
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-white text-brand-gray-800">
+<body class="text-slate-800">
 
-    <!-- HEADER -->
-    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            
-            <!-- Logo e Título -->
-            <a href="#hero" class="flex-shrink-0 flex items-center">
-                <img class="h-16 w-16" src="LeahparCode.png" alt="[Logo da Leahpar Code]">
-                <span class="text-white font-bold text-2xl ml-3 hidden md:inline">Leahpar Code</span>
+    <div id="scroll-progress"></div>
+
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6">
+        <nav class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#hero" class="flex items-center group">
+                <img src="LeahparCode.png" alt="Logo" class="h-12 w-12 transition-transform group-hover:scale-110">
+                <span class="ml-3 font-bold text-xl tracking-tight text-brand-dark navbar-text transition-colors">Leahpar Code</span>
             </a>
             
-            <!-- Navegação Desktop -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#jornada" class="text-white hover:text-brand-blue-100 transition-colors duration-300 font-medium">Minha Jornada</a>
-                <a href="#tecnologias" class="text-white hover:text-brand-blue-100 transition-colors duração-300 font-medium">Ferramentas</a>
-                <a href="#projetos" class="text-white hover:text-brand-blue-100 transition-colors duração-300 font-medium">Projetos</a>
-                <a href="#contato" class="bg-white text-brand-blue-700 px-5 py-2 rounded-full font-semibold hover:bg-brand-blue-50 transition-transform duration-300 hover:scale-105">
-                    Vamos Conversar
+            <div class="hidden md:flex items-center space-x-10">
+                <a href="#jornada" class="font-medium hover:text-brand-blue transition-colors">Jornada</a>
+                <a href="#tecnologias" class="font-medium hover:text-brand-blue transition-colors">Stack</a>
+                <a href="#projetos" class="font-medium hover:text-brand-blue transition-colors">Projetos</a>
+                <a href="#contato" class="bg-brand-blue text-white px-7 py-2.5 rounded-full font-bold hover:bg-brand-dark transition-all shadow-lg hover:shadow-brand-blue/20">
+                    Contato
                 </a>
             </div>
 
-            <!-- Botão Menu Mobile -->
-            <div class="md:hidden">
-                <button id="menu-btn" class="text-white focus:outline-none">
-                    <i data-lucide="menu" class="h-7 w-7"></i>
-                </button>
-            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-brand-dark">
+                <i data-lucide="menu"></i>
+            </button>
         </nav>
-
-        <!-- Menu Dropdown Mobile -->
-        <div id="menu-dropdown" class="hidden md:hidden bg-white shadow-xl">
-            <a href="#jornada" class="block px-6 py-4 text-brand-gray-800 hover:bg-brand-gray-100 font-medium">Minha Jornada</a>
-            <a href="#tecnologias" class="block px-6 py-4 text-brand-gray-800 hover:bg-brand-gray-100 font-medium">Ferramentas</a>
-            <a href="#projetos" class="block px-6 py-4 text-brand-gray-800 hover:bg-brand-gray-100 font-medium">Projetos</a>
-            <a href="#contato" class="block px-6 py-5 bg-brand-blue-50 text-brand-blue-700 text-center font-semibold">
-                Vamos Conversar
-            </a>
-        </div>
     </header>
 
-    <!-- SEÇÃO HERO -->
-    <section id="hero" class="pt-32 pb-16 md:pt-48 md:pb-32 bg-gradient-to-b from-brand-blue-900 via-brand-blue-500 to-brand-blue-25 text-white">
-        <div class="container mx-auto px-6 text-center flex flex-col items-center">
-            <div class="relative inline-block mb-8 reveal-on-scroll">
-                <img src="LeahparCode.png" alt="[Logo da Leahpar Code]" class="h-40 w-40 md:h-56 md:w-56 object-contain">
+    <section id="hero" class="min-h-screen flex items-center pt-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-50 via-white to-white">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div class="reveal">
+                <span class="inline-block py-1 px-4 rounded-full bg-blue-100 text-brand-blue font-bold text-sm mb-6">
+                    Disponível para novos projetos
+                </span>
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+                    Transformando <span class="text-gradient">ideias</span> em código de alta performance.
+                </h1>
+                <p class="text-lg text-slate-600 mb-10 max-w-lg leading-relaxed">
+                    Desenvolvedor Full Stack especializado em criar ecossistemas digitais que unem design intuitivo e robustez técnica.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#projetos" class="bg-brand-dark text-white px-8 py-4 rounded-xl font-bold flex items-center group transition-all hover:scale-105">
+                        Ver Projetos
+                        <i data-lucide="arrow-down" class="ml-2 w-5 h-5 group-hover:translate-y-1 transition-transform"></i>
+                    </a>
+                    <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" class="border-2 border-brand-dark text-brand-dark px-8 py-4 rounded-xl font-bold hover:bg-brand-dark hover:text-white transition-all">
+                        Falar agora
+                    </a>
+                </div>
             </div>
-
-            <h1 class="text-4xl md:text-7xl font-bold text-white drop-shadow-lg mb-4 reveal-on-scroll" style="transition-delay: 0.2s;">
-                Leahpar Code
-            </h1>
-            <p class="text-lg md:text-2xl text-brand-blue-50 max-w-2xl mx-auto reveal-on-scroll" style="transition-delay: 0.4s;">
-                Soluções revolucionárias em códigos e assistência técnica. Criando ecossistemas digitais fluidos e eficientes.
-            </p>
+            <div class="flex justify-center reveal" style="transition-delay: 200ms">
+                <div class="relative animate-float">
+                    <div class="absolute -inset-4 bg-brand-blue/20 rounded-full blur-3xl"></div>
+                    <img src="LeahparCode.png" alt="Logo Grande" class="relative w-72 md:w-96 drop-shadow-2xl">
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- SEÇÃO MINHA JORNADA -->
-    <section id="jornada" class="py-20 md:py-32 bg-gradient-to-b from-white via-brand-blue-25 to-white">
+    <section id="jornada" class="py-24 bg-white">
         <div class="container mx-auto px-6">
-            <div class="max-w-6xl mx-auto text-center">
-                <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">
-                    Minha Jornada
-                </h2>
-                <p class="mt-4 text-3xl md:text-5xl font-bold text-brand-gray-900 reveal-on-scroll" style="transition-delay: 0.2s;">
-                    Da Ideia à Inovação.
-                </p>
-                
-                <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-left">
-                    <!-- Coluna da Foto e Sobre o Fundador -->
-                    <div class="flex flex-col items-center lg:items-start text-center lg:text-left reveal-on-scroll" style="transition-delay: 0.4s;">
-                        <div class="mb-8 p-1.5 bg-brand-blue-500 rounded-full inline-block shadow-lg">
-                            <img src="eu.jpg" alt="Raphael Barbosa, Fundador da Leahpar Code" class="h-48 w-48 md:h-64 md:w-64 rounded-full object-cover">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div class="reveal">
+                    <div class="relative inline-block">
+                        <img src="eu.jpg" alt="Raphael Barbosa" class="rounded-3xl shadow-2xl w-full max-w-md grayscale hover:grayscale-0 transition-all duration-700">
+                        <div class="absolute -bottom-6 -right-6 bg-brand-blue text-white p-8 rounded-2xl shadow-xl hidden md:block">
+                            <span class="text-4xl font-black block">5</span>
+                            <span class="text-sm font-medium">Anos vivendo tecnologia</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-4">Sobre mim, Raphael Barbosa</h3>
-                        <p class="text-brand-gray-500 leading-relaxed max-w-lg">
-                            Desde 1998, sempre vi tecnologia como caminho de liberdade. Comecei nos jogos online, migrei para o código e hoje transformo problemas reais em soluções digitais completas, do front ao back-end.
-                        </p>
                     </div>
-
-                    <!-- Coluna Sobre a Leahpar Code -->
-                    <div class="space-y-6 text-left lg:pl-8 reveal-on-scroll" style="transition-delay: 0.6s;">
-                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-4">Minha Visão para a Leahpar Code</h3>
-                        <p class="text-brand-gray-500 leading-relaxed">
-                            A Leahpar Code nasceu para simplificar o digital: interfaces claras, sistemas organizados e dados fazendo sentido. Cada projeto é pensado como um ecossistema, não só como uma tela bonita.
-                        </p>
-                        <p class="text-brand-gray-500 leading-relaxed">
-                            Meu foco é entregar soluções estáveis, escaláveis e fáceis de usar, unindo design, código limpo e suporte próximo para empresas que querem profissionalizar seus processos.
-                        </p>
+                </div>
+                <div class="reveal" style="transition-delay: 200ms">
+                    <h2 class="text-4xl font-extrabold mb-8">O arquiteto por trás da <span class="text-brand-blue">Leahpar Code</span></h2>
+                    <p class="text-slate-600 text-lg mb-6 leading-relaxed">
+                        Meu nome é <strong>Raphael Barbosa</strong>. Minha relação com a tecnologia começou em 1998 e, desde então, evoluí dos games para a engenharia de software.
+                    </p>
+                    <p class="text-slate-600 text-lg mb-8 leading-relaxed">
+                        Não entrego apenas código; entrego soluções que otimizam o tempo humano. Meu foco é na simplicidade da interface aliada à complexidade necessária no back-end.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="p-4 bg-brand-soft rounded-xl">
+                            <i data-lucide="check-circle" class="text-brand-blue mb-2"></i>
+                            <h4 class="font-bold">Foco em UI/UX</h4>
+                        </div>
+                        <div class="p-4 bg-brand-soft rounded-xl">
+                            <i data-lucide="zap" class="text-brand-blue mb-2"></i>
+                            <h4 class="font-bold">Código Limpo</h4>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SEÇÃO TECNOLOGIAS -->
-    <section id="tecnologias" data-section="ferramentas" class="py-16 md:py-24 bg-gradient-to-b from-brand-blue-25 via-white to-brand-blue-50">
-        <div class="container mx-auto px-6">
-            <div class="max-w-3xl mx-auto text-center mb-16">
-                <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">Ferramentas</h2>
-                <p class="mt-4 text-3xl md:text-5xl font-bold text-brand-gray-900 reveal-on-scroll" style="transition-delay: 0.2s;">
-                    Tecnologias que aplico nos projetos.
-                </p>
-                <p class="mt-4 text-lg text-brand-gray-500 reveal-on-scroll" style="transition-delay: 0.4s;">
-                    Um conjunto direto de stacks para entregar performance, segurança e clareza em cada sistema.
-                </p>
+    <section id="tecnologias" class="py-24 bg-brand-dark text-white overflow-hidden">
+        <div class="container mx-auto px-6 text-center mb-16 reveal">
+            <h2 class="text-4xl font-extrabold mb-4">Minha Stack Tech</h2>
+            <p class="text-blue-200">As ferramentas que utilizo para dar vida aos seus projetos.</p>
+        </div>
+        <div class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal">
+                <img src="js.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <span class="font-bold">JavaScript</span>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- JavaScript -->
-                <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll hover:shadow-2xl hover:bg-white" style="transition-delay: 0.1s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-50 via-amber-200 to-orange-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-amber-200/70 overflow-hidden">
-                        <img src="js.png" alt="Logo JavaScript" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">JavaScript</h3>
-                    <p class="text-brand-gray-500">Interações dinâmicas, automações e lógica do front que dá vida às telas.</p>
-                </div>
-
-                <!-- HTML -->
-                <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll hover:shadow-2xl hover:bg-white" style="transition-delay: 0.2s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-50 via-orange-200 to-rose-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-orange-200/70 overflow-hidden">
-                        <img src="html-5.png" alt="Logo HTML5" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">HTML</h3>
-                    <p class="text-brand-gray-500">Base semântica e acessível que estrutura cada página e cada seção.</p>
-                </div>
-
-                <!-- CSS & Tailwind -->
-                <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll hover:shadow-2xl hover:bg-white" style="transition-delay: 0.3s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-50 via-blue-200 to-indigo-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-sky-200/70 overflow-hidden">
-                        <img src="css.png" alt="Logo CSS e Tailwind" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">CSS & Tailwind</h3>
-                    <p class="text-brand-gray-500">Layouts responsivos, animações suaves e identidade visual consistente.</p>
-                </div>
-
-                <!-- Bootstrap -->
-                <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll hover:shadow-2xl hover:bg-white" style="transition-delay: 0.4s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-50 via-violet-200 to-purple-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-purple-200/70 overflow-hidden">
-                        <img src="bootstrap.png" alt="Logo Bootstrap" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">Bootstrap</h3>
-                    <p class="text-brand-gray-500">Componentes prontos para montar dashboards e painéis com agilidade.</p>
-                </div>
-
-                <!-- GitHub -->
-                <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll hover:shadow-2xl hover:bg-white" style="transition-delay: 0.5s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-50 via-slate-200 to-slate-400 flex items-center justify-center mb-4 shadow-lg ring-2 ring-slate-200/70 overflow-hidden">
-                        <img src="github.png" alt="Logo GitHub" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">GitHub</h3>
-                    <p class="text-brand-gray-500">Versionamento, histórico limpo de código e colaboração entre projetos.</p>
-                </div>
-
-                <!-- NoSQL -->
-                <div class="tech-card group bg-white/90 border border-brand-blue-100 rounded-3xl p-6 shadow-xl backdrop-blur reveal-on-scroll hover:shadow-2xl hover:bg-white" style="transition-delay: 0.6s;">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-lime-50 via-emerald-200 to-green-300 flex items-center justify-center mb-4 shadow-lg ring-2 ring-lime-200/70 overflow-hidden">
-                        <img src="database.png" alt="Logo NoSQL" loading="lazy" class="w-12 h-12 object-contain transition duration-300 transform group-hover:scale-110">
-                    </div>
-                    <h3 class="text-xl font-bold text-brand-gray-900 mb-2">NoSQL</h3>
-                    <p class="text-brand-gray-500">Banco flexível para dados em tempo real, eventos e documentos.</p>
-                </div>
+            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 100ms">
+                <img src="html-5.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <span class="font-bold">HTML5</span>
+            </div>
+            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 200ms">
+                <img src="css.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <span class="font-bold">Tailwind</span>
+            </div>
+            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 300ms">
+                <img src="bootstrap.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <span class="font-bold">Bootstrap</span>
+            </div>
+            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 400ms">
+                <img src="github.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <span class="font-bold">GitHub</span>
+            </div>
+            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 500ms">
+                <img src="database.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <span class="font-bold">NoSQL</span>
             </div>
         </div>
     </section>
 
-    <!-- SEÇÃO PROJETOS -->
-    <section id="projetos" class="py-20 md:py-32 bg-gradient-to-b from-brand-blue-50 via-white to-brand-blue-25">
+    <section id="projetos" class="py-24 bg-slate-50">
         <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center mb-16">
-                <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">
-                    Meus Produtos
-                </h2>
-                <p class="mt-4 text-3xl md:text-5xl font-bold text-brand-gray-900 reveal-on-scroll" style="transition-delay: 0.2s;">
-                    Soluções Reais para Desafios Reais.
-                </p>
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+                <div>
+                    <h2 class="text-4xl font-extrabold mb-4">Projetos em <span class="text-brand-blue">Destaque</span></h2>
+                    <p class="text-slate-500">Sistemas que estão rodando e gerando valor.</p>
+                </div>
             </div>
 
-            <!-- Cards de Projetos -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="md:col-span-2 reveal">
+                    <div class="special-border shadow-2xl group">
+                        <div class="bg-white rounded-[1.9rem] flex flex-col lg:flex-row overflow-hidden">
+                            <div class="lg:w-3/5 overflow-hidden">
+                                <img src="https://i.imgur.com/fmWP2Zg.jpeg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 cursor-pointer gallery-item" data-src="https://i.imgur.com/fmWP2Zg.jpeg" data-title="Leahpar Note">
+                            </div>
+                            <div class="lg:w-2/5 p-12 flex flex-col justify-center">
+                                <span class="text-brand-blue font-bold text-sm tracking-widest uppercase mb-2">Projeto Recente</span>
+                                <h3 class="text-4xl font-black mb-6">Leahpar Note</h3>
+                                <p class="text-slate-500 mb-8 text-lg leading-relaxed">
+                                    Uma ferramenta de produtividade minimalista. Focada em velocidade de anotação e uma interface livre de distrações. O seu cérebro externo em formato digital.
+                                </p>
+                                <div class="flex gap-4">
+                                    <span class="px-3 py-1 bg-slate-100 rounded-md text-xs font-bold">JavaScript</span>
+                                    <span class="px-3 py-1 bg-slate-100 rounded-md text-xs font-bold">Local Storage</span>
+                                    <span class="px-3 py-1 bg-slate-100 rounded-md text-xs font-bold">UI/UX</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Projeto 1: Intranet -->
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden reveal-on-scroll" style="transition-delay: 0.1s;">
-                    <img src="intranet.png" alt="[Captura de tela do Portal EDT]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="intranet.png" data-title="Portal EDT / Intranet">
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-3">Sistemas de Intranet</h3>
-                        <p class="text-brand-gray-500 mb-6">
-                            Uma intranet enxuta para conectar áreas, centralizar informações e facilitar o dia a dia das equipes.
-                        </p>
-                        <a href="https://hiddenmodel.fly.dev/" target="_blank" class="font-medium text-brand-blue-500 hover:text-brand-blue-700 transition-colors duration-300 inline-flex items-center">
-                            Ver Projeto
-                            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                <div class="bg-white rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group" style="transition-delay: 100ms">
+                    <div class="rounded-2xl overflow-hidden mb-6 h-64">
+                        <img src="painel_disparos.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item" data-src="painel_disparos.png" data-title="Painel Disparos">
+                    </div>
+                    <div class="px-4 pb-4">
+                        <h3 class="text-2xl font-bold mb-3">Painel Disparos</h3>
+                        <p class="text-slate-500 mb-6 line-clamp-2">Controle absoluto sobre campanhas de mensagens em massa com métricas em tempo real.</p>
+                        <a href="https://paineldisparos.fly.dev/" target="_blank" class="text-brand-blue font-bold inline-flex items-center group">
+                            Ver Online <i data-lucide="external-link" class="ml-2 w-4 h-4"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- Projeto 2: Painel Disparos -->
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden reveal-on-scroll" style="transition-delay: 0.2s;">
-                    <img src="painel_disparos.png" alt="[Captura de tela do Painel Disparos]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="painel_disparos.png" data-title="Painel Disparos">
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-3">Painel Disparos</h3>
-                        <p class="text-brand-gray-500 mb-6">
-                            Dashboard para monitorar disparos em massa com integração Blip e insights em tempo real.
-                        </p>
-                        <a href="https://paineldisparos.fly.dev/" target="_blank" class="font-medium text-brand-blue-500 hover:text-brand-blue-700 transition-colors duration-300 inline-flex items-center">
-                            Ver Projeto
-                            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                <div class="bg-white rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group" style="transition-delay: 200ms">
+                    <div class="rounded-2xl overflow-hidden mb-6 h-64">
+                        <img src="help_desk.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item" data-src="help_desk.png" data-title="Helpdesk Pro">
+                    </div>
+                    <div class="px-4 pb-4">
+                        <h3 class="text-2xl font-bold mb-3">Helpdesk Pro</h3>
+                        <p class="text-slate-500 mb-6 line-clamp-2">Gestão inteligente de chamados para equipes de TI que buscam produtividade.</p>
+                        <a href="https://helpdeskpro.fly.dev/" target="_blank" class="text-brand-blue font-bold inline-flex items-center group">
+                            Ver Online <i data-lucide="external-link" class="ml-2 w-4 h-4"></i>
                         </a>
                     </div>
-                </div>
-
-                <!-- Projeto 3: Helpdesk Pro -->
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden reveal-on-scroll" style="transition-delay: 0.3s;">
-                    <img src="help_desk.png" alt="[Captura de tela do Helpdesk Pro]" class="w-full h-56 object-cover cursor-pointer gallery-item" data-src="help_desk.png" data-title="Helpdesk Pro">
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold text-brand-gray-900 mb-3">Helpdesk Pro</h3>
-                        <p class="text-brand-gray-500 mb-6">
-                            Sistema de tickets com SLA, categorias e visão clara das demandas de TI ou suporte interno.
-                        </p>
-                        <a href="https://helpdeskpro.fly.dev/" target="_blank" class="font-medium text-brand-blue-500 hover:text-brand-blue-700 transition-colors duration-300 inline-flex items-center">
-                            Ver Projeto
-                            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Galeria -->
-            <div class="max-w-4xl mx-auto text-center mt-20 mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-gray-900 reveal-on-scroll">
-                    Galeria de Projetos
-                </h2>
-                <p class="mt-4 text-lg text-brand-gray-500 reveal-on-scroll" style="transition-delay: 0.2s;">
-                    Alguns detalhes visuais das interfaces que desenvolvi.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="reveal-on-scroll" style="transition-delay: 0.1s;">
-                    <img src="painel_disparos.png" alt="[Painel Disparos - Dashboard]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="painel_disparos.png" data-title="Painel Disparos - Dashboard">
-                </div>
-                <div class="reveal-on-scroll" style="transition-delay: 0.2s;">
-                    <img src="painel_disparos2.png" alt="[Painel Disparos - Gráficos]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="painel_disparos2.png" data-title="Painel Disparos - Gráficos">
-                </div>
-                <div class="reveal-on-scroll" style="transition-delay: 0.3s;">
-                    <img src="intranet.png" alt="[Portal EDT - Página Inicial]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duration-300 gallery-item" data-src="intranet.png" data-title="Página Inicial / Intranet">
-                </div>
-                <div class="reveal-on-scroll" style="transition-delay: 0.5s;">
-                    <img src="help_desk.png" alt="[Helpdesk Pro - Painel]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duração-300 gallery-item" data-src="help_desk.png" data-title="Helpdesk Pro - Painel de Controle">
-                </div>
-                <div class="reveal-on-scroll" style="transition-delay: 0.6s;">
-                    <img src="help_desk2.png" alt="[Helpdesk Pro - Abertura de Chamado]" class="h-auto max-w-full rounded-lg cursor-pointer hover:opacity-80 transition-opacity duração-300 gallery-item" data-src="help_desk2.png" data-title="Helpdesk Pro - Abertura de Chamado">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SEÇÃO CONTATO -->
-    <section id="contato" class="py-20 md:py-32 bg-gradient-to-b from-white via-brand-blue-25 to-white">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-sm font-semibold text-brand-blue-500 uppercase tracking-wider reveal-on-scroll">
-                    Contato
-                </h2>
-                <p class="mt-4 text-3xl md:text-5xl font-bold text-brand-gray-900 reveal-on-scroll" style="transition-delay: 0.2s;">
-                    Vamos construir algo incrível.
-                </p>
-                <p class="mt-6 text-lg text-brand-gray-500 max-w-2xl mx-auto reveal-on-scroll" style="transition-delay: 0.4s;">
-                    Aberto a novos projetos, parcerias e ideias. Me chama e a gente tira seu sistema do papel.
-                </p>
-
-                <div class="mt-12 flex flex-col md:flex-row justify-center items-center gap-8 reveal-on-scroll" style="transition-delay: 0.6s;">
-                    
-                    <!-- WhatsApp -->
-                    <a href="https://api.whatsapp.com/send?phone=5531992434398" target="_blank" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
-                        <svg class="w-7 h-7 mr-3 flex-shrink-0" viewBox="0 0 32 32" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="16" cy="16" r="16" fill="#25D366" />
-                            <path fill="#FFFFFF" d="M21.57 18.39c-.34-.17-2.02-.99-2.33-1.1-.31-.11-.53-.17-.75.17-.22.34-.86 1.1-1.05 1.32-.19.22-.39.25-.73.08-.34-.17-1.41-.52-2.68-1.66-.99-.88-1.66-1.97-1.86-2.3-.19-.34-.02-.52.15-.69.16-.16.34-.39.5-.58.17-.19.22-.34.34-.56.11-.22.06-.41-.03-.58-.09-.17-.75-1.8-1.03-2.47-.27-.64-.55-.55-.75-.56-.19-.01-.41-.01-.63-.01-.22 0-.58.08-.88.41-.3.34-1.16 1.13-1.16 2.76 0 1.63 1.19 3.21 1.35 3.44.17.22 2.33 3.56 5.63 4.99.79.34 1.41.54 1.89.69.79.25 1.51.22 2.08.13.64-.09 2.02-.83 2.31-1.64.28-.81.28-1.5.19-1.64-.09-.13-.31-.22-.64-.39z" />
-                        </svg>
-                        (31) 99243-4398
-                    </a>
-
-                    <!-- Email -->
-                    <a href="mailto:leahparcode@outlook.com" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
-                        <svg class="w-7 h-7 mr-3 flex-shrink-0" viewBox="0 0 32 32" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="32" height="32" rx="6" fill="#0F6CBD" />
-                            <path fill="#FFFFFF" d="M7 10.5c0-.83.67-1.5 1.5-1.5h15c.83 0 1.5.67 1.5 1.5v11c0 .83-.67 1.5-1.5 1.5h-15A1.5 1.5 0 0 1 7 21.5v-11Zm16.5-.5h-15c-.28 0-.5.22-.5.5v.33l8 4.94 8-4.94V10.5c0-.28-.22-.5-.5-.5Zm.5 2.12-7.45 4.6a1 1 0 0 1-1.1 0L8.5 12.12V21.5c0 .28.22.5.5.5h15c.28 0 .5-.22.5-.5v-8.88Z" />
-                        </svg>
-                        leahparcode@outlook.com
-                    </a>
-
-                    <!-- LinkedIn -->
-                    <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" class="flex items-center text-lg font-medium text-brand-gray-800 hover:text-brand-blue-500 transition-colors duration-300">
-                        <svg class="w-7 h-7 mr-3 flex-shrink-0" viewBox="0 0 32 32" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="16" cy="16" r="16" fill="#0A66C2" />
-                            <path fill="#FFFFFF" d="M12.19 13.03h-2.7V21h2.7v-7.97Zm-.14-2.51c0-.78-.58-1.41-1.5-1.41-.92 0-1.51.63-1.51 1.41 0 .78.58 1.41 1.48 1.41h.02c.92 0 1.51-.63 1.51-1.41ZM22 21v-4.21c0-2.25-1.2-3.3-2.81-3.3-1.29 0-1.88.71-2.21 1.21v-1.04h-2.7c.04.69 0 7.34 0 7.34h2.7v-4.1c0-.22.02-.44.08-.6.17-.44.55-.89 1.2-.89.85 0 1.19.67 1.19 1.66V21H22Z" />
-                        </svg>
-                        Leahpar Code
-                    </a>
-                </div>
+    <section id="contato" class="py-24 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-6 text-center reveal">
+            <h2 class="text-5xl font-black mb-8 text-gradient">Vamos criar o seu <br>próximo sistema?</h2>
+            <p class="text-slate-500 text-xl max-w-2xl mx-auto mb-16">
+                Estou pronto para ouvir sua ideia e transformá-la em uma ferramenta poderosa.
+            </p>
+            
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" class="w-full md:w-auto bg-[#25D366] text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-green-500/20">
+                    <i data-lucide="message-circle" class="mr-3"></i>
+                    (31) 97503-0149
+                </a>
+                <a href="mailto:leahparcode@outlook.com" class="w-full md:w-auto bg-brand-dark text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-blue-900/20">
+                    <i data-lucide="mail" class="mr-3"></i>
+                    leahparcode@outlook.com
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="py-12 bg-gradient-to-r from-brand-blue-700 to-brand-blue-500">
-        <div class="container mx-auto px-6 text-center text-brand-blue-100">
-            <p>&copy; 2026 Leahpar Code. Todos os direitos reservados.</p>
-            <p class="text-sm mt-2">Desenvolvido com muita dedicação e código.</p>
+    <footer class="py-12 bg-slate-50 border-t border-slate-200">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-slate-500">
+            <div class="flex items-center mb-6 md:mb-0">
+                <img src="LeahparCode.png" class="h-8 opacity-50 grayscale">
+                <span class="ml-3 font-bold">Leahpar Code &copy; 2026</span>
+            </div>
+            <div class="flex space-x-6">
+                <a href="https://www.linkedin.com/company/leahpar-code/" class="hover:text-brand-blue transition-colors">LinkedIn</a>
+                <a href="#" class="hover:text-brand-blue transition-colors">Instagram</a>
+            </div>
         </div>
     </footer>
 
-    <!-- LIGHTBOX (MODAL DA GALERIA) -->
-    <div id="lightbox" class="lightbox fixed inset-0 z-50 flex items-center justify-center p-4 hidden opacity-0">
-        <div id="lightbox-backdrop" class="lightbox-backdrop fixed inset-0"></div>
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-brand-blue text-white p-4 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all hover:bg-brand-dark z-50">
+        <i data-lucide="chevron-up"></i>
+    </button>
 
-        <div class="relative z-10 max-w-4xl max-h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden">
-            <img id="lightbox-img" src="" alt="[Imagem do projeto ampliada]" class="w-full h-auto object-contain max-h-[80vh]">
-            <p id="lightbox-title" class="py-3 px-6 text-center font-medium text-brand-gray-800 bg-gray-50"></p>
+    <div id="lightbox" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 lightbox-backdrop" id="close-lightbox"></div>
+        <div class="relative max-w-5xl w-full max-h-[90vh] z-10 flex flex-col items-center">
+            <img id="lightbox-img" class="rounded-xl shadow-2xl max-h-[80vh] object-contain">
+            <p id="lightbox-title" class="text-white mt-4 font-bold text-xl px-6 py-2 bg-black/40 rounded-full"></p>
+            <button id="btn-close-lightbox" class="absolute -top-12 right-0 text-white hover:text-brand-blue transition-colors">
+                <i data-lucide="x" class="w-10 h-10"></i>
+            </button>
         </div>
-
-        <button id="lightbox-close" class="absolute top-6 right-6 z-20 text-white rounded-full bg-black/30 hover:bg-black/60 p-2 transition-colors duration-300">
-            <i data-lucide="x" class="w-8 h-8"></i>
-        </button>
     </div>
 
-    <!-- SCRIPTS JS -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Menu mobile
-            const menuBtn = document.getElementById('menu-btn');
-            const menuDropdown = document.getElementById('menu-dropdown');
-            menuBtn.addEventListener('click', () => {
-                menuDropdown.classList.toggle('hidden');
-                const icon = menuBtn.querySelector('i');
-                if (menuDropdown.classList.contains('hidden')) {
-                    icon.setAttribute('data-lucide', 'menu');
-                } else {
-                    icon.setAttribute('data-lucide', 'x');
-                }
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons({
-                        attrs: { 'stroke-width': 2.5 },
-                        nodes: [icon]
-                    });
-                } else {
-                    console.warn("Menu icon toggled, but 'lucide' is not ready yet.");
-                }
-            });
+        // Inicializar ícones
+        lucide.createIcons();
 
-            // Evita seção duplicada de Ferramentas
-            const ferramentasSections = Array.from(document.querySelectorAll('[data-section="ferramentas"]'));
-            if (ferramentasSections.length > 1) {
-                ferramentasSections.slice(1).forEach(section => section.remove());
+        // Barra de progresso e scroll do header
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+
+            const navbar = document.getElementById('navbar');
+            const backToTop = document.getElementById('back-to-top');
+
+            if (winScroll > 50) {
+                navbar.classList.add('glass', 'shadow-lg', 'py-3');
+                navbar.classList.remove('py-6');
+                backToTop.classList.remove('opacity-0', 'translate-y-10');
+            } else {
+                navbar.classList.remove('glass', 'shadow-lg', 'py-3');
+                navbar.classList.add('py-6');
+                backToTop.classList.add('opacity-0', 'translate-y-10');
             }
-            const jornadaSection = document.getElementById('jornada');
-            const ferramentasSection = ferramentasSections[0];
-            if (jornadaSection && ferramentasSection) {
-                const ferramentasAntesDaJornada = jornadaSection.compareDocumentPosition(ferramentasSection) & Node.DOCUMENT_POSITION_PRECEDING;
-                if (ferramentasAntesDaJornada) {
-                    jornadaSection.insertAdjacentElement('afterend', ferramentasSection);
-                }
-            }
+        };
 
-            // Scroll reveal
-            const revealElements = document.querySelectorAll('.reveal-on-scroll');
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            revealElements.forEach(el => observer.observe(el));
-
-            // Lightbox
-            const lightbox = document.getElementById('lightbox');
-            const lightboxBackdrop = document.getElementById('lightbox-backdrop');
-            const lightboxImg = document.getElementById('lightbox-img');
-            const lightboxTitle = document.getElementById('lightbox-title');
-            const lightboxClose = document.getElementById('lightbox-close');
-            const galleryItems = document.querySelectorAll('.gallery-item');
-
-            galleryItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const src = item.dataset.src;
-                    const title = item.dataset.title;
-                    lightboxImg.src = src;
-                    lightboxTitle.textContent = title;
-                    lightbox.classList.remove('hidden');
-                    setTimeout(() => lightbox.classList.remove('opacity-0'), 10);
-                });
-            });
-
-            const closeLightbox = () => {
-                lightbox.classList.add('opacity-0');
-                setTimeout(() => lightbox.classList.add('hidden'), 300);
-            };
-
-            lightboxClose.addEventListener('click', closeLightbox);
-            lightboxBackdrop.addEventListener('click', closeLightbox);
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
-                    closeLightbox();
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 }
             });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                lightboxImg.src = item.getAttribute('data-src');
+                lightboxTitle.innerText = item.getAttribute('data-title');
+                lightbox.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        const closeBtn = () => {
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        document.getElementById('close-lightbox').addEventListener('click', closeBtn);
+        document.getElementById('btn-close-lightbox').addEventListener('click', closeBtn);
+
+        // Voltar ao topo
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        mobileMenuBtn.addEventListener('click', () => {
+            // Lógica simples para alerta ou expansão se desejar
+            alert('Menu mobile acionado! Implemente seu dropdown aqui.');
         });
     </script>
 </body>
