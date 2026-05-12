@@ -60,14 +60,22 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Gradientes de Texto */
-        .text-gradient {
-            background: linear-gradient(135deg, #001B5D 0%, #1E90FF 100%);
+        /* Gradientes de Texto Animado (Para a palavra 'ideias') */
+        .text-gradient-animated {
+            background: linear-gradient(270deg, #001B5D, #1E90FF, #38BDF8, #1E90FF, #001B5D);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: animateTextGradient 4s ease infinite;
         }
 
-        /* Animações */
+        @keyframes animateTextGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animações Diversas */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -134,9 +142,12 @@
 
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6">
         <nav class="container mx-auto px-6 flex justify-between items-center">
+            
             <a href="#hero" class="flex items-center group">
-                <img src="LeahparCode.png" alt="Logo" class="h-12 w-12 transition-transform group-hover:scale-110">
-                <span class="ml-3 font-bold text-xl tracking-tight text-brand-dark navbar-text transition-colors">Leahpar Code</span>
+                <div class="bg-gradient-to-br from-brand-blue to-blue-300 p-2 rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-110">
+                    <img src="LeahparCode.png" alt="Logo" class="h-14 w-14 object-contain">
+                </div>
+                <span class="ml-4 font-bold text-xl tracking-tight text-brand-dark navbar-text transition-colors">Leahpar Code</span>
             </a>
             
             <div class="hidden md:flex items-center space-x-10">
@@ -160,9 +171,11 @@
                 <span class="inline-block py-1 px-4 rounded-full bg-blue-100 text-brand-blue font-bold text-sm mb-6">
                     Disponível para novos projetos
                 </span>
+                
                 <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
-                    Transformando <span class="text-gradient">ideias</span> em código de alta performance.
+                    Transformando <span class="text-gradient-animated">ideias</span> em código de alta performance.
                 </h1>
+                
                 <p class="text-lg text-slate-600 mb-10 max-w-lg leading-relaxed">
                     Desenvolvedor Full Stack especializado em criar ecossistemas digitais que unem design intuitivo e robustez técnica.
                 </p>
@@ -192,7 +205,7 @@
                     <div class="relative inline-block">
                         <img src="eu.jpg" alt="Raphael Barbosa" class="rounded-3xl shadow-2xl w-full max-w-md grayscale hover:grayscale-0 transition-all duration-700">
                         <div class="absolute -bottom-6 -right-6 bg-brand-blue text-white p-8 rounded-2xl shadow-xl hidden md:block">
-                            <span class="text-4xl font-black block">5</span>
+                            <span class="text-4xl font-black block">25+</span>
                             <span class="text-sm font-medium">Anos vivendo tecnologia</span>
                         </div>
                     </div>
