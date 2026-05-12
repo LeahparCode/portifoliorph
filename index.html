@@ -52,15 +52,17 @@
         }
         ::-webkit-scrollbar-thumb:hover { background: var(--brand-dark); }
 
-        /* Efeito de Vidro Azul Suave (Navbar) */
+        /* Efeito de Vidro Azul Suave (Navbar) com animação */
         .glass-blue {
-            background: linear-gradient(90deg, rgba(239, 246, 255, 0.85) 0%, rgba(219, 234, 254, 0.85) 100%);
+            background: linear-gradient(270deg, rgba(239, 246, 255, 0.85), rgba(219, 234, 254, 0.95), rgba(239, 246, 255, 0.85));
+            background-size: 200% 200%;
+            animation: animateTextGradient 6s ease infinite;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Gradientes de Texto Animado (Para a palavra 'ideias') */
+        /* Gradientes de Texto Animado */
         .text-gradient-animated {
             background: linear-gradient(270deg, #001B5D, #1E90FF, #38BDF8, #1E90FF, #001B5D);
             background-size: 300% 300%;
@@ -144,10 +146,8 @@
         <nav class="container mx-auto px-6 flex justify-between items-center">
             
             <a href="#hero" class="flex items-center group">
-                <div class="bg-gradient-to-br from-brand-blue to-blue-300 p-2 rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-110">
-                    <img src="LeahparCode.png" alt="Logo" class="h-14 w-14 object-contain">
-                </div>
-                <span class="ml-4 font-bold text-xl tracking-tight text-brand-dark navbar-text transition-colors">Leahpar Code</span>
+                <img src="LeahparCode.png" alt="Logo" class="h-14 w-14 object-contain transition-transform duration-300 group-hover:scale-110">
+                <span class="ml-3 font-bold text-xl tracking-tight text-gradient-animated transition-colors">Leahpar Code</span>
             </a>
             
             <div class="hidden md:flex items-center space-x-10">
@@ -378,7 +378,7 @@
         // Inicializar ícones
         lucide.createIcons();
 
-        // Barra de progresso e scroll do header com Navbar Azul Suave
+        // Barra de progresso e scroll do header
         window.onscroll = function() {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
