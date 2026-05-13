@@ -23,7 +23,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #fcfcfc;
+            background-color: transparent; /* Alterado para transparente para mostrar o BG parallax */
             overflow-x: hidden;
         }
 
@@ -57,8 +57,8 @@
             background: linear-gradient(270deg, rgba(239, 246, 255, 0.85), rgba(219, 234, 254, 0.95), rgba(239, 246, 255, 0.85));
             background-size: 200% 200%;
             animation: animateTextGradient 6s ease infinite;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.5);
         }
 
@@ -122,6 +122,11 @@
             background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(8px);
         }
+
+        /* Otimização de Performance para o Parallax */
+        .will-change-transform {
+            will-change: transform;
+        }
     </style>
 
     <script>
@@ -138,7 +143,13 @@
         }
     </script>
 </head>
-<body class="text-slate-800">
+<body class="text-slate-800 relative">
+
+    <div class="fixed inset-0 z-[-1] overflow-hidden bg-[#fcfcfc]">
+        <div id="bg-orb-1" class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-300/40 blur-[100px] will-change-transform mix-blend-multiply"></div>
+        <div id="bg-orb-2" class="absolute top-[30%] right-[-15%] w-[45vw] h-[45vw] rounded-full bg-brand-blue/20 blur-[120px] will-change-transform mix-blend-multiply"></div>
+        <div id="bg-orb-3" class="absolute bottom-[-20%] left-[10%] w-[60vw] h-[60vw] rounded-full bg-sky-200/40 blur-[120px] will-change-transform mix-blend-multiply"></div>
+    </div>
 
     <div id="scroll-progress"></div>
 
@@ -165,10 +176,10 @@
         </nav>
     </header>
 
-    <section id="hero" class="min-h-screen flex items-center pt-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-50 via-white to-white">
+    <section id="hero" class="min-h-screen flex items-center pt-20">
         <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
             <div class="reveal">
-                <span class="inline-block py-1 px-4 rounded-full bg-blue-100 text-brand-blue font-bold text-sm mb-6">
+                <span class="inline-block py-1 px-4 rounded-full bg-blue-100 text-brand-blue font-bold text-sm mb-6 shadow-sm border border-blue-200">
                     Disponível para novos projetos
                 </span>
                 
@@ -180,31 +191,31 @@
                     Desenvolvedor Full Stack especializado em criar ecossistemas digitais que unem design intuitivo e robustez técnica.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <a href="#projetos" class="bg-brand-dark text-white px-8 py-4 rounded-xl font-bold flex items-center group transition-all hover:scale-105">
+                    <a href="#projetos" class="bg-brand-dark text-white px-8 py-4 rounded-xl font-bold flex items-center group transition-all hover:scale-105 shadow-xl shadow-brand-dark/20">
                         Ver Projetos
                         <i data-lucide="arrow-down" class="ml-2 w-5 h-5 group-hover:translate-y-1 transition-transform"></i>
                     </a>
-                    <a href="#contato" class="border-2 border-brand-dark text-brand-dark px-8 py-4 rounded-xl font-bold hover:bg-brand-dark hover:text-white transition-all">
+                    <a href="#contato" class="bg-white/50 backdrop-blur-md border-2 border-brand-dark text-brand-dark px-8 py-4 rounded-xl font-bold hover:bg-brand-dark hover:text-white transition-all">
                         Falar agora
                     </a>
                 </div>
             </div>
             <div class="flex justify-center reveal" style="transition-delay: 200ms">
                 <div class="relative animate-float">
-                    <div class="absolute -inset-4 bg-brand-blue/20 rounded-full blur-3xl"></div>
+                    <div class="absolute -inset-4 bg-brand-blue/10 rounded-full blur-3xl"></div>
                     <img src="LeahparCode.png" alt="Logo Grande" class="relative w-72 md:w-96 drop-shadow-2xl">
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="jornada" class="py-24 bg-white">
+    <section id="jornada" class="py-24 bg-white/60 backdrop-blur-2xl border-t border-white/40 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
         <div class="container mx-auto px-6">
             <div class="grid lg:grid-cols-2 gap-20 items-center">
                 <div class="reveal">
                     <div class="relative inline-block">
-                        <img src="eu.jpg" alt="Raphael Barbosa" class="rounded-3xl shadow-2xl w-full max-w-md grayscale hover:grayscale-0 transition-all duration-700">
-                        <div class="absolute -bottom-6 -right-6 bg-brand-blue text-white p-8 rounded-2xl shadow-xl hidden md:block">
+                        <img src="eu.jpg" alt="Raphael Barbosa" class="rounded-3xl shadow-2xl w-full max-w-md grayscale hover:grayscale-0 transition-all duration-700 border border-white/50">
+                        <div class="absolute -bottom-6 -right-6 bg-brand-blue/90 backdrop-blur-md text-white p-8 rounded-2xl shadow-xl hidden md:block border border-blue-400/30">
                             <span class="text-4xl font-black block">5</span>
                             <span class="text-sm font-medium">Anos vivendo tecnologia</span>
                         </div>
@@ -219,11 +230,11 @@
                         Não entrego apenas código; entrego soluções que otimizam o tempo humano. Meu foco é na simplicidade da interface aliada à complexidade necessária no back-end.
                     </p>
                     <div class="grid grid-cols-2 gap-6">
-                        <div class="p-4 bg-brand-soft rounded-xl">
+                        <div class="p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm">
                             <i data-lucide="check-circle" class="text-brand-blue mb-2"></i>
                             <h4 class="font-bold">Foco em UI/UX</h4>
                         </div>
-                        <div class="p-4 bg-brand-soft rounded-xl">
+                        <div class="p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm">
                             <i data-lucide="zap" class="text-brand-blue mb-2"></i>
                             <h4 class="font-bold">Código Limpo</h4>
                         </div>
@@ -233,40 +244,40 @@
         </div>
     </section>
 
-    <section id="tecnologias" class="py-24 bg-brand-dark text-white overflow-hidden">
+    <section id="tecnologias" class="py-24 bg-brand-dark/95 backdrop-blur-2xl text-white overflow-hidden border-y border-white/10">
         <div class="container mx-auto px-6 text-center mb-16 reveal">
             <h2 class="text-4xl font-extrabold mb-4">Minha Stack Tech</h2>
             <p class="text-blue-200">As ferramentas que utilizo para dar vida aos seus projetos.</p>
         </div>
         <div class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal">
+            <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal shadow-lg">
                 <img src="https://i.imgur.com/321YoZO.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
                 <span class="font-bold">JavaScript</span>
             </div>
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 100ms">
+            <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal shadow-lg" style="transition-delay: 100ms">
                 <img src="html-5.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span class="font-bold">HTML5</span>
             </div>
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 200ms">
+            <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal shadow-lg" style="transition-delay: 200ms">
                 <img src="https://1000logos.net/wp-content/uploads/2020/09/CSS-Logo-2011.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span class="font-bold">Tailwind</span>
             </div>
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 300ms">
+            <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal shadow-lg" style="transition-delay: 300ms">
                 <img src="bootstrap.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span class="font-bold">Bootstrap</span>
             </div>
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 400ms">
+            <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal shadow-lg" style="transition-delay: 400ms">
                 <img src="github.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span class="font-bold">GitHub</span>
             </div>
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal" style="transition-delay: 500ms">
+            <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center reveal shadow-lg" style="transition-delay: 500ms">
                 <img src="database.png" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span class="font-bold">NoSQL</span>
             </div>
         </div>
     </section>
 
-    <section id="projetos" class="py-24 bg-slate-50">
+    <section id="projetos" class="py-24 bg-slate-50/60 backdrop-blur-xl border-b border-white/40">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
                 <div>
@@ -278,9 +289,9 @@
             <div class="grid md:grid-cols-2 gap-10">
                 <div class="md:col-span-2 reveal">
                     <div class="special-border shadow-2xl group">
-                        <div class="bg-white rounded-[1.9rem] flex flex-col lg:flex-row overflow-hidden">
-                            <div class="lg:w-3/5 overflow-hidden">
-                                <img src="https://i.imgur.com/fmWP2Zg.jpeg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 cursor-pointer gallery-item" data-src="https://i.imgur.com/fmWP2Zg.jpeg" data-title="Leahpar Note">
+                        <div class="bg-white/90 backdrop-blur-md rounded-[1.9rem] flex flex-col lg:flex-row overflow-hidden border border-white/60">
+                            <div class="lg:w-3/5 overflow-hidden bg-brand-soft">
+                                <img src="https://i.imgur.com/fmWP2Zg.jpeg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 cursor-pointer gallery-item mix-blend-multiply" data-src="https://i.imgur.com/fmWP2Zg.jpeg" data-title="Leahpar Note">
                             </div>
                             <div class="lg:w-2/5 p-12 flex flex-col justify-center">
                                 <span class="text-brand-blue font-bold text-sm tracking-widest uppercase mb-2">Projeto Recente</span>
@@ -289,18 +300,18 @@
                                     Uma ferramenta de produtividade minimalista. Focada em velocidade de anotação e uma interface livre de distrações. O seu cérebro externo em formato digital.
                                 </p>
                                 <div class="flex gap-4">
-                                    <span class="px-3 py-1 bg-slate-100 rounded-md text-xs font-bold">JavaScript</span>
-                                    <span class="px-3 py-1 bg-slate-100 rounded-md text-xs font-bold">Local Storage</span>
-                                    <span class="px-3 py-1 bg-slate-100 rounded-md text-xs font-bold">UI/UX</span>
+                                    <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">JavaScript</span>
+                                    <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">Local Storage</span>
+                                    <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">UI/UX</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group" style="transition-delay: 100ms">
-                    <div class="rounded-2xl overflow-hidden mb-6 h-64">
-                        <img src="intranet.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item" data-src="intranet.png" data-title="Sistemas de Intranet">
+                <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" style="transition-delay: 100ms">
+                    <div class="rounded-2xl overflow-hidden mb-6 h-64 bg-slate-100">
+                        <img src="intranet.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="intranet.png" data-title="Sistemas de Intranet">
                     </div>
                     <div class="px-4 pb-4">
                         <h3 class="text-2xl font-bold mb-3">Sistemas de Intranet</h3>
@@ -311,13 +322,13 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group" style="transition-delay: 200ms">
-                    <div class="rounded-2xl overflow-hidden mb-6 h-64">
-                        <img src="help_desk.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item" data-src="help_desk.png" data-title="Helpdesk Pro">
+                <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" style="transition-delay: 200ms">
+                    <div class="rounded-2xl overflow-hidden mb-6 h-64 bg-slate-100">
+                        <img src="help_desk.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="help_desk.png" data-title="Helpdesk Pro">
                     </div>
                     <div class="px-4 pb-4">
                         <h3 class="text-2xl font-bold mb-3">Helpdesk Pro</h3>
-                        <p class="text-slate-500 mb-6 line-clamp-2">Gestão inteligente de chamados para equipes de TI que buscam produtividade.</p>
+                        <p class="text-slate-500 mb-6 line-clamp-2">Gestão inteligente de chamados para equipas de TI que buscam produtividade.</p>
                         <a href="https://helpdeskpro.fly.dev/" target="_blank" class="text-brand-blue font-bold inline-flex items-center group">
                             Ver Online <i data-lucide="external-link" class="ml-2 w-4 h-4"></i>
                         </a>
@@ -327,19 +338,19 @@
         </div>
     </section>
 
-    <section id="contato" class="py-24 bg-white relative overflow-hidden">
-        <div class="container mx-auto px-6 text-center reveal">
+    <section id="contato" class="py-24 bg-white/60 backdrop-blur-xl relative overflow-hidden">
+        <div class="container mx-auto px-6 text-center reveal relative z-10">
             <h2 class="text-5xl font-black mb-8 text-gradient">Vamos criar o seu <br>próximo sistema?</h2>
             <p class="text-slate-500 text-xl max-w-2xl mx-auto mb-16">
-                Estou pronto para ouvir sua ideia e transformá-la em uma ferramenta poderosa.
+                Estou pronto para ouvir sua ideia e transformá-la numa ferramenta poderosa.
             </p>
             
             <div class="flex flex-col md:flex-row justify-center items-center gap-6">
-                <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" class="w-full md:w-auto bg-[#25D366] text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-green-500/20">
-                    <img src="https://i.imgur.com/jCQb3Xg.png" alt="Logo WhatsApp" class="h-6 w-auto mr-3 object-contain">
+                <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" class="w-full md:w-auto bg-[#25D366]/90 backdrop-blur-md text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-green-500/20 border border-white/20">
+                    <img src="https://i.imgur.com/jCQb3Xg.png" alt="Logo WhatsApp" class="h-6 w-auto mr-3 object-contain drop-shadow-md">
                     <span class="text-lg">(31) 97503-0149</span>
                 </a>
-                <a href="mailto:leahparcode@outlook.com" class="w-full md:w-auto bg-brand-dark text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-blue-900/20">
+                <a href="mailto:leahparcode@outlook.com" class="w-full md:w-auto bg-brand-dark/90 backdrop-blur-md text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-blue-900/20 border border-white/20">
                     <i data-lucide="mail" class="mr-3"></i>
                     leahparcode@outlook.com
                 </a>
@@ -347,29 +358,29 @@
         </div>
     </section>
 
-    <footer class="py-12 bg-slate-50 border-t border-slate-200">
+    <footer class="py-12 bg-slate-50/80 backdrop-blur-2xl border-t border-slate-200/50">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-slate-500">
             <div class="flex items-center mb-6 md:mb-0">
                 <img src="LeahparCode.png" class="h-8 opacity-50 grayscale">
                 <span class="ml-3 font-bold">Leahpar Code &copy; 2026</span>
             </div>
             <div class="flex space-x-6">
-                <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" class="hover:text-brand-blue transition-colors">LinkedIn</a>
+                <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" class="hover:text-brand-blue transition-colors font-medium">LinkedIn</a>
             </div>
         </div>
     </footer>
 
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-brand-blue text-white p-4 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all hover:bg-brand-dark z-50">
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-brand-blue/90 backdrop-blur-md text-white p-4 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all hover:bg-brand-dark border border-white/20 z-50">
         <i data-lucide="chevron-up"></i>
     </button>
 
     <div id="lightbox" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
         <div class="absolute inset-0 lightbox-backdrop" id="close-lightbox"></div>
         <div class="relative max-w-5xl w-full max-h-[90vh] z-10 flex flex-col items-center">
-            <img id="lightbox-img" class="rounded-xl shadow-2xl max-h-[80vh] object-contain">
-            <p id="lightbox-title" class="text-white mt-4 font-bold text-xl px-6 py-2 bg-black/40 rounded-full"></p>
+            <img id="lightbox-img" class="rounded-xl shadow-2xl max-h-[80vh] object-contain border border-white/10">
+            <p id="lightbox-title" class="text-white mt-4 font-bold text-xl px-6 py-2 bg-black/40 backdrop-blur-xl rounded-full border border-white/10"></p>
             <button id="btn-close-lightbox" class="absolute -top-12 right-0 text-white hover:text-brand-blue transition-colors">
-                <i data-lucide="x" class="w-10 h-10"></i>
+                <i data-lucide="x" class="w-10 h-10 drop-shadow-lg"></i>
             </button>
         </div>
     </div>
@@ -378,18 +389,25 @@
         // Inicializar ícones
         lucide.createIcons();
 
-        // Barra de progresso e scroll do header
-        window.onscroll = function() {
+        // Variáveis dos Orbes do Parallax Background
+        const orb1 = document.getElementById('bg-orb-1');
+        const orb2 = document.getElementById('bg-orb-2');
+        const orb3 = document.getElementById('bg-orb-3');
+
+        // Barra de progresso e Lógica Geral de Scroll
+        window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
+            
+            // Progress Bar
             document.getElementById("scroll-progress").style.width = scrolled + "%";
 
+            // Navbar e Back to Top
             const navbar = document.getElementById('navbar');
             const backToTop = document.getElementById('back-to-top');
 
             if (winScroll > 50) {
-                // Adiciona o gradiente azul suave e reduz o padding
                 navbar.classList.add('glass-blue', 'shadow-lg', 'py-3');
                 navbar.classList.remove('py-6');
                 backToTop.classList.remove('opacity-0', 'translate-y-10');
@@ -398,7 +416,12 @@
                 navbar.classList.add('py-6');
                 backToTop.classList.add('opacity-0', 'translate-y-10');
             }
-        };
+
+            // Efeito Parallax "Apple-style" nos Orbes de Fundo
+            if(orb1) orb1.style.transform = `translateY(${winScroll * 0.25}px) translateX(${winScroll * 0.1}px)`;
+            if(orb2) orb2.style.transform = `translateY(${winScroll * -0.15}px)`;
+            if(orb3) orb3.style.transform = `translateY(${winScroll * 0.15}px) translateX(${winScroll * -0.05}px)`;
+        });
 
         // Scroll Reveal
         const observer = new IntersectionObserver((entries) => {
