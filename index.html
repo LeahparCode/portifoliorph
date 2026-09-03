@@ -98,17 +98,6 @@
             font-weight: 600;
         }
 
-        /* ===== Noise / grain overlay ===== */
-        .noise-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 55;
-            pointer-events: none;
-            opacity: 0.035;
-            mix-blend-mode: overlay;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-        }
-
         /* ===== Dot grid ===== */
         .dot-grid {
             background-image: radial-gradient(rgba(0, 27, 93, 0.18) 1.4px, transparent 1.4px);
@@ -341,8 +330,6 @@
         </div>
         <span class="preloader-text">Carregando</span>
     </div>
-
-    <div class="noise-overlay"></div>
 
     <div class="fixed inset-0 z-[-1] overflow-hidden bg-[#fcfcfc]">
         <div id="bg-orb-1" class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-300/40 blur-[100px] will-change-transform mix-blend-multiply"></div>
@@ -847,23 +834,38 @@
         }, { threshold: 0.6 });
         document.querySelectorAll('[data-counter]').forEach(el => counterObserver.observe(el));
 
-        // ===== Spotlight (glow que segue o cursor) =====
+        // ===== Spotlight (glow que segue o cursor) e Tilt 3D =====
+        // Atualiza no máximo 1x por frame (via requestAnimationFrame) em vez de a
+        // cada evento de mousemove bruto, para não sobrecarregar a thread principal.
         if (window.matchMedia('(pointer: fine)').matches) {
+            let spotFrame = null;
+            let pendingSpot = null;
             document.querySelectorAll('.spot').forEach(el => {
                 el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    el.style.setProperty('--x', `${e.clientX - rect.left}px`);
-                    el.style.setProperty('--y', `${e.clientY - rect.top}px`);
+                    pendingSpot = { el, x: e.clientX, y: e.clientY };
+                    if (spotFrame) return;
+                    spotFrame = requestAnimationFrame(() => {
+                        const rect = pendingSpot.el.getBoundingClientRect();
+                        pendingSpot.el.style.setProperty('--x', `${pendingSpot.x - rect.left}px`);
+                        pendingSpot.el.style.setProperty('--y', `${pendingSpot.y - rect.top}px`);
+                        spotFrame = null;
+                    });
                 });
             });
 
-            // ===== Tilt 3D =====
+            let tiltFrame = null;
+            let pendingTilt = null;
             document.querySelectorAll('.tilt').forEach(el => {
                 el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    const x = (e.clientX - rect.left) / rect.width - 0.5;
-                    const y = (e.clientY - rect.top) / rect.height - 0.5;
-                    el.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+                    pendingTilt = { el, x: e.clientX, y: e.clientY };
+                    if (tiltFrame) return;
+                    tiltFrame = requestAnimationFrame(() => {
+                        const rect = pendingTilt.el.getBoundingClientRect();
+                        const x = (pendingTilt.x - rect.left) / rect.width - 0.5;
+                        const y = (pendingTilt.y - rect.top) / rect.height - 0.5;
+                        pendingTilt.el.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+                        tiltFrame = null;
+                    });
                 });
                 el.addEventListener('mouseleave', () => {
                     el.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg)';
