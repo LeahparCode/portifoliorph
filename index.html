@@ -239,6 +239,54 @@
             will-change: transform;
         }
         #logo-flyer.is-flying { visibility: visible; }
+        /* Aura azul "fluida" que acende atrás da logo ao pousar — é ela que
+           faz a escrita clara da marca aparecer sobre o fundo claro do hero */
+        #logo-aura {
+            position: absolute;
+            inset: -18%;
+            opacity: 0;
+            pointer-events: none;
+            border-radius: 9999px;
+            -webkit-mask-image: radial-gradient(circle at 50% 52%, #000 42%, transparent 74%);
+            mask-image: radial-gradient(circle at 50% 52%, #000 42%, transparent 74%);
+        }
+        .aura-blob {
+            position: absolute;
+            border-radius: 9999px;
+            will-change: transform;
+        }
+        /* Gradientes radiais já nascem suaves: dispensa filtro de blur, que é
+           caro de redesenhar a cada quadro */
+        .aura-a {
+            width: 78%; height: 78%; left: 4%; top: 16%;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.62) 0%, rgba(30, 144, 255, 0) 70%);
+            animation: aura-drift-a 15s ease-in-out infinite;
+        }
+        .aura-b {
+            width: 70%; height: 70%; right: 2%; top: 26%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.55) 0%, rgba(56, 189, 248, 0) 70%);
+            animation: aura-drift-b 19s ease-in-out infinite;
+        }
+        .aura-c {
+            width: 86%; height: 62%; left: 7%; bottom: 2%;
+            background: radial-gradient(ellipse, rgba(0, 27, 93, 0.5) 0%, rgba(0, 27, 93, 0) 68%);
+            animation: aura-drift-c 17s ease-in-out infinite;
+        }
+        @keyframes aura-drift-a {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(9%, -7%) scale(1.14); }
+            66% { transform: translate(-7%, 5%) scale(0.94); }
+        }
+        @keyframes aura-drift-b {
+            0%, 100% { transform: translate(0, 0) scale(1.05); }
+            40% { transform: translate(-10%, 8%) scale(0.92); }
+            70% { transform: translate(6%, -6%) scale(1.16); }
+        }
+        @keyframes aura-drift-c {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, -5%) scale(1.12); }
+        }
+
         /* Respiração suave depois que a logo pousa no hero */
         @keyframes logo-breathe {
             0%, 100% { transform: translateY(0) scale(1); }
@@ -250,7 +298,7 @@
         #logo-fly-badge, #logo-fly-mark {
             transition: opacity 0.25s linear;
         }
-        #logo-halo { transition: opacity 0.4s ease; }
+        #logo-aura { transition: opacity 0.45s ease; }
 
         /* Chips de tecnologia, cada um na cor oficial da sua stack */
         .tech-chip {
@@ -446,7 +494,7 @@
         @media (max-width: 767px) and (max-height: 720px) {
             #hero { padding-top: 4.5rem; padding-bottom: 3.5rem; }
             #hero h1 { font-size: 1.7rem; margin-bottom: 0.5rem; }
-            #logo-landing, #logo-flyer { width: 5.5rem; height: 5.5rem; }
+            #logo-landing, #logo-flyer { width: 7rem; height: 7rem; }
             #hero .container { gap: 1rem; }
             #hero p { margin-bottom: 1.25rem; }
         }
@@ -570,9 +618,7 @@
             <!-- Onde a logo pousa quando a página é rolada. Fica vazio no início:
                  a logo só chega aqui vinda da navbar. -->
             <div class="order-2 flex items-center justify-center">
-                <div id="logo-landing" class="relative w-36 h-36 sm:w-44 sm:h-44 md:w-80 md:h-80 lg:w-96 lg:h-96">
-                    <div id="logo-halo" class="absolute inset-6 rounded-full bg-brand-blue/10 blur-3xl opacity-0"></div>
-                </div>
+                <div id="logo-landing" class="relative w-44 h-44 sm:w-52 sm:h-52 md:w-[22rem] md:h-[22rem] lg:w-[26rem] lg:h-[26rem]"></div>
             </div>
         </div>
 
@@ -814,8 +860,13 @@
     </footer>
 
     <!-- Logo que desce da navbar até o hero conforme a rolagem (e volta ao subir) -->
-    <div id="logo-flyer" class="w-36 h-36 sm:w-44 sm:h-44 md:w-80 md:h-80 lg:w-96 lg:h-96" aria-hidden="true">
+    <div id="logo-flyer" class="w-44 h-44 sm:w-52 sm:h-52 md:w-[22rem] md:h-[22rem] lg:w-[26rem] lg:h-[26rem]" aria-hidden="true">
         <div class="logo-inner relative w-full h-full">
+            <div id="logo-aura">
+                <span class="aura-blob aura-a"></span>
+                <span class="aura-blob aura-b"></span>
+                <span class="aura-blob aura-c"></span>
+            </div>
             <img id="logo-fly-badge" src="LeahparHero.png" alt="" class="absolute inset-0 w-full h-full object-contain rounded-xl">
             <img id="logo-fly-mark" src="LeahparCode.png" alt="" class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl opacity-0">
         </div>
@@ -892,7 +943,7 @@
         // quadro, a logo acompanha o hero naturalmente ao continuar a rolagem.
         const logoFlyer = document.getElementById('logo-flyer');
         const logoLanding = document.getElementById('logo-landing');
-        const logoHalo = document.getElementById('logo-halo');
+        const logoAura = document.getElementById('logo-aura');
         const logoBadge = document.getElementById('logo-fly-badge');
         const logoMark = document.getElementById('logo-fly-mark');
         const navLogo = document.getElementById('nav-logo');
@@ -967,7 +1018,8 @@
             const swap = clamp01(raw / 0.22);
             if (logoBadge) logoBadge.style.opacity = String(1 - swap);
             if (logoMark) logoMark.style.opacity = String(swap);
-            if (logoHalo) logoHalo.style.opacity = String(p * 0.9);
+            // A aura acende na reta final do trajeto, junto com o pouso
+            if (logoAura) logoAura.style.opacity = String(clamp01((raw - 0.5) / 0.45));
         }
 
         // Barra de progresso e Lógica Geral de Scroll (throttled via requestAnimationFrame)
