@@ -232,6 +232,31 @@
             to { transform: translateX(-50%); }
         }
 
+        /* Chips de tecnologia, cada um na cor oficial da sua stack */
+        .tech-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.7rem;
+            border-radius: 0.375rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            line-height: 1.4;
+            letter-spacing: 0.01em;
+            border: 1px solid rgba(0, 0, 0, 0.07);
+            box-shadow: 0 1px 2px rgba(0, 27, 93, 0.08);
+        }
+        .chip-js { background: #F7DF1E; color: #1A1A1A; }
+        .chip-html { background: #E34F26; color: #FFFFFF; }
+        .chip-css { background: #1572B6; color: #FFFFFF; }
+        .chip-vue { background: #42B883; color: #0A2E22; }
+        .chip-react { background: #61DAFB; color: #0B3A46; }
+        .chip-python { background: #3776AB; color: #FFFFFF; }
+        .chip-neutral {
+            background: rgba(241, 245, 249, 0.85);
+            color: #334155;
+            border-color: #E2E8F0;
+        }
+
         /* Crossfade de imagens (antes / depois) nos projetos */
         .img-swap { position: relative; }
         .img-swap img { transition: opacity 0.6s ease; }
@@ -662,10 +687,10 @@
                                 <p class="text-slate-500 mb-5 md:mb-8 text-base md:text-lg leading-relaxed">
                                     Uma ferramenta de produtividade minimalista. Focada em velocidade de anotação e uma interface livre de distrações. O seu cérebro externo em formato digital.
                                 </p>
-                                <div class="flex gap-2 md:gap-4 flex-wrap">
-                                    <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">JavaScript</span>
-                                    <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">Local Storage</span>
-                                    <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">UI/UX</span>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="tech-chip chip-js">JavaScript</span>
+                                    <span class="tech-chip chip-neutral">Local Storage</span>
+                                    <span class="tech-chip chip-neutral">UI/UX</span>
                                 </div>
                             </div>
                         </div>
@@ -681,10 +706,13 @@
                     </div>
                     <div class="px-2 pb-3 md:px-4 md:pb-4">
                         <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Sistemas de Intranet</h3>
-                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-6 line-clamp-2">Uma intranet enxuta para conectar áreas, centralizar informações e facilitar o dia a dia das equipas.</p>
-                        <a href="https://hiddenmodel.fly.dev/" target="_blank" rel="noopener" class="tap-press text-brand-blue font-bold inline-flex items-center group/link">
-                            Ver Online <i data-lucide="external-link" class="ml-2 w-4 h-4 group-hover/link:translate-x-1 transition-transform"></i>
-                        </a>
+                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-5 line-clamp-2">Uma intranet enxuta para conectar áreas, centralizar informações e facilitar o dia a dia das equipas.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="tech-chip chip-html">HTML5</span>
+                            <span class="tech-chip chip-css">CSS3</span>
+                            <span class="tech-chip chip-js">JavaScript</span>
+                            <span class="tech-chip chip-vue">Vue.js</span>
+                        </div>
                     </div>
                 </div>
 
@@ -698,10 +726,12 @@
                     </div>
                     <div class="px-2 pb-3 md:px-4 md:pb-4">
                         <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Helpdesk Pro</h3>
-                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-6 line-clamp-2">Gestão inteligente de chamados para equipas de TI que buscam produtividade.</p>
-                        <a href="https://helpdeskpro.fly.dev/" target="_blank" rel="noopener" class="tap-press text-brand-blue font-bold inline-flex items-center group/link">
-                            Ver Online <i data-lucide="external-link" class="ml-2 w-4 h-4 group-hover/link:translate-x-1 transition-transform"></i>
-                        </a>
+                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-5 line-clamp-2">Gestão inteligente de chamados para equipas de TI que buscam produtividade.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="tech-chip chip-js">JavaScript</span>
+                            <span class="tech-chip chip-python">Python</span>
+                            <span class="tech-chip chip-css">CSS3</span>
+                        </div>
                     </div>
                 </div>
 
@@ -715,10 +745,12 @@
                     </div>
                     <div class="px-2 pb-3 md:px-4 md:pb-4">
                         <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Painel de Disparos</h3>
-                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-6 line-clamp-2">Dashboard de monitoramento em tempo real de disparos, com métricas de volume, status e orçamento.</p>
+                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-5 line-clamp-2">Dashboard de monitoramento em tempo real de disparos, com métricas de volume, status e orçamento.</p>
                         <div class="flex gap-2 flex-wrap">
-                            <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">JavaScript</span>
-                            <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">Dashboard</span>
+                            <span class="tech-chip chip-js">JavaScript</span>
+                            <span class="tech-chip chip-css">CSS3</span>
+                            <span class="tech-chip chip-react">React</span>
+                            <span class="tech-chip chip-vue">Vue.js</span>
                         </div>
                     </div>
                 </div>
