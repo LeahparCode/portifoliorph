@@ -105,13 +105,46 @@
             font-weight: 600;
         }
 
-        /* ===== Dot grid ===== */
+        /* ===== Grade de pontos do fundo =====
+           Duas camadas derivando na diagonal em ritmos diferentes. É o
+           descompasso entre elas que dá a sensação dos pontos andarem em
+           cadeia, sem nenhum ponto precisar ser um elemento de verdade.
+           Só transform é animado, então a rasterização acontece uma vez. */
         .dot-grid {
-            background-image: radial-gradient(rgba(0, 27, 93, 0.18) 1.4px, transparent 1.4px);
-            background-size: 26px 26px;
+            overflow: hidden;
             -webkit-mask-image: radial-gradient(ellipse 65% 65% at 50% 35%, black 30%, transparent 75%);
             mask-image: radial-gradient(ellipse 65% 65% at 50% 35%, black 30%, transparent 75%);
         }
+        .dot-grid::before,
+        .dot-grid::after {
+            content: '';
+            position: absolute;
+            inset: -70px;
+            will-change: transform;
+        }
+        .dot-grid::before {
+            background-image: radial-gradient(rgba(0, 27, 93, 0.18) 1.4px, transparent 1.4px);
+            background-size: 26px 26px;
+            animation: dot-drift 16s linear infinite;
+        }
+        /* Camada mais espaçada e azulada, bem mais lenta, dando profundidade */
+        .dot-grid::after {
+            background-image: radial-gradient(rgba(30, 144, 255, 0.14) 1.7px, transparent 1.7px);
+            background-size: 52px 52px;
+            animation: dot-drift-slow 38s linear infinite;
+        }
+        /* O deslocamento é de exatamente um ladrilho, então o laço é imperceptível */
+        @keyframes dot-drift {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(26px, 26px, 0); }
+        }
+        @keyframes dot-drift-slow {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(52px, 52px, 0); }
+        }
+        /* Fora de vista, não precisa animar */
+        .dot-grid.dots-paused::before,
+        .dot-grid.dots-paused::after { animation-play-state: paused; }
 
         /* Barra de leitura */
         #scroll-progress {
@@ -936,6 +969,15 @@
         const orb3 = document.getElementById('bg-orb-3');
         const scrollRing = document.getElementById('scroll-ring');
         const RING_CIRCUMFERENCE = 157.08;
+
+        // ===== Pontos do fundo: só animam enquanto o hero está à vista =====
+        const dotGrid = document.querySelector('.dot-grid');
+        if (dotGrid) {
+            const dotsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => dotGrid.classList.toggle('dots-paused', !entry.isIntersecting));
+            }, { threshold: 0 });
+            dotsObserver.observe(dotGrid);
+        }
 
         // ===== Logo que desce da navbar para o hero ao rolar a página =====
         // A posição é interpolada entre dois pontos reais da tela: o slot da logo
