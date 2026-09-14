@@ -38,6 +38,13 @@
             font-family: 'Inter', sans-serif;
             background-color: transparent;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Altura real da viewport no mobile (evita o "pulo" da barra de endereço) */
+        #hero {
+            min-height: 100vh;
+            min-height: 100svh;
         }
 
         h1, h2, h3, .font-sora {
@@ -96,17 +103,6 @@
             letter-spacing: 0.3em;
             text-transform: uppercase;
             font-weight: 600;
-        }
-
-        /* ===== Noise / grain overlay ===== */
-        .noise-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 55;
-            pointer-events: none;
-            opacity: 0.035;
-            mix-blend-mode: overlay;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
         /* ===== Dot grid ===== */
@@ -243,6 +239,9 @@
             position: absolute;
             inset: 0;
             opacity: 0;
+            /* Sem isto a segunda tela (invisível) ficava por cima e engolia o
+               clique/toque, impedindo o visualizador de abrir nesses cards */
+            pointer-events: none;
         }
         .img-swap:hover .img-secondary { opacity: 1; }
         .img-swap:hover .img-primary { opacity: 0; }
@@ -304,9 +303,107 @@
             backdrop-filter: blur(8px);
         }
 
+        /* ===== Visualizador de imagens (lightbox) ===== */
+        #lightbox-stage {
+            touch-action: none;
+            overflow: hidden;
+        }
+        #lightbox-img {
+            transform-origin: center center;
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        #lightbox-img.no-anim { transition: none; }
+        .lb-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: background 0.25s ease, transform 0.2s ease, opacity 0.25s ease;
+        }
+        .lb-btn:hover { background: rgba(var(--brand-blue-rgb), 0.85); }
+        .lb-btn.is-zoomed { background: rgba(var(--brand-blue-rgb), 0.9); border-color: rgba(255, 255, 255, 0.45); }
+        .lb-btn:active { transform: scale(0.92); }
+        .lb-btn[hidden] { display: none; }
+
         /* Otimização de Performance para o Parallax */
         .will-change-transform {
             will-change: transform;
+        }
+
+        /* =======================================================
+           CAMADA MOBILE — animações e ajustes próprios do toque
+           (o desktop segue exatamente como está acima)
+           ======================================================= */
+        @media (max-width: 767px) {
+            html { scroll-padding-top: 84px; }
+
+            /* Reveals direcionais: no mobile os blocos entram de lados
+               alternados em vez de todos subindo igual */
+            .reveal {
+                transform: translateY(22px);
+                transition-duration: 0.65s;
+            }
+            .reveal[data-m="left"] { transform: translateX(-26px); }
+            .reveal[data-m="right"] { transform: translateX(26px); }
+            .reveal[data-m="zoom"] { transform: scale(0.94); }
+            .reveal.active { transform: none; }
+
+            /* Equivalente mobile do "glow que segue o cursor": o card acende
+               sozinho quando chega ao centro da tela durante a rolagem */
+            .spot.in-view::before { opacity: 1; }
+            .m-lift {
+                transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease;
+            }
+            .m-lift.in-view {
+                transform: translateY(-5px);
+                box-shadow: 0 24px 45px -20px rgba(var(--brand-blue-rgb), 0.55);
+            }
+
+            /* A foto ganha cor ao entrar em cena (no desktop isso é hover) */
+            .m-color { filter: grayscale(1); transition: filter 0.9s ease; }
+            .m-color.in-view { filter: grayscale(0); }
+
+            /* Menu mobile: itens entram escalonados */
+            #mobile-menu.open-menu { max-height: 480px; }
+            #mobile-menu .mobile-nav-link {
+                opacity: 0;
+                transform: translateY(12px);
+                transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            #mobile-menu.open-menu .mobile-nav-link { opacity: 1; transform: none; }
+            #mobile-menu.open-menu .mobile-nav-link:nth-child(1) { transition-delay: 0.06s; }
+            #mobile-menu.open-menu .mobile-nav-link:nth-child(2) { transition-delay: 0.12s; }
+            #mobile-menu.open-menu .mobile-nav-link:nth-child(3) { transition-delay: 0.18s; }
+            #mobile-menu.open-menu .mobile-nav-link:nth-child(4) { transition-delay: 0.24s; }
+
+            /* Marquee mais compacto e um pouco mais ágil na tela pequena */
+            .marquee-track { gap: 1rem; animation-duration: 30s; }
+
+            /* Feedback de pressão ao tocar */
+            .tap-press { transition: transform 0.18s ease; }
+            .tap-press:active { transform: scale(0.97); }
+
+            /* Respiro extra em aparelhos com notch/barra inferior */
+            #back-to-top { bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
+        }
+
+        /* Celulares de tela baixa: compacta o hero para os botões caberem */
+        @media (max-width: 767px) and (max-height: 720px) {
+            #hero { padding-top: 4.5rem; padding-bottom: 3.5rem; }
+            #hero-logo-img { width: 6.25rem; }
+            #hero h1 { font-size: 1.7rem; margin-bottom: 0.5rem; }
+            #hero .container { gap: 1rem; }
+            #hero p { margin-bottom: 1.25rem; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -342,8 +439,6 @@
         <span class="preloader-text">Carregando</span>
     </div>
 
-    <div class="noise-overlay"></div>
-
     <div class="fixed inset-0 z-[-1] overflow-hidden bg-[#fcfcfc]">
         <div id="bg-orb-1" class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-300/40 blur-[100px] will-change-transform mix-blend-multiply"></div>
         <div id="bg-orb-2" class="absolute top-[30%] right-[-15%] w-[45vw] h-[45vw] rounded-full bg-brand-blue/20 blur-[120px] will-change-transform mix-blend-multiply"></div>
@@ -352,12 +447,12 @@
 
     <div id="scroll-progress"></div>
 
-    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6">
-        <nav class="container mx-auto px-6">
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4 md:py-6">
+        <nav class="container mx-auto px-5 md:px-6">
             <div class="flex justify-between items-center">
                 <a href="#hero" class="flex items-center group">
-                    <img src="LeahparHero.png" alt="Logo Leahpar Code" class="h-14 w-14 object-contain rounded-xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                    <span class="ml-3 font-bold text-xl tracking-tight text-gradient-animated transition-colors">Leahpar Code</span>
+                    <img src="LeahparHero.png" alt="Logo Leahpar Code" class="h-11 w-11 md:h-14 md:w-14 object-contain rounded-xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                    <span class="ml-2.5 md:ml-3 font-bold text-lg md:text-xl tracking-tight text-gradient-animated transition-colors">Leahpar Code</span>
                 </a>
 
                 <div class="hidden md:flex items-center space-x-10">
@@ -369,96 +464,108 @@
                     </a>
                 </div>
 
-                <button id="mobile-menu-btn" class="md:hidden text-brand-dark relative w-8 h-8" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
-                    <i data-lucide="menu" id="icon-menu-open" class="absolute inset-0"></i>
-                    <i data-lucide="x" id="icon-menu-close" class="absolute inset-0 hidden"></i>
+                <button id="mobile-menu-btn" class="md:hidden tap-press relative w-11 h-11 flex items-center justify-center rounded-xl text-brand-dark bg-white/70 backdrop-blur-md border border-white/70 shadow-sm" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
+                    <i data-lucide="menu" id="icon-menu-open" class="w-5 h-5"></i>
+                    <i data-lucide="x" id="icon-menu-close" class="w-5 h-5 hidden"></i>
                 </button>
             </div>
 
-            <div id="mobile-menu" class="md:hidden mt-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-xl">
-                <div class="flex flex-col p-4 gap-1">
-                    <a href="#jornada" class="mobile-nav-link px-4 py-3 rounded-xl font-medium hover:bg-blue-50 hover:text-brand-blue transition-colors">Jornada</a>
-                    <a href="#tecnologias" class="mobile-nav-link px-4 py-3 rounded-xl font-medium hover:bg-blue-50 hover:text-brand-blue transition-colors">Stack</a>
-                    <a href="#projetos" class="mobile-nav-link px-4 py-3 rounded-xl font-medium hover:bg-blue-50 hover:text-brand-blue transition-colors">Projetos</a>
-                    <a href="#contato" class="mobile-nav-link mt-2 text-center bg-brand-blue text-white px-4 py-3 rounded-xl font-bold hover:bg-brand-dark transition-all">Contato</a>
+            <div id="mobile-menu" class="md:hidden mt-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-white/70 shadow-2xl shadow-brand-dark/10">
+                <div class="flex flex-col p-3 gap-1">
+                    <a href="#jornada" class="mobile-nav-link tap-press flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-slate-700 active:bg-blue-50 transition-colors">
+                        <i data-lucide="user" class="w-[18px] h-[18px] text-brand-blue"></i> Jornada
+                    </a>
+                    <a href="#tecnologias" class="mobile-nav-link tap-press flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-slate-700 active:bg-blue-50 transition-colors">
+                        <i data-lucide="layers" class="w-[18px] h-[18px] text-brand-blue"></i> Stack
+                    </a>
+                    <a href="#projetos" class="mobile-nav-link tap-press flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-slate-700 active:bg-blue-50 transition-colors">
+                        <i data-lucide="folder-code" class="w-[18px] h-[18px] text-brand-blue"></i> Projetos
+                    </a>
+                    <a href="#contato" class="mobile-nav-link tap-press mt-1 flex items-center justify-center gap-2 bg-brand-blue text-white px-4 py-3.5 rounded-xl font-bold shadow-lg shadow-brand-blue/25">
+                        <i data-lucide="message-circle" class="w-[18px] h-[18px]"></i> Contato
+                    </a>
                 </div>
             </div>
         </nav>
     </header>
 
-    <section id="hero" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section id="hero" class="relative flex items-center pt-20 pb-20 md:pb-0 overflow-hidden">
         <div class="dot-grid absolute inset-0 z-0"></div>
-        <div class="container relative z-10 mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-            <div class="reveal">
-                <span class="inline-block py-1 px-4 rounded-full bg-blue-100 text-brand-blue font-bold text-sm mb-6 shadow-sm border border-blue-200">
+        <div class="container relative z-10 mx-auto px-5 md:px-6 grid md:grid-cols-2 gap-6 md:gap-12 items-center">
+            <div class="order-2 md:order-1 text-center md:text-left reveal" data-m="up" style="transition-delay: 120ms">
+                <span class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-blue-100 text-brand-blue font-bold text-xs sm:text-sm mb-4 md:mb-6 shadow-sm border border-blue-200">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-blue"></span>
+                    </span>
                     Disponível para novos projetos
                 </span>
 
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">
+                <h1 class="text-[1.95rem] sm:text-5xl md:text-7xl font-extrabold mb-3 md:mb-4 leading-[1.15] md:leading-tight">
                     Transformando <span class="text-gradient-animated">ideias</span> em código de alta performance.
                 </h1>
 
-                <div class="h-8 mb-6 flex items-center font-sora text-lg md:text-xl font-bold text-brand-dark">
-                    <span id="typed-role"></span><span class="typed-cursor h-6" aria-hidden="true"></span>
+                <div class="h-7 md:h-8 mb-4 md:mb-6 flex items-center justify-center md:justify-start font-sora text-base sm:text-lg md:text-xl font-bold text-brand-dark">
+                    <span id="typed-role"></span><span class="typed-cursor h-5 md:h-6" aria-hidden="true"></span>
                 </div>
 
-                <p class="text-lg text-slate-600 mb-10 max-w-lg leading-relaxed">
+                <p class="text-base sm:text-lg text-slate-600 mb-7 md:mb-10 max-w-lg mx-auto md:mx-0 leading-relaxed">
                     Desenvolvimento Full Stack especializado em criar ecossistemas digitais que unem design intuitivo e robustez técnica.
                 </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#projetos" class="spot relative overflow-hidden bg-brand-dark text-white px-8 py-4 rounded-xl font-bold flex items-center group transition-all hover:scale-105 shadow-xl shadow-brand-dark/20">
+                <div class="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4">
+                    <a href="#projetos" class="spot tap-press relative overflow-hidden bg-brand-dark text-white px-6 py-3.5 md:px-8 md:py-4 rounded-xl font-bold flex items-center justify-center sm:justify-start group transition-all md:hover:scale-105 shadow-xl shadow-brand-dark/20">
                         <span class="relative z-10 flex items-center">Ver Projetos
                         <i data-lucide="arrow-down" class="ml-2 w-5 h-5 group-hover:translate-y-1 transition-transform"></i></span>
                     </a>
-                    <a href="#contato" class="spot relative overflow-hidden bg-white/50 backdrop-blur-md border-2 border-brand-dark text-brand-dark px-8 py-4 rounded-xl font-bold hover:bg-brand-dark hover:text-white transition-all">
+                    <a href="#contato" class="spot tap-press relative overflow-hidden bg-white/50 backdrop-blur-md border-2 border-brand-dark text-brand-dark px-6 py-3.5 md:px-8 md:py-4 rounded-xl font-bold flex items-center justify-center sm:justify-start md:hover:bg-brand-dark md:hover:text-white transition-all">
                         <span class="relative z-10">Falar agora</span>
                     </a>
                 </div>
             </div>
-            <div class="flex justify-center reveal" style="transition-delay: 200ms">
+            <div class="order-1 md:order-2 flex justify-center reveal" data-m="zoom">
                 <div class="relative animate-float">
                     <div class="absolute -inset-4 bg-brand-blue/10 rounded-full blur-3xl"></div>
-                    <img id="hero-logo-img" src="LeahparCode.png" alt="Logo Leahpar Code" class="tilt relative w-72 md:w-96 drop-shadow-2xl">
+                    <img id="hero-logo-img" src="LeahparCode.png" alt="Logo Leahpar Code" class="tilt relative w-36 sm:w-56 md:w-96 drop-shadow-2xl">
                 </div>
             </div>
         </div>
 
-        <div class="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 items-center justify-center text-slate-400 animate-bounce">
-            <i data-lucide="chevron-down" class="w-6 h-6"></i>
+        <div class="flex absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 items-center justify-center text-slate-400 animate-bounce">
+            <i data-lucide="chevron-down" class="w-5 h-5 md:w-6 md:h-6"></i>
         </div>
     </section>
 
-    <section id="jornada" class="py-24 bg-white/60 backdrop-blur-2xl border-t border-white/40 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
-        <div class="container mx-auto px-6">
-            <div class="grid lg:grid-cols-2 gap-20 items-center">
-                <div class="reveal">
-                    <div class="relative inline-block">
-                        <img src="eu.jpg" alt="Foto de Raphael Barbosa" class="rounded-3xl shadow-2xl w-full max-w-md grayscale hover:grayscale-0 transition-all duration-700 border border-white/50">
-                        <div class="absolute -bottom-6 -right-6 bg-brand-blue/90 backdrop-blur-md text-white p-8 rounded-2xl shadow-xl hidden md:block border border-blue-400/30">
-                            <span id="stat-years" class="text-4xl font-black block" data-counter data-target="5">0</span>
-                            <span class="text-sm font-medium">Anos vivendo tecnologia</span>
+    <section id="jornada" class="py-16 md:py-24 bg-white/60 backdrop-blur-md md:backdrop-blur-2xl border-t border-white/40 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
+        <div class="container mx-auto px-5 md:px-6">
+            <div class="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+                <div class="reveal" data-m="zoom">
+                    <div class="relative inline-block w-full max-w-md">
+                        <img src="eu.jpg" alt="Foto de Raphael Barbosa" data-inview class="m-color rounded-3xl shadow-2xl w-full max-h-[360px] md:max-h-none object-cover object-top md:grayscale md:hover:grayscale-0 transition-all duration-700 border border-white/50">
+                        <div class="absolute -bottom-5 -right-2 md:-bottom-6 md:-right-6 bg-brand-blue/90 backdrop-blur-md text-white px-5 py-4 md:p-8 rounded-2xl shadow-xl border border-blue-400/30">
+                            <span id="stat-years" class="text-3xl md:text-4xl font-black block leading-none mb-1" data-counter data-target="5">0</span>
+                            <span class="text-xs md:text-sm font-medium">Anos vivendo tecnologia</span>
                         </div>
                     </div>
                 </div>
-                <div class="reveal" style="transition-delay: 200ms">
-                    <h2 class="text-4xl font-extrabold mb-8">O arquiteto por trás da <span class="text-brand-blue">Leahpar Code</span></h2>
-                    <p class="text-slate-600 text-lg mb-6 leading-relaxed">
+                <div class="reveal" data-m="right" style="transition-delay: 150ms">
+                    <h2 class="text-3xl md:text-4xl font-extrabold mb-5 md:mb-8 leading-tight">O arquiteto por trás da <span class="text-brand-blue">Leahpar Code</span></h2>
+                    <p class="text-slate-600 text-base md:text-lg mb-4 md:mb-6 leading-relaxed">
                         Meu nome é <strong>Raphael Barbosa</strong>. Minha relação com a tecnologia começou em 1998 e, desde então, evoluí dos games para a engenharia de software.
                     </p>
-                    <p class="text-slate-600 text-lg mb-6 leading-relaxed">
+                    <p class="text-slate-600 text-base md:text-lg mb-4 md:mb-6 leading-relaxed">
                         Atuei por mais de um ano elaborando relatórios gerenciais e indicadores para apoiar a tomada de decisão, e trago um diferencial: sei automatizar boa parte desse trabalho. Desenvolvo em Python e trabalho com banco de dados, transformando rotinas manuais de planilha em processos rápidos e confiáveis.
                     </p>
-                    <p class="text-slate-600 text-lg mb-8 leading-relaxed">
+                    <p class="text-slate-600 text-base md:text-lg mb-6 md:mb-8 leading-relaxed">
                         Não entrego apenas código; entrego soluções que otimizam o tempo humano, unindo simplicidade de interface à complexidade necessária no back-end. Atualmente curso Gestão da Tecnologia da Informação e busco um lugar onde eu possa unir análise de dados e tecnologia para gerar resultado. Fico à disposição para conversarmos.
                     </p>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="spot relative p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm">
+                    <div class="grid grid-cols-2 gap-3 md:gap-6">
+                        <div class="spot relative p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm" data-inview>
                             <i data-lucide="check-circle" class="text-brand-blue mb-2"></i>
-                            <h4 class="font-bold">Foco em UI/UX</h4>
+                            <h4 class="font-bold text-sm md:text-base">Foco em UI/UX</h4>
                         </div>
-                        <div class="spot relative p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm">
+                        <div class="spot relative p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm" data-inview>
                             <i data-lucide="zap" class="text-brand-blue mb-2"></i>
-                            <h4 class="font-bold">Código Limpo</h4>
+                            <h4 class="font-bold text-sm md:text-base">Código Limpo</h4>
                         </div>
                     </div>
                 </div>
@@ -466,93 +573,96 @@
         </div>
     </section>
 
-    <section id="tecnologias" class="relative py-24 bg-brand-dark/95 backdrop-blur-2xl text-white overflow-hidden border-y border-white/10">
+    <section id="tecnologias" class="relative py-16 md:py-24 bg-brand-dark/95 backdrop-blur-md md:backdrop-blur-2xl text-white overflow-hidden border-y border-white/10">
         <div class="absolute top-[-20%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-brand-blue/20 blur-[120px]"></div>
         <div class="absolute bottom-[-25%] right-[-10%] w-[45vw] h-[45vw] rounded-full bg-sky-500/10 blur-[130px]"></div>
 
-        <div class="container relative mx-auto px-6 text-center mb-16 reveal">
-            <h2 class="text-4xl font-extrabold mb-4">Minha Stack Tech</h2>
-            <p class="text-blue-200">As ferramentas que utilizo para dar vida aos seus projetos.</p>
+        <div class="container relative mx-auto px-5 md:px-6 text-center mb-10 md:mb-16 reveal">
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-3 md:mb-4">Minha Stack Tech</h2>
+            <p class="text-blue-200 text-sm md:text-base">As ferramentas que utilizo para dar vida aos seus projetos.</p>
         </div>
 
         <div class="marquee-wrap relative reveal">
             <div class="marquee-track">
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0">
-                    <img src="js.png" alt="JavaScript" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">JavaScript</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
+                    <img src="js.png" alt="JavaScript" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">JavaScript</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0">
-                    <img src="html-5.png" alt="HTML5" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">HTML5</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
+                    <img src="html-5.png" alt="HTML5" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">HTML5</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0">
-                    <img src="css.png" alt="CSS3" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">CSS3</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
+                    <img src="css.png" alt="CSS3" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">CSS3</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0">
-                    <img src="bootstrap.png" alt="Bootstrap" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">Bootstrap</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
+                    <img src="bootstrap.png" alt="Bootstrap" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">Bootstrap</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0">
-                    <img src="github.png" alt="GitHub" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">GitHub</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
+                    <img src="github.png" alt="GitHub" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">GitHub</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0">
-                    <img src="database.png" alt="NoSQL" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">NoSQL</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
+                    <img src="database.png" alt="NoSQL" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">NoSQL</span>
                 </div>
                 <!-- duplicado para loop contínuo -->
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0" aria-hidden="true">
-                    <img src="js.png" alt="" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">JavaScript</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
+                    <img src="js.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">JavaScript</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0" aria-hidden="true">
-                    <img src="html-5.png" alt="" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">HTML5</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
+                    <img src="html-5.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">HTML5</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0" aria-hidden="true">
-                    <img src="css.png" alt="" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">CSS3</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
+                    <img src="css.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">CSS3</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0" aria-hidden="true">
-                    <img src="bootstrap.png" alt="" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">Bootstrap</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
+                    <img src="bootstrap.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">Bootstrap</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0" aria-hidden="true">
-                    <img src="github.png" alt="" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">GitHub</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
+                    <img src="github.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">GitHub</span>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-40 shrink-0" aria-hidden="true">
-                    <img src="database.png" alt="" loading="lazy" class="h-12 mx-auto mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold">NoSQL</span>
+                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
+                    <img src="database.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
+                    <span class="font-bold text-sm md:text-base">NoSQL</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="projetos" class="py-24 bg-slate-50/60 backdrop-blur-xl border-b border-white/40">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+        <div class="container mx-auto px-5 md:px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 reveal">
                 <div>
-                    <h2 class="text-4xl font-extrabold mb-4">Projetos em <span class="text-brand-blue">Destaque</span></h2>
-                    <p class="text-slate-500">Sistemas que estão rodando e gerando valor.</p>
+                    <h2 class="text-3xl md:text-4xl font-extrabold mb-3 md:mb-4">Projetos em <span class="text-brand-blue">Destaque</span></h2>
+                    <p class="text-slate-500 text-sm md:text-base">Sistemas que estão rodando e gerando valor.</p>
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-10">
-                <div class="md:col-span-2 reveal">
-                    <div class="special-border tilt shadow-2xl group">
+            <div class="grid md:grid-cols-2 gap-6 md:gap-10">
+                <div class="md:col-span-2 reveal" data-m="zoom">
+                    <div class="special-border tilt m-lift shadow-2xl group" data-inview>
                         <div class="bg-white/90 backdrop-blur-md rounded-[1.9rem] flex flex-col lg:flex-row overflow-hidden border border-white/60">
-                            <div class="lg:w-3/5 overflow-hidden bg-brand-soft">
-                                <img src="https://i.imgur.com/fmWP2Zg.jpeg" alt="Captura de tela do projeto Leahpar Note" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 cursor-pointer gallery-item mix-blend-multiply" data-src="https://i.imgur.com/fmWP2Zg.jpeg" data-title="Leahpar Note">
+                            <div class="relative lg:w-3/5 h-52 sm:h-72 lg:h-auto overflow-hidden bg-brand-soft">
+                                <img src="https://i.imgur.com/fmWP2Zg.jpeg" alt="Captura de tela do projeto Leahpar Note" loading="lazy" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 cursor-pointer gallery-item mix-blend-multiply" data-src="https://i.imgur.com/fmWP2Zg.jpeg" data-title="Leahpar Note">
+                                <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
+                                    <i data-lucide="maximize-2" class="w-3 h-3"></i> Toque para ampliar
+                                </span>
                             </div>
-                            <div class="lg:w-2/5 p-12 flex flex-col justify-center">
-                                <span class="text-brand-blue font-bold text-sm tracking-widest uppercase mb-2">Projeto Recente</span>
-                                <h3 class="text-4xl font-black mb-6">Leahpar Note</h3>
-                                <p class="text-slate-500 mb-8 text-lg leading-relaxed">
+                            <div class="lg:w-2/5 p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
+                                <span class="text-brand-blue font-bold text-xs md:text-sm tracking-widest uppercase mb-2">Projeto Recente</span>
+                                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black mb-3 md:mb-6">Leahpar Note</h3>
+                                <p class="text-slate-500 mb-5 md:mb-8 text-base md:text-lg leading-relaxed">
                                     Uma ferramenta de produtividade minimalista. Focada em velocidade de anotação e uma interface livre de distrações. O seu cérebro externo em formato digital.
                                 </p>
-                                <div class="flex gap-4">
+                                <div class="flex gap-2 md:gap-4 flex-wrap">
                                     <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">JavaScript</span>
                                     <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">Local Storage</span>
                                     <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">UI/UX</span>
@@ -562,41 +672,50 @@
                     </div>
                 </div>
 
-                <div class="spot tilt relative bg-white/80 backdrop-blur-xl rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" style="transition-delay: 100ms">
-                    <div class="img-swap rounded-2xl overflow-hidden mb-6 h-64 bg-slate-100">
-                        <img src="intranet.png" alt="Captura de tela do sistema de Intranet" loading="lazy" class="img-primary w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="intranet.png" data-title="Sistemas de Intranet">
+                <div class="spot tilt m-lift relative bg-white/80 backdrop-blur-md md:backdrop-blur-xl rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 100ms">
+                    <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
+                        <img src="intranet.png" alt="Captura de tela do sistema de Intranet" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="intranet.png" data-title="Sistemas de Intranet">
+                        <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
+                            <i data-lucide="maximize-2" class="w-3 h-3"></i> Toque para ampliar
+                        </span>
                     </div>
-                    <div class="px-4 pb-4">
-                        <h3 class="text-2xl font-bold mb-3">Sistemas de Intranet</h3>
-                        <p class="text-slate-500 mb-6 line-clamp-2">Uma intranet enxuta para conectar áreas, centralizar informações e facilitar o dia a dia das equipas.</p>
-                        <a href="https://hiddenmodel.fly.dev/" target="_blank" rel="noopener" class="text-brand-blue font-bold inline-flex items-center group/link">
+                    <div class="px-2 pb-3 md:px-4 md:pb-4">
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Sistemas de Intranet</h3>
+                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-6 line-clamp-2">Uma intranet enxuta para conectar áreas, centralizar informações e facilitar o dia a dia das equipas.</p>
+                        <a href="https://hiddenmodel.fly.dev/" target="_blank" rel="noopener" class="tap-press text-brand-blue font-bold inline-flex items-center group/link">
                             Ver Online <i data-lucide="external-link" class="ml-2 w-4 h-4 group-hover/link:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
                 </div>
 
-                <div class="spot tilt relative bg-white/80 backdrop-blur-xl rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" style="transition-delay: 200ms">
-                    <div class="img-swap rounded-2xl overflow-hidden mb-6 h-64 bg-slate-100">
-                        <img src="help_desk.png" alt="Captura de tela do sistema Helpdesk Pro" loading="lazy" class="img-primary w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="help_desk.png" data-title="Helpdesk Pro">
-                        <img src="help_desk2.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 mix-blend-multiply">
+                <div class="spot tilt m-lift relative bg-white/80 backdrop-blur-md md:backdrop-blur-xl rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="right" data-inview style="transition-delay: 200ms">
+                    <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
+                        <img src="help_desk.png" alt="Captura de tela do sistema Helpdesk Pro" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="help_desk.png" data-title="Helpdesk Pro">
+                        <img src="help_desk2.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 mix-blend-multiply">
+                        <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
+                            <i data-lucide="images" class="w-3 h-3"></i> 2 telas · toque para ampliar
+                        </span>
                     </div>
-                    <div class="px-4 pb-4">
-                        <h3 class="text-2xl font-bold mb-3">Helpdesk Pro</h3>
-                        <p class="text-slate-500 mb-6 line-clamp-2">Gestão inteligente de chamados para equipas de TI que buscam produtividade.</p>
-                        <a href="https://helpdeskpro.fly.dev/" target="_blank" rel="noopener" class="text-brand-blue font-bold inline-flex items-center group/link">
+                    <div class="px-2 pb-3 md:px-4 md:pb-4">
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Helpdesk Pro</h3>
+                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-6 line-clamp-2">Gestão inteligente de chamados para equipas de TI que buscam produtividade.</p>
+                        <a href="https://helpdeskpro.fly.dev/" target="_blank" rel="noopener" class="tap-press text-brand-blue font-bold inline-flex items-center group/link">
                             Ver Online <i data-lucide="external-link" class="ml-2 w-4 h-4 group-hover/link:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
                 </div>
 
-                <div class="spot tilt relative bg-white/80 backdrop-blur-xl rounded-3xl p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" style="transition-delay: 300ms">
-                    <div class="img-swap rounded-2xl overflow-hidden mb-6 h-64 bg-slate-100">
-                        <img src="painel_disparos.png" alt="Captura de tela do Painel de Disparos" loading="lazy" class="img-primary w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="painel_disparos.png" data-title="Painel de Disparos">
-                        <img src="painel_disparos2.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 mix-blend-multiply">
+                <div class="spot tilt m-lift relative bg-white/80 backdrop-blur-md md:backdrop-blur-xl rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 300ms">
+                    <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
+                        <img src="painel_disparos.png" alt="Captura de tela do Painel de Disparos" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="painel_disparos.png" data-title="Painel de Disparos">
+                        <img src="painel_disparos2.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 mix-blend-multiply">
+                        <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
+                            <i data-lucide="images" class="w-3 h-3"></i> 2 telas · toque para ampliar
+                        </span>
                     </div>
-                    <div class="px-4 pb-4">
-                        <h3 class="text-2xl font-bold mb-3">Painel de Disparos</h3>
-                        <p class="text-slate-500 mb-6 line-clamp-2">Dashboard de monitoramento em tempo real de disparos, com métricas de volume, status e orçamento.</p>
+                    <div class="px-2 pb-3 md:px-4 md:pb-4">
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Painel de Disparos</h3>
+                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-6 line-clamp-2">Dashboard de monitoramento em tempo real de disparos, com métricas de volume, status e orçamento.</p>
                         <div class="flex gap-2 flex-wrap">
                             <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">JavaScript</span>
                             <span class="px-3 py-1 bg-slate-100/80 rounded-md text-xs font-bold border border-slate-200">Dashboard</span>
@@ -608,40 +727,40 @@
         </div>
     </section>
 
-    <section id="contato" class="py-24 bg-white/60 backdrop-blur-xl relative overflow-hidden">
+    <section id="contato" class="py-16 md:py-24 bg-white/60 backdrop-blur-md md:backdrop-blur-xl relative overflow-hidden">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[70vw] max-w-3xl max-h-3xl rounded-full bg-brand-blue/5 blur-[100px]"></div>
-        <div class="container mx-auto px-6 text-center reveal relative z-10">
-            <h2 class="text-5xl font-black mb-8 text-gradient-animated">Vamos criar o seu <br>próximo sistema?</h2>
-            <p class="text-slate-500 text-xl max-w-2xl mx-auto mb-16">
+        <div class="container mx-auto px-5 md:px-6 text-center reveal relative z-10">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5 md:mb-8 leading-tight text-gradient-animated">Vamos criar o seu <br class="hidden md:inline">próximo sistema?</h2>
+            <p class="text-slate-500 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 md:mb-16">
                 Estou pronto para ouvir sua ideia e transformá-la numa ferramenta poderosa.
             </p>
 
-            <div class="flex flex-col md:flex-row justify-center items-center gap-6">
-                <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" rel="noopener" class="spot spot-dark relative overflow-hidden w-full md:w-auto bg-[#25D366]/90 backdrop-blur-md text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-green-500/20 border border-white/20">
-                    <img src="https://i.imgur.com/jCQb3Xg.png" alt="Logo WhatsApp" class="h-6 w-auto mr-3 object-contain drop-shadow-md">
-                    <span class="text-lg relative z-10">(31) 97503-0149</span>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6">
+                <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" rel="noopener" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-[#25D366]/90 backdrop-blur-md text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-green-500/20 border border-white/20">
+                    <img src="https://i.imgur.com/jCQb3Xg.png" alt="Logo WhatsApp" class="h-5 md:h-6 w-auto mr-3 object-contain drop-shadow-md">
+                    <span class="text-base md:text-lg relative z-10">(31) 97503-0149</span>
                 </a>
-                <a href="mailto:leahparcode@outlook.com" class="spot spot-dark relative overflow-hidden w-full md:w-auto bg-brand-dark/90 backdrop-blur-md text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-xl shadow-blue-900/20 border border-white/20">
-                    <i data-lucide="mail" class="mr-3 relative z-10"></i>
-                    <span class="relative z-10">leahparcode@outlook.com</span>
+                <a href="mailto:leahparcode@outlook.com" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-brand-dark/90 backdrop-blur-md text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-blue-900/20 border border-white/20">
+                    <i data-lucide="mail" class="mr-3 relative z-10 w-5 h-5"></i>
+                    <span class="relative z-10 text-sm sm:text-base">leahparcode@outlook.com</span>
                 </a>
             </div>
         </div>
     </section>
 
-    <footer class="py-12 bg-slate-50/80 backdrop-blur-2xl border-t border-slate-200/50">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-slate-500">
-            <div class="flex items-center mb-6 md:mb-0">
+    <footer class="py-10 md:py-12 bg-slate-50/80 backdrop-blur-md md:backdrop-blur-2xl border-t border-slate-200/50">
+        <div class="container mx-auto px-5 md:px-6 flex flex-col md:flex-row justify-between items-center text-slate-500">
+            <div class="flex items-center mb-5 md:mb-0">
                 <img src="LeahparCode.png" alt="Logo Leahpar Code" class="h-8 opacity-50 grayscale">
-                <span class="ml-3 font-bold">Leahpar Code &copy; 2026</span>
+                <span class="ml-3 font-bold text-sm md:text-base">Leahpar Code &copy; 2026</span>
             </div>
             <div class="flex space-x-6">
-                <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" rel="noopener" class="hover:text-brand-blue transition-colors font-medium">LinkedIn</a>
+                <a href="https://www.linkedin.com/company/leahpar-code/" target="_blank" rel="noopener" class="tap-press hover:text-brand-blue transition-colors font-medium text-sm md:text-base">LinkedIn</a>
             </div>
         </div>
     </footer>
 
-    <button id="back-to-top" class="fixed bottom-8 right-8 z-50 w-14 h-14 opacity-0 translate-y-10 transition-all duration-300 group" aria-label="Voltar ao topo">
+    <button id="back-to-top" class="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-50 w-14 h-14 opacity-0 translate-y-10 transition-all duration-300 group scale-[0.85] md:scale-100" aria-label="Voltar ao topo">
         <svg class="absolute inset-0 w-14 h-14 -rotate-90 pointer-events-none" viewBox="0 0 56 56">
             <circle cx="28" cy="28" r="25" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="3"></circle>
             <circle id="scroll-ring" cx="28" cy="28" r="25" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-dasharray="157.08" stroke-dashoffset="157.08"></circle>
@@ -651,14 +770,37 @@
         </span>
     </button>
 
-    <div id="lightbox" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 invisible transition-opacity duration-300">
+    <div id="lightbox" class="fixed inset-0 z-[100] opacity-0 invisible transition-opacity duration-300" role="dialog" aria-modal="true" aria-label="Visualizador de imagem">
         <div class="absolute inset-0 lightbox-backdrop" id="close-lightbox"></div>
-        <div id="lightbox-content" class="relative max-w-5xl w-full max-h-[90vh] z-10 flex flex-col items-center scale-95 transition-transform duration-300">
-            <img id="lightbox-img" alt="" class="rounded-xl shadow-2xl max-h-[80vh] object-contain border border-white/10">
-            <p id="lightbox-title" class="text-white mt-4 font-bold text-xl px-6 py-2 bg-black/40 backdrop-blur-xl rounded-full border border-white/10"></p>
-            <button id="btn-close-lightbox" class="absolute -top-12 right-0 text-white hover:text-brand-blue transition-colors" aria-label="Fechar">
-                <i data-lucide="x" class="w-10 h-10 drop-shadow-lg"></i>
-            </button>
+
+        <div id="lightbox-content" class="relative z-10 h-full w-full flex flex-col items-center justify-center px-3 py-4 md:px-6 scale-95 transition-transform duration-300">
+
+            <div class="w-full max-w-5xl flex items-center justify-between gap-3 mb-3">
+                <span id="lightbox-counter" class="text-white/80 text-xs md:text-sm font-bold px-3 py-1.5 rounded-full bg-white/10 border border-white/15"></span>
+                <div class="flex items-center gap-2">
+                    <button id="lb-zoom" class="lb-btn" aria-label="Ampliar imagem">
+                        <i data-lucide="zoom-in" class="w-5 h-5"></i>
+                    </button>
+                    <button id="btn-close-lightbox" class="lb-btn" aria-label="Fechar">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="lightbox-stage" class="relative w-full max-w-5xl flex-1 flex items-center justify-center">
+                <img id="lightbox-img" alt="" class="max-h-full max-w-full object-contain rounded-xl shadow-2xl border border-white/10">
+                <button id="lb-prev" class="lb-btn absolute left-0 md:left-2 top-1/2 -translate-y-1/2" aria-label="Imagem anterior">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <button id="lb-next" class="lb-btn absolute right-0 md:right-2 top-1/2 -translate-y-1/2" aria-label="Próxima imagem">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="w-full max-w-5xl mt-3 md:mt-4 flex flex-col items-center gap-1.5">
+                <p id="lightbox-title" class="text-white font-bold text-base md:text-xl px-5 py-2 bg-black/40 backdrop-blur-xl rounded-full border border-white/10 text-center"></p>
+                <p id="lightbox-hint" class="text-white/45 text-[11px] md:text-xs text-center"></p>
+            </div>
         </div>
     </div>
 
@@ -761,6 +903,8 @@
             iconOpen.classList.toggle('hidden', open);
             iconClose.classList.toggle('hidden', !open);
             menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            // Sem travar a rolagem do body aqui: o menu fica preso à navbar fixa,
+            // e travar o scroll com a página no meio causa saltos de posição.
         }
 
         menuBtn.addEventListener('click', () => {
@@ -847,23 +991,38 @@
         }, { threshold: 0.6 });
         document.querySelectorAll('[data-counter]').forEach(el => counterObserver.observe(el));
 
-        // ===== Spotlight (glow que segue o cursor) =====
+        // ===== Spotlight (glow que segue o cursor) e Tilt 3D =====
+        // Atualiza no máximo 1x por frame (via requestAnimationFrame) em vez de a
+        // cada evento de mousemove bruto, para não sobrecarregar a thread principal.
         if (window.matchMedia('(pointer: fine)').matches) {
+            let spotFrame = null;
+            let pendingSpot = null;
             document.querySelectorAll('.spot').forEach(el => {
                 el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    el.style.setProperty('--x', `${e.clientX - rect.left}px`);
-                    el.style.setProperty('--y', `${e.clientY - rect.top}px`);
+                    pendingSpot = { el, x: e.clientX, y: e.clientY };
+                    if (spotFrame) return;
+                    spotFrame = requestAnimationFrame(() => {
+                        const rect = pendingSpot.el.getBoundingClientRect();
+                        pendingSpot.el.style.setProperty('--x', `${pendingSpot.x - rect.left}px`);
+                        pendingSpot.el.style.setProperty('--y', `${pendingSpot.y - rect.top}px`);
+                        spotFrame = null;
+                    });
                 });
             });
 
-            // ===== Tilt 3D =====
+            let tiltFrame = null;
+            let pendingTilt = null;
             document.querySelectorAll('.tilt').forEach(el => {
                 el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    const x = (e.clientX - rect.left) / rect.width - 0.5;
-                    const y = (e.clientY - rect.top) / rect.height - 0.5;
-                    el.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+                    pendingTilt = { el, x: e.clientX, y: e.clientY };
+                    if (tiltFrame) return;
+                    tiltFrame = requestAnimationFrame(() => {
+                        const rect = pendingTilt.el.getBoundingClientRect();
+                        const x = (pendingTilt.x - rect.left) / rect.width - 0.5;
+                        const y = (pendingTilt.y - rect.top) / rect.height - 0.5;
+                        pendingTilt.el.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+                        tiltFrame = null;
+                    });
                 });
                 el.addEventListener('mouseleave', () => {
                     el.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg)';
@@ -881,16 +1040,173 @@
             marqueeWrap.addEventListener('touchcancel', resumeMarquee);
         }
 
-        // ===== Lightbox =====
+        // ===== Animações de rolagem no mobile =====
+        // No desktop os cards acendem seguindo o cursor; no mobile isso não existe,
+        // então o card "acende" sozinho ao chegar ao centro da tela.
+        const mobileQuery = window.matchMedia('(max-width: 767px)');
+        let inViewObserver = null;
+
+        function setupMobileInView() {
+            if (inViewObserver) {
+                inViewObserver.disconnect();
+                inViewObserver = null;
+            }
+            document.querySelectorAll('.in-view').forEach(el => el.classList.remove('in-view'));
+            if (!mobileQuery.matches) return;
+
+            inViewObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    entry.target.classList.toggle('in-view', entry.isIntersecting);
+                });
+            }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
+
+            document.querySelectorAll('[data-inview]').forEach(el => inViewObserver.observe(el));
+        }
+        setupMobileInView();
+        mobileQuery.addEventListener('change', setupMobileInView);
+
+        // ===== Visualizador de imagens (galeria + zoom + gestos) =====
         const lightbox = document.getElementById('lightbox');
         const lightboxContent = document.getElementById('lightbox-content');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+        const lightboxHint = document.getElementById('lightbox-hint');
+        const lightboxStage = document.getElementById('lightbox-stage');
+        const btnPrev = document.getElementById('lb-prev');
+        const btnNext = document.getElementById('lb-next');
+        const btnZoom = document.getElementById('lb-zoom');
 
-        function openLightbox(src, title) {
-            lightboxImg.src = src;
-            lightboxImg.alt = title || '';
-            lightboxTitle.innerText = title || '';
+        // Cada projeto vira um grupo: a imagem principal + a segunda tela (que no
+        // desktop só aparece no hover e no mobile ficaria inacessível).
+        const galleries = [];
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            const title = item.getAttribute('data-title') || '';
+            const images = [item.getAttribute('data-src')];
+            const swap = item.closest('.img-swap');
+            if (swap) {
+                swap.querySelectorAll('.img-secondary').forEach(sec => {
+                    const src = sec.getAttribute('src');
+                    if (src && !images.includes(src)) images.push(src);
+                });
+            }
+            const groupIndex = galleries.push({ title, images }) - 1;
+            item.dataset.group = String(groupIndex);
+        });
+
+        let currentGroup = null;
+        let currentIndex = 0;
+        let zoomScale = 1;
+        let panX = 0;
+        let panY = 0;
+        let mouseDragging = false;
+
+        function applyImageTransform(animate = true) {
+            lightboxImg.classList.toggle('no-anim', !animate);
+            lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
+            if (btnZoom) {
+                btnZoom.setAttribute('aria-label', zoomScale > 1 ? 'Reduzir imagem' : 'Ampliar imagem');
+                btnZoom.classList.toggle('is-zoomed', zoomScale > 1);
+            }
+            if (!mouseDragging) {
+                lightboxStage.style.cursor = zoomScale > 1 ? 'grab' : '';
+            }
+        }
+
+        function resetZoom(animate = true) {
+            zoomScale = 1;
+            panX = 0;
+            panY = 0;
+            applyImageTransform(animate);
+        }
+
+        function clampPan() {
+            // Não deixa a imagem ser arrastada para fora da área visível
+            const stage = lightboxStage.getBoundingClientRect();
+            const width = lightboxImg.offsetWidth * zoomScale;
+            const height = lightboxImg.offsetHeight * zoomScale;
+            const maxX = Math.max(0, (width - stage.width) / 2);
+            const maxY = Math.max(0, (height - stage.height) / 2);
+            panX = Math.max(-maxX, Math.min(maxX, panX));
+            panY = Math.max(-maxY, Math.min(maxY, panY));
+        }
+
+        // As capturas de tela são bem largas (formato de monitor). Numa tela de
+        // celular em pé, caber na largura deixaria a imagem minúscula — então
+        // abrimos preenchendo a altura e o visitante arrasta para os lados.
+        function fillScreenScale() {
+            const stage = lightboxStage.getBoundingClientRect();
+            const h = lightboxImg.offsetHeight;
+            if (!h || !stage.height) return 1;
+            const scale = (stage.height * 0.96) / h;
+            return scale > 1.3 ? Math.min(scale, 3.2) : 1;
+        }
+
+        // Só o mobile abre já ampliado; no desktop a imagem inteira cabe na tela
+        function autoOpenScale() {
+            return mobileQuery.matches ? fillScreenScale() : 1;
+        }
+
+        // Há espaço para arrastar a imagem na vertical?
+        function canPanY() {
+            const stage = lightboxStage.getBoundingClientRect();
+            return (lightboxImg.offsetHeight * zoomScale) - stage.height > 4;
+        }
+
+        function updateHint() {
+            const total = currentGroup ? currentGroup.images.length : 1;
+            const isTouch = mobileQuery.matches || window.matchMedia('(pointer: coarse)').matches;
+
+            if (zoomScale > 1) {
+                lightboxHint.innerText = isTouch
+                    ? (total > 1
+                        ? 'Arraste para explorar · use as setas para a outra tela'
+                        : 'Arraste para explorar · toque duas vezes para ver tudo')
+                    : 'Arraste para explorar · clique duas vezes para ver tudo';
+                return;
+            }
+
+            lightboxHint.innerText = isTouch
+                ? (total > 1
+                    ? 'Toque duas vezes para ampliar · deslize para a outra tela'
+                    : 'Toque duas vezes para ampliar · arraste para baixo para fechar')
+                : (total > 1
+                    ? 'Clique duas vezes para ampliar · use ← → para trocar de tela'
+                    : 'Clique duas vezes para ampliar · Esc para fechar');
+        }
+
+        function renderLightbox() {
+            if (!currentGroup) return;
+            const total = currentGroup.images.length;
+            currentIndex = (currentIndex + total) % total;
+            lightboxImg.src = currentGroup.images[currentIndex];
+            lightboxImg.alt = currentGroup.title;
+            lightboxTitle.innerText = currentGroup.title;
+            lightboxCounter.innerText = total > 1 ? `${currentIndex + 1} / ${total}` : 'Imagem';
+            btnPrev.hidden = total < 2;
+            btnNext.hidden = total < 2;
+            resetZoom(false);
+            updateHint();
+        }
+
+        // Assim que a imagem carrega (ou troca), já abre no tamanho útil
+        lightboxImg.addEventListener('load', () => {
+            const scale = autoOpenScale();
+            if (scale > 1) {
+                zoomScale = scale;
+                panX = 0;
+                panY = 0;
+                clampPan();
+                applyImageTransform(false);
+            }
+            updateHint();
+        });
+
+        function openLightbox(groupIndex, startIndex = 0) {
+            currentGroup = galleries[groupIndex];
+            if (!currentGroup) return;
+            currentIndex = startIndex;
+            renderLightbox();
             lightbox.classList.remove('invisible', 'opacity-0');
             document.body.style.overflow = 'hidden';
             requestAnimationFrame(() => lightboxContent.classList.remove('scale-95'));
@@ -899,24 +1215,175 @@
         function closeLightbox() {
             lightbox.classList.add('opacity-0');
             lightboxContent.classList.add('scale-95');
-            document.body.style.overflow = 'auto';
-            setTimeout(() => lightbox.classList.add('invisible'), 300);
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                lightbox.classList.add('invisible');
+                resetZoom(false);
+            }, 300);
+        }
+
+        function step(delta) {
+            if (!currentGroup || currentGroup.images.length < 2) return;
+            currentIndex += delta;
+            renderLightbox();
         }
 
         document.querySelectorAll('.gallery-item').forEach(item => {
-            item.addEventListener('click', () => {
-                openLightbox(item.getAttribute('data-src'), item.getAttribute('data-title'));
-            });
+            item.addEventListener('click', () => openLightbox(Number(item.dataset.group)));
         });
 
         document.getElementById('close-lightbox').addEventListener('click', closeLightbox);
         document.getElementById('btn-close-lightbox').addEventListener('click', closeLightbox);
+        btnPrev.addEventListener('click', () => step(-1));
+        btnNext.addEventListener('click', () => step(1));
+        function toggleZoom() {
+            if (zoomScale > 1) {
+                resetZoom();
+            } else {
+                zoomScale = Math.max(fillScreenScale(), 2.2);
+                panX = 0;
+                panY = 0;
+                clampPan();
+                applyImageTransform();
+            }
+            updateHint();
+        }
+        btnZoom.addEventListener('click', toggleZoom);
+
+        // --- Gestos de toque: deslizar entre telas, arrastar para fechar,
+        //     toque duplo e pinça para ampliar, arrastar para navegar na imagem ---
+        let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+        let panStartX = 0, panStartY = 0;
+        let pinchStartDist = 0, pinchStartScale = 1;
+        let lastTapTime = 0;
+        let gestureMoved = false;
+
+        const distance = (t1, t2) => Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+
+        lightboxStage.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                pinchStartDist = distance(e.touches[0], e.touches[1]);
+                pinchStartScale = zoomScale;
+                gestureMoved = true;
+                return;
+            }
+            const t = e.touches[0];
+            touchStartX = t.clientX;
+            touchStartY = t.clientY;
+            touchStartTime = Date.now();
+            panStartX = panX;
+            panStartY = panY;
+            gestureMoved = false;
+        }, { passive: true });
+
+        lightboxStage.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && pinchStartDist > 0) {
+                const ratio = distance(e.touches[0], e.touches[1]) / pinchStartDist;
+                zoomScale = Math.max(1, Math.min(4, pinchStartScale * ratio));
+                clampPan();
+                applyImageTransform(false);
+                gestureMoved = true;
+                return;
+            }
+            const t = e.touches[0];
+            const dx = t.clientX - touchStartX;
+            const dy = t.clientY - touchStartY;
+            if (Math.abs(dx) > 8 || Math.abs(dy) > 8) gestureMoved = true;
+
+            // Arrastar para baixo fecha — inclusive com a imagem ampliada, desde
+            // que não haja espaço vertical para navegar dentro dela
+            const isCloseGesture = Math.abs(dy) > Math.abs(dx) && dy > 0 && !canPanY();
+
+            if (zoomScale > 1 && !isCloseGesture) {
+                // Ampliada: o arrasto navega dentro da imagem
+                panX = panStartX + dx;
+                panY = panStartY + dy;
+                clampPan();
+                applyImageTransform(false);
+            } else if (isCloseGesture) {
+                // Acompanha o dedo antes de fechar
+                lightboxContent.style.transform = `translateY(${dy * 0.5}px)`;
+                lightboxContent.style.opacity = String(Math.max(0.35, 1 - dy / 420));
+            }
+        }, { passive: true });
+
+        lightboxStage.addEventListener('touchend', (e) => {
+            const changed = e.changedTouches[0];
+            const dx = changed.clientX - touchStartX;
+            const dy = changed.clientY - touchStartY;
+            const elapsed = Date.now() - touchStartTime;
+
+            lightboxContent.style.transform = '';
+            lightboxContent.style.opacity = '';
+            pinchStartDist = 0;
+
+            // Toque duplo alterna entre "ver tudo" e ampliado
+            if (!gestureMoved && elapsed < 260) {
+                const now = Date.now();
+                if (now - lastTapTime < 320) {
+                    toggleZoom();
+                    lastTapTime = 0;
+                    return;
+                }
+                lastTapTime = now;
+                return;
+            }
+
+            // Arrastar para baixo fecha (quando não dá para navegar na vertical)
+            if (dy > 110 && Math.abs(dx) < 80 && !canPanY()) {
+                closeLightbox();
+                return;
+            }
+
+            // Com a imagem ampliada, arrastar navega dentro dela
+            if (zoomScale > 1) {
+                updateHint();
+                return;
+            }
+
+            if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+                step(dx < 0 ? 1 : -1);
+            }
+        });
+
+        // --- Arraste com o mouse quando a imagem está ampliada (desktop) ---
+        let mouseStartX = 0, mouseStartY = 0;
+
+        lightboxStage.addEventListener('mousedown', (e) => {
+            if (zoomScale <= 1) return;
+            mouseDragging = true;
+            mouseStartX = e.clientX;
+            mouseStartY = e.clientY;
+            panStartX = panX;
+            panStartY = panY;
+            lightboxStage.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!mouseDragging) return;
+            panX = panStartX + (e.clientX - mouseStartX);
+            panY = panStartY + (e.clientY - mouseStartY);
+            clampPan();
+            applyImageTransform(false);
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (!mouseDragging) return;
+            mouseDragging = false;
+            lightboxStage.style.cursor = '';
+        });
+
+        lightboxImg.addEventListener('dblclick', toggleZoom);
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeLightbox();
                 setMenuState(false);
             }
+            if (lightbox.classList.contains('invisible')) return;
+            if (e.key === 'ArrowRight') step(1);
+            if (e.key === 'ArrowLeft') step(-1);
         });
 
         // Voltar ao topo
