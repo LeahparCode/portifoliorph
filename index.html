@@ -239,24 +239,118 @@
             will-change: transform;
         }
 
-        /* Marquee de tecnologias */
+        /* ===== Faixas de tecnologias =====
+           Duas faixas correndo em sentidos opostos. O JS clona cada conjunto
+           até a faixa ser mais larga que a tela e define a distância exata de
+           um conjunto, então o laço fecha sem sobra — independente do tamanho
+           do monitor (era justamente isso que abria o buraco em telas largas). */
         .marquee-wrap {
             overflow: hidden;
-            -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-            mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, black 7%, black 93%, transparent);
+            mask-image: linear-gradient(90deg, transparent, black 7%, black 93%, transparent);
         }
         .marquee-track {
             display: flex;
             width: max-content;
-            gap: 2rem;
-            animation: marquee 42s linear infinite;
+            gap: var(--marquee-gap, 1.5rem);
+            animation: marquee-left var(--marquee-duration, 30s) linear infinite;
             will-change: transform;
+        }
+        .marquee-row[data-direction="right"] .marquee-track {
+            animation-name: marquee-right;
+            /* Defasa a segunda faixa para as duas nunca alinharem o mesmo logo */
+            animation-delay: calc(var(--marquee-duration, 30s) * -0.37);
         }
         .marquee-wrap:hover .marquee-track,
         .marquee-wrap.paused .marquee-track { animation-play-state: paused; }
-        @keyframes marquee {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
+        @keyframes marquee-left {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(calc(var(--marquee-distance, 50%) * -1), 0, 0); }
+        }
+        @keyframes marquee-right {
+            from { transform: translate3d(calc(var(--marquee-distance, 50%) * -1), 0, 0); }
+            to { transform: translate3d(0, 0, 0); }
+        }
+
+        /* ===== Card de tecnologia ===== */
+        .tech-card {
+            position: relative;
+            flex-shrink: 0;
+            width: 8.5rem;
+            padding: 1.15rem 0.75rem 1rem;
+            border-radius: 1.15rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                        background 0.45s ease, border-color 0.45s ease;
+        }
+        /* Brilho na cor da própria tecnologia */
+        .tech-glow {
+            position: absolute;
+            left: 50%;
+            top: 34%;
+            width: 78%;
+            aspect-ratio: 1;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--tech) 0%, transparent 66%);
+            opacity: 0.2;
+            pointer-events: none;
+            transition: opacity 0.45s ease;
+        }
+        /* Linha de acento no pé do card */
+        .tech-card::after {
+            content: '';
+            position: absolute;
+            left: 22%;
+            right: 22%;
+            bottom: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--tech), transparent);
+            opacity: 0.5;
+            transition: opacity 0.45s ease;
+        }
+        .tech-card:hover {
+            transform: translateY(-6px);
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+        .tech-card:hover .tech-glow { opacity: 0.4; }
+        .tech-card:hover::after { opacity: 1; }
+        /* Ladrilho claro atrás do logo: sem ele, marcas escuras como a do
+           GitHub praticamente somem no fundo azul-escuro da seção */
+        .tech-tile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            margin: 0 auto 0.75rem;
+            border-radius: 0.9rem;
+            background: rgba(255, 255, 255, 0.94);
+            box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.45);
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .tech-card:hover .tech-tile { transform: scale(1.08) rotate(-3deg); }
+        .tech-tile img {
+            width: 2.1rem;
+            height: 2.1rem;
+            object-fit: contain;
+        }
+        .tech-name {
+            position: relative;
+            display: block;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.01em;
+        }
+        @media (min-width: 768px) {
+            .tech-card { width: 10rem; padding: 1.5rem 1rem 1.35rem; }
+            .tech-tile { width: 4.25rem; height: 4.25rem; margin-bottom: 0.9rem; }
+            .tech-tile img { width: 2.6rem; height: 2.6rem; }
+            .tech-name { font-size: 0.95rem; }
         }
 
         /* ===== Logo que viaja entre a navbar e o hero ===== */
@@ -511,7 +605,7 @@
             #mobile-menu.open-menu .mobile-nav-link:nth-child(4) { transition-delay: 0.24s; }
 
             /* Marquee mais compacto e um pouco mais ágil na tela pequena */
-            .marquee-track { gap: 1rem; animation-duration: 30s; }
+            .marquee-track { --marquee-gap: 1rem; }
 
             /* Feedback de pressão ao tocar */
             .tap-press { transition: transform 0.18s ease; }
@@ -705,56 +799,73 @@
             <p class="text-blue-200 text-sm md:text-base">As ferramentas que utilizo para dar vida aos seus projetos.</p>
         </div>
 
-        <div class="marquee-wrap relative reveal">
-            <div class="marquee-track">
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
-                    <img src="js.png" alt="JavaScript" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">JavaScript</span>
+        <div class="marquee-wrap relative reveal space-y-4 md:space-y-6">
+            <div class="marquee-row" data-direction="left">
+                <div class="marquee-track">
+                    <div class="tech-card" style="--tech: #F7DF1E">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="js.png" alt="JavaScript" loading="lazy"></span>
+                        <span class="tech-name">JavaScript</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #E34F26">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="html-5.png" alt="HTML5" loading="lazy"></span>
+                        <span class="tech-name">HTML5</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #1572B6">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="css.png" alt="CSS3" loading="lazy"></span>
+                        <span class="tech-name">CSS3</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #7952B3">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="bootstrap.png" alt="Bootstrap" loading="lazy"></span>
+                        <span class="tech-name">Bootstrap</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #C9D1D9">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="github.png" alt="GitHub" loading="lazy"></span>
+                        <span class="tech-name">GitHub</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #1E90FF">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="database.png" alt="NoSQL" loading="lazy"></span>
+                        <span class="tech-name">NoSQL</span>
+                    </div>
                 </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
-                    <img src="html-5.png" alt="HTML5" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">HTML5</span>
-                </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
-                    <img src="css.png" alt="CSS3" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">CSS3</span>
-                </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
-                    <img src="bootstrap.png" alt="Bootstrap" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">Bootstrap</span>
-                </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
-                    <img src="github.png" alt="GitHub" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">GitHub</span>
-                </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0">
-                    <img src="database.png" alt="NoSQL" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">NoSQL</span>
-                </div>
-                <!-- duplicado para loop contínuo -->
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
-                    <img src="js.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">JavaScript</span>
-                </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
-                    <img src="html-5.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">HTML5</span>
-                </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
-                    <img src="css.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">CSS3</span>
-                </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
-                    <img src="bootstrap.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">Bootstrap</span>
-                </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
-                    <img src="github.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">GitHub</span>
-                </div>
-                <div class="group bg-white/5 border border-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl hover:bg-white/10 transition-all text-center shadow-lg w-[8.5rem] md:w-40 shrink-0" aria-hidden="true">
-                    <img src="database.png" alt="" loading="lazy" class="h-10 md:h-12 mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform object-contain">
-                    <span class="font-bold text-sm md:text-base">NoSQL</span>
+            </div>
+            <div class="marquee-row" data-direction="right">
+                <div class="marquee-track">
+                    <div class="tech-card" style="--tech: #7952B3" aria-hidden="true">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="bootstrap.png" alt="" loading="lazy"></span>
+                        <span class="tech-name">Bootstrap</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #1E90FF" aria-hidden="true">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="database.png" alt="" loading="lazy"></span>
+                        <span class="tech-name">NoSQL</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #F7DF1E" aria-hidden="true">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="js.png" alt="" loading="lazy"></span>
+                        <span class="tech-name">JavaScript</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #1572B6" aria-hidden="true">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="css.png" alt="" loading="lazy"></span>
+                        <span class="tech-name">CSS3</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #C9D1D9" aria-hidden="true">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="github.png" alt="" loading="lazy"></span>
+                        <span class="tech-name">GitHub</span>
+                    </div>
+                    <div class="tech-card" style="--tech: #E34F26" aria-hidden="true">
+                        <span class="tech-glow"></span>
+                        <span class="tech-tile"><img src="html-5.png" alt="" loading="lazy"></span>
+                        <span class="tech-name">HTML5</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1344,8 +1455,55 @@
             });
         }
 
-        // ===== Marquee (Stack Tech): pausa também ao toque, não só no hover =====
+        // ===== Faixas da Stack Tech =====
+        // O laço só fecha sem sobra se a faixa for mais larga que a tela e o
+        // deslocamento for exatamente um conjunto. Como isso depende da largura
+        // do monitor, clonamos aqui em vez de fixar as cópias no HTML.
+        const MARQUEE_SPEED = 46; // pixels por segundo
         const marqueeWrap = document.querySelector('.marquee-wrap');
+
+        function setupMarquee() {
+            document.querySelectorAll('.marquee-track').forEach(track => {
+                const originals = track.querySelectorAll('[data-marquee-clone]');
+                originals.forEach(clone => clone.remove());
+
+                const items = [...track.children];
+                if (!items.length) return;
+
+                const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+                // Um "conjunto" inclui o espaço depois do último item, senão o
+                // laço fecha deslocado e aparece um pulo a cada volta
+                const period = items.reduce((sum, el) => sum + el.getBoundingClientRect().width + gap, 0);
+                if (!period) return;
+
+                const needed = (track.parentElement.getBoundingClientRect().width || 0) + period * 2;
+                const copies = Math.max(1, Math.ceil(needed / period));
+                const fragment = document.createDocumentFragment();
+                for (let i = 0; i < copies; i++) {
+                    items.forEach(item => {
+                        const clone = item.cloneNode(true);
+                        clone.setAttribute('data-marquee-clone', '');
+                        clone.setAttribute('aria-hidden', 'true');
+                        clone.querySelectorAll('img').forEach(img => img.setAttribute('alt', ''));
+                        fragment.appendChild(clone);
+                    });
+                }
+                track.appendChild(fragment);
+
+                track.style.setProperty('--marquee-distance', `${period}px`);
+                track.style.setProperty('--marquee-duration', `${(period / MARQUEE_SPEED).toFixed(2)}s`);
+            });
+        }
+
+        setupMarquee();
+        window.addEventListener('load', setupMarquee);
+        let marqueeResizeTimer = null;
+        window.addEventListener('resize', () => {
+            clearTimeout(marqueeResizeTimer);
+            marqueeResizeTimer = setTimeout(setupMarquee, 250);
+        });
+
+        // Pausa também ao toque, não só no hover
         if (marqueeWrap) {
             const pauseMarquee = () => marqueeWrap.classList.add('paused');
             const resumeMarquee = () => marqueeWrap.classList.remove('paused');
