@@ -279,6 +279,8 @@
             inset: -18%;
             opacity: 0;
             pointer-events: none;
+            transform-origin: center center;
+            will-change: transform, opacity;
             border-radius: 9999px;
             -webkit-mask-image: radial-gradient(circle at 50% 52%, #000 42%, transparent 74%);
             mask-image: radial-gradient(circle at 50% 52%, #000 42%, transparent 74%);
@@ -328,10 +330,6 @@
         #logo-flyer.is-landed .logo-inner {
             animation: logo-breathe 6s ease-in-out infinite;
         }
-        #logo-fly-badge, #logo-fly-mark {
-            transition: opacity 0.25s linear;
-        }
-        #logo-aura { transition: opacity 0.45s ease; }
 
         /* Chips de tecnologia, cada um na cor oficial da sua stack */
         .tech-chip {
@@ -991,8 +989,26 @@
         const navLogo = document.getElementById('nav-logo');
         let navAnchor = null;
 
-        const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
         const clamp01 = (v) => Math.min(Math.max(v, 0), 1);
+        // Passa um pouco do ponto final e assenta — é o que dá o "pouso"
+        const easeOutBack = (t) => {
+            const c1 = 1.25, c3 = c1 + 1;
+            return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+        };
+
+        // O gatilho é quase imediato (a rolagem só diz "para onde"), e uma mola
+        // leva a logo até lá sozinha. Assim basta um toque de rolagem para a
+        // animação acontecer inteira, sem ficar seca.
+        const FLIGHT_RANGE_DESKTOP = 85;
+        const FLIGHT_RANGE_MOBILE = 70;
+        // Constante de tempo da mola, em segundos. Como o avanço é calculado
+        // pelo tempo decorrido (e não por quadro), a animação dura o mesmo
+        // tanto em 60Hz, 120Hz ou num aparelho engasgando.
+        const FLIGHT_TAU = 0.1;
+        let flightProgress = 0;
+        let flightTarget = 0;
+        let flightRaf = null;
+        let flightLastTime = 0;
 
         function readNavAnchor() {
             if (!navLogo) return;
@@ -1017,7 +1033,7 @@
             };
         }
 
-        function updateLogoFlight(scrollY) {
+        function renderLogoFlight() {
             if (!logoFlyer || !logoLanding) return;
             readNavAnchor();
             if (!navAnchor) return;
@@ -1026,24 +1042,28 @@
             const baseH = logoFlyer.offsetHeight;
             if (!baseW) return;
 
-            const range = window.matchMedia('(min-width: 768px)').matches ? 280 : 220;
-            const raw = clamp01(scrollY / range);
-            const p = easeInOutCubic(raw);
-
+            const p = flightProgress;
             const land = logoLanding.getBoundingClientRect();
             const startScale = navAnchor.size / baseW;
-            const scale = startScale + (1 - startScale) * p;
+
+            // O tamanho acompanha o trajeto (smoothstep), para a logo não chegar
+            // grande demais ainda por cima do título...
+            const grow = p * p * (3 - 2 * p);
+            // ...e ganha um "pop" curto só na chegada, que volta ao normal: o pouso assenta
+            const pop = 1 + 0.07 * Math.sin(Math.PI * clamp01((p - 0.72) / 0.28));
+            const scale = (startScale + (1 - startScale) * grow) * pop;
+
             const cx = navAnchor.cx + (land.left + land.width / 2 - navAnchor.cx) * p;
             // Arco leve no meio do caminho, para o trajeto não ser uma reta seca
-            const arc = Math.sin(raw * Math.PI) * 16;
+            const arc = Math.sin(p * Math.PI) * 18;
             const cy = navAnchor.cy + (land.top + land.height / 2 - navAnchor.cy) * p - arc;
-            const rot = -10 * (1 - p);
+            const rot = -9 * (1 - p);
 
             logoFlyer.style.transform =
                 `translate(${cx - baseW / 2}px, ${cy - baseH / 2}px) scale(${scale}) rotate(${rot}deg)`;
 
-            const flying = raw > 0.002;
-            const landed = raw >= 1;
+            const flying = p > 0.002;
+            const landed = p > 0.995;
             logoFlyer.classList.toggle('is-flying', flying);
             logoFlyer.classList.toggle('is-landed', landed);
 
@@ -1052,16 +1072,60 @@
             // para trás do conteúdo e reaparece na área de pouso.
             const navBottom = navAnchor.cy + navAnchor.size;
             logoFlyer.style.zIndex = cy > navBottom + 20 ? '5' : '60';
-            // Esmaece no meio do trajeto para não brigar com o texto do hero
-            logoFlyer.style.opacity = flying ? String(1 - 0.55 * Math.sin(raw * Math.PI)) : '0';
+            // Esmaece de leve no meio do trajeto para não brigar com o título
+            logoFlyer.style.opacity = flying ? String(1 - 0.38 * Math.sin(p * Math.PI)) : '0';
 
-            // A logo da navbar "solta" e a versão limpa assume durante o trajeto
+            // A logo da navbar "solta" e a versão limpa assume logo no começo
             if (navLogo) navLogo.style.opacity = flying ? '0' : '1';
-            const swap = clamp01(raw / 0.22);
+            const swap = clamp01(p / 0.18);
             if (logoBadge) logoBadge.style.opacity = String(1 - swap);
             if (logoMark) logoMark.style.opacity = String(swap);
-            // A aura acende na reta final do trajeto, junto com o pouso
-            if (logoAura) logoAura.style.opacity = String(clamp01((raw - 0.5) / 0.45));
+
+            // A aura floresce junto com o pouso
+            if (logoAura) {
+                const auraP = clamp01((p - 0.3) / 0.62);
+                logoAura.style.opacity = String(auraP);
+                logoAura.style.transform = `scale(${0.7 + 0.3 * easeOutBack(auraP)})`;
+            }
+        }
+
+        function flightTick(now) {
+            // Aba em segundo plano pode devolver um intervalo enorme; limitamos
+            const dt = flightLastTime ? Math.min((now - flightLastTime) / 1000, 0.05) : 1 / 60;
+            flightLastTime = now;
+
+            const diff = flightTarget - flightProgress;
+            if (Math.abs(diff) < 0.0008) {
+                flightProgress = flightTarget;
+                renderLogoFlight();
+                flightRaf = null;
+                flightLastTime = 0;
+                return;
+            }
+            flightProgress += diff * (1 - Math.exp(-dt / FLIGHT_TAU));
+            renderLogoFlight();
+            flightRaf = requestAnimationFrame(flightTick);
+        }
+
+        function startFlightSpring() {
+            if (flightRaf) return;
+            flightLastTime = 0;
+            flightRaf = requestAnimationFrame(flightTick);
+        }
+
+        function updateLogoFlight(scrollY) {
+            const range = window.matchMedia('(min-width: 768px)').matches
+                ? FLIGHT_RANGE_DESKTOP
+                : FLIGHT_RANGE_MOBILE;
+            flightTarget = clamp01(scrollY / range);
+
+            if (Math.abs(flightTarget - flightProgress) > 0.0008) {
+                startFlightSpring();
+            } else {
+                // Já assentou: só reposiciona, porque a área de pouso rola junto
+                flightProgress = flightTarget;
+                renderLogoFlight();
+            }
         }
 
         // Barra de progresso e Lógica Geral de Scroll (throttled via requestAnimationFrame)
