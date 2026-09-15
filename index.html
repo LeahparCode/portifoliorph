@@ -239,13 +239,21 @@
             will-change: transform;
         }
 
-        /* ===== Faixas de tecnologias =====
-           Duas faixas correndo em sentidos opostos. O JS clona cada conjunto
-           até a faixa ser mais larga que a tela e define a distância exata de
-           um conjunto, então o laço fecha sem sobra — independente do tamanho
-           do monitor (era justamente isso que abria o buraco em telas largas). */
+        /* ===== Faixa de tecnologias =====
+           O JS clona o conjunto até a faixa ficar mais larga que a tela e
+           define a distância exata de um conjunto, então o laço fecha sem
+           sobra — independente do tamanho do monitor (era justamente isso
+           que abria o buraco em telas largas). */
         .marquee-wrap {
             overflow: hidden;
+            /* A faixa tinha exatamente a altura dos itens: qualquer movimento
+               vertical no hover era cortado por este overflow (o ícone parecia
+               entrar por baixo do fundo). A folga abaixo resolve, e a margem
+               negativa devolve o espaçamento original da seção. */
+            padding-top: 16px;
+            padding-bottom: 16px;
+            margin-top: -16px;
+            margin-bottom: -16px;
             -webkit-mask-image: linear-gradient(90deg, transparent, black 7%, black 93%, transparent);
             mask-image: linear-gradient(90deg, transparent, black 7%, black 93%, transparent);
         }
@@ -289,14 +297,15 @@
             box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.6);
             transition: box-shadow 0.5s ease;
         }
-        /* No hover, o brilho nasce da borda do próprio ladrilho, acompanhando
-           o formato arredondado. A camada clara garante que marcas de tom
-           escuro (o azul do CSS3) também apareçam sobre o fundo azul-marinho. */
+        /* No hover, o acento colorido vai por dentro do ladrilho, como um anel
+           fino sobre o branco: ali qualquer cor de marca tem contraste — tanto
+           o azul escuro do CSS3 quanto o cinza claro do GitHub. Por fora fica
+           só uma sombra neutra e discreta, sem brilho colorido espalhado (que
+           em marcas claras virava um halo branco em formato de quadrado). */
         .tech-item:hover .tech-tile {
             box-shadow:
-                0 10px 26px -14px rgba(0, 0, 0, 0.7),
-                0 0 16px -2px rgba(255, 255, 255, 0.45),
-                0 0 30px 1px var(--tech);
+                inset 0 0 0 2px var(--tech),
+                0 12px 22px -14px rgba(0, 0, 0, 0.75);
         }
         .tech-tile img {
             width: 2.25rem;
