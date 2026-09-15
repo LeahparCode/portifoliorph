@@ -192,6 +192,91 @@
             100% { background-position: 0% 50%; }
         }
 
+
+        /* ===== Manchas de cor do fundo =====
+           Eram três círculos sólidos com filter: blur(100-120px) e
+           mix-blend-multiply. Essa era a combinação mais cara da página: os
+           orbes têm parallax, então o blur era refeito a cada quadro, e o
+           resultado ainda servia de base para o backdrop-filter de todas as
+           seções por cima — um borrão em cima do outro, quadro a quadro.
+           Gradiente radial já nasce suave e entrega a mesma imagem sem filtro
+           nenhum. As paradas abaixo não foram estimadas no olho: são o perfil
+           radial medido no que o navegador desenhava com o blur, transcrito
+           ponto a ponto, com o alfa ajustado para que a soma dos três reproduza
+           a composição antiga. O raio é escrito como raio original (vw) mais
+           3 sigma (px), então a proporção se mantém em qualquer largura. */
+        .bg-orb {
+            position: absolute;
+            border-radius: 9999px;
+            will-change: transform;
+        }
+        #bg-orb-1 {
+            top: calc(-10% - 300px);
+            left: calc(-10% - 300px);
+            width: calc(50vw + 600px);
+            height: calc(50vw + 600px);
+            background: radial-gradient(circle,
+                rgba(147,197,253,0.410) 0.0%,
+                rgba(147,197,253,0.410) 6.3%,
+                rgba(147,197,253,0.410) 12.5%,
+                rgba(147,197,253,0.400) 18.8%,
+                rgba(147,197,253,0.400) 25.0%,
+                rgba(147,197,253,0.381) 31.3%,
+                rgba(147,197,253,0.343) 37.5%,
+                rgba(147,197,253,0.295) 43.8%,
+                rgba(147,197,253,0.238) 50.0%,
+                rgba(147,197,253,0.162) 56.3%,
+                rgba(147,197,253,0.105) 62.5%,
+                rgba(147,197,253,0.057) 68.8%,
+                rgba(147,197,253,0.019) 75.0%,
+                rgba(147,197,253,0.010) 81.3%,
+                rgba(147,197,253,0.010) 87.5%,
+                rgba(147,197,253,0.000) 93.8%);
+        }
+        #bg-orb-2 {
+            top: calc(30% - 360px);
+            right: calc(-15% - 360px);
+            width: calc(45vw + 720px);
+            height: calc(45vw + 720px);
+            background: radial-gradient(circle,
+                rgba(30,144,255,0.203) 0.0%,
+                rgba(30,144,255,0.198) 6.3%,
+                rgba(30,144,255,0.194) 12.5%,
+                rgba(30,144,255,0.185) 18.8%,
+                rgba(30,144,255,0.176) 25.0%,
+                rgba(30,144,255,0.153) 31.3%,
+                rgba(30,144,255,0.131) 37.5%,
+                rgba(30,144,255,0.104) 43.8%,
+                rgba(30,144,255,0.077) 50.0%,
+                rgba(30,144,255,0.054) 56.3%,
+                rgba(30,144,255,0.032) 62.5%,
+                rgba(30,144,255,0.018) 68.8%,
+                rgba(30,144,255,0.009) 75.0%,
+                rgba(30,144,255,0.005) 81.3%,
+                rgba(30,144,255,0.000) 87.5%);
+        }
+        #bg-orb-3 {
+            bottom: calc(-20% - 360px);
+            left: calc(10% - 360px);
+            width: calc(60vw + 720px);
+            height: calc(60vw + 720px);
+            background: radial-gradient(circle,
+                rgba(186,230,253,0.424) 0.0%,
+                rgba(186,230,253,0.424) 6.3%,
+                rgba(186,230,253,0.424) 12.5%,
+                rgba(186,230,253,0.424) 18.8%,
+                rgba(186,230,253,0.409) 25.0%,
+                rgba(186,230,253,0.394) 31.3%,
+                rgba(186,230,253,0.364) 37.5%,
+                rgba(186,230,253,0.303) 43.8%,
+                rgba(186,230,253,0.242) 50.0%,
+                rgba(186,230,253,0.167) 56.3%,
+                rgba(186,230,253,0.106) 62.5%,
+                rgba(186,230,253,0.061) 68.8%,
+                rgba(186,230,253,0.030) 75.0%,
+                rgba(186,230,253,0.000) 81.3%);
+        }
+
         /* Animações Diversas */
         .reveal {
             opacity: 0;
@@ -266,6 +351,11 @@
         }
         .marquee-wrap:hover .marquee-track,
         .marquee-wrap.paused .marquee-track { animation-play-state: paused; }
+        /* Animação fora da tela continua acordando o compositor a cada quadro.
+           A faixa e a borda giratória do card param quando saem de vista, do
+           mesmo jeito que os pontos do fundo já faziam. */
+        .marquee-wrap.offscreen .marquee-track,
+        .special-border.offscreen::after { animation-play-state: paused; }
         @keyframes marquee-left {
             from { transform: translate3d(0, 0, 0); }
             to { transform: translate3d(calc(var(--marquee-distance, 50%) * -1), 0, 0); }
@@ -760,9 +850,9 @@
     </div>
 
     <div class="fixed inset-0 z-[-1] overflow-hidden bg-[#fcfcfc]">
-        <div id="bg-orb-1" class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-300/40 blur-[100px] will-change-transform mix-blend-multiply"></div>
-        <div id="bg-orb-2" class="absolute top-[30%] right-[-15%] w-[45vw] h-[45vw] rounded-full bg-brand-blue/20 blur-[120px] will-change-transform mix-blend-multiply"></div>
-        <div id="bg-orb-3" class="absolute bottom-[-20%] left-[10%] w-[60vw] h-[60vw] rounded-full bg-sky-200/40 blur-[120px] will-change-transform mix-blend-multiply"></div>
+        <div id="bg-orb-1" class="bg-orb"></div>
+        <div id="bg-orb-2" class="bg-orb"></div>
+        <div id="bg-orb-3" class="bg-orb"></div>
     </div>
 
     <div id="scroll-progress"></div>
@@ -790,7 +880,7 @@
                 </button>
             </div>
 
-            <div id="mobile-menu" class="md:hidden mt-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-white/70 shadow-2xl shadow-brand-dark/10">
+            <div id="mobile-menu" class="md:hidden mt-3 rounded-2xl bg-white/95 border border-white/70 shadow-2xl shadow-brand-dark/10">
                 <div class="flex flex-col p-3 gap-1">
                     <a href="#jornada" class="mobile-nav-link tap-press flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-slate-700 active:bg-blue-50 transition-colors">
                         <i data-lucide="user" class="w-[18px] h-[18px] text-brand-blue"></i> Jornada
@@ -854,7 +944,7 @@
         </div>
     </section>
 
-    <section id="jornada" class="py-16 md:py-24 bg-white/60 backdrop-blur-md md:backdrop-blur-2xl border-t border-white/40 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
+    <section id="jornada" class="py-16 md:py-24 bg-white/60 border-t border-white/40 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
         <div class="container mx-auto px-5 md:px-6">
             <div class="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
                 <div class="reveal" data-m="zoom">
@@ -878,11 +968,11 @@
                         Não entrego apenas código; entrego soluções que otimizam o tempo humano, unindo simplicidade de interface à complexidade necessária no back-end. Atualmente curso Gestão da Tecnologia da Informação e busco um lugar onde eu possa unir análise de dados e tecnologia para gerar resultado. Fico à disposição para conversarmos.
                     </p>
                     <div class="grid grid-cols-2 gap-3 md:gap-6">
-                        <div class="spot relative p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm" data-inview>
+                        <div class="spot relative p-4 bg-white/50 rounded-xl border border-white/60 shadow-sm" data-inview>
                             <i data-lucide="check-circle" class="text-brand-blue mb-2"></i>
                             <h4 class="font-bold text-sm md:text-base">Foco em UI/UX</h4>
                         </div>
-                        <div class="spot relative p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm" data-inview>
+                        <div class="spot relative p-4 bg-white/50 rounded-xl border border-white/60 shadow-sm" data-inview>
                             <i data-lucide="zap" class="text-brand-blue mb-2"></i>
                             <h4 class="font-bold text-sm md:text-base">Código Limpo</h4>
                         </div>
@@ -892,7 +982,7 @@
         </div>
     </section>
 
-    <section id="tecnologias" class="relative py-16 md:py-24 bg-brand-dark/95 backdrop-blur-md md:backdrop-blur-2xl text-white overflow-hidden border-y border-white/10">
+    <section id="tecnologias" class="relative py-16 md:py-24 bg-brand-dark/95 text-white overflow-hidden border-y border-white/10">
         <div class="absolute top-[-20%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-brand-blue/20 blur-[120px]"></div>
         <div class="absolute bottom-[-25%] right-[-10%] w-[45vw] h-[45vw] rounded-full bg-sky-500/10 blur-[130px]"></div>
 
@@ -937,7 +1027,7 @@
         </div>
     </section>
 
-    <section id="projetos" class="py-24 bg-slate-50/60 backdrop-blur-xl border-b border-white/40">
+    <section id="projetos" class="py-24 bg-slate-50/60 border-b border-white/40">
         <div class="container mx-auto px-5 md:px-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 reveal">
                 <div>
@@ -949,7 +1039,7 @@
             <div class="grid md:grid-cols-2 gap-6 md:gap-10">
                 <div class="md:col-span-2 reveal" data-m="zoom">
                     <div class="special-border tilt m-lift shadow-2xl group" data-inview>
-                        <div class="bg-white/90 backdrop-blur-md rounded-[1.9rem] flex flex-col lg:flex-row overflow-hidden border border-white/60">
+                        <div class="bg-white/90 rounded-[1.9rem] flex flex-col lg:flex-row overflow-hidden border border-white/60">
                             <div class="relative lg:w-3/5 h-52 sm:h-72 lg:h-auto overflow-hidden bg-brand-soft">
                                 <img src="https://i.imgur.com/fmWP2Zg.jpeg" alt="Captura de tela do projeto Leahpar Note" loading="lazy" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 cursor-pointer gallery-item mix-blend-multiply" data-src="https://i.imgur.com/fmWP2Zg.jpeg" data-title="Leahpar Note">
                                 <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
@@ -972,7 +1062,7 @@
                     </div>
                 </div>
 
-                <div class="spot tilt m-lift relative bg-white/80 backdrop-blur-md md:backdrop-blur-xl rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 100ms">
+                <div class="spot tilt m-lift relative bg-white/80 rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 100ms">
                     <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
                         <img src="intranet.png" alt="Captura de tela do sistema de Intranet" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="intranet.png" data-title="Sistemas de Intranet">
                         <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
@@ -991,7 +1081,7 @@
                     </div>
                 </div>
 
-                <div class="spot tilt m-lift relative bg-white/80 backdrop-blur-md md:backdrop-blur-xl rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="right" data-inview style="transition-delay: 200ms">
+                <div class="spot tilt m-lift relative bg-white/80 rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="right" data-inview style="transition-delay: 200ms">
                     <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
                         <img src="help_desk.png" alt="Captura de tela do sistema Helpdesk Pro" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="help_desk.png" data-title="Helpdesk Pro">
                         <img src="help_desk2.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 mix-blend-multiply">
@@ -1010,7 +1100,7 @@
                     </div>
                 </div>
 
-                <div class="spot tilt m-lift relative bg-white/80 backdrop-blur-md md:backdrop-blur-xl rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 300ms">
+                <div class="spot tilt m-lift relative bg-white/80 rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 300ms">
                     <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
                         <img src="painel_disparos.png" alt="Captura de tela do Painel de Disparos" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="painel_disparos.png" data-title="Painel de Disparos">
                         <img src="painel_disparos2.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 mix-blend-multiply">
@@ -1035,7 +1125,7 @@
     </section>
 
     <!-- ===== Parcerias de sucesso: clientes atendidos ===== -->
-    <section id="parcerias" class="relative py-16 md:py-24 bg-brand-dark/95 backdrop-blur-md md:backdrop-blur-2xl text-white overflow-hidden border-y border-white/10">
+    <section id="parcerias" class="relative py-16 md:py-24 bg-brand-dark/95 text-white overflow-hidden border-y border-white/10">
         <div class="absolute top-[-25%] right-[-12%] w-[42vw] h-[42vw] rounded-full bg-brand-blue/20 blur-[120px]"></div>
         <div class="absolute bottom-[-30%] left-[-12%] w-[45vw] h-[45vw] rounded-full bg-sky-500/10 blur-[130px]"></div>
 
@@ -1076,7 +1166,7 @@
         </div>
     </section>
 
-    <section id="contato" class="py-16 md:py-24 bg-white/60 backdrop-blur-md md:backdrop-blur-xl relative overflow-hidden">
+    <section id="contato" class="py-16 md:py-24 bg-white/60 relative overflow-hidden">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[70vw] max-w-3xl max-h-3xl rounded-full bg-brand-blue/5 blur-[100px]"></div>
         <div class="container mx-auto px-5 md:px-6 text-center reveal relative z-10">
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5 md:mb-8 leading-tight text-gradient-animated">Vamos criar o seu <br class="hidden md:inline">próximo sistema?</h2>
@@ -1085,11 +1175,11 @@
             </p>
 
             <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6">
-                <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" rel="noopener" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-[#25D366]/90 backdrop-blur-md text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-green-500/20 border border-white/20">
+                <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" rel="noopener" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-[#25D366]/90 text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-green-500/20 border border-white/20">
                     <img src="https://i.imgur.com/jCQb3Xg.png" alt="Logo WhatsApp" class="h-5 md:h-6 w-auto mr-3 object-contain drop-shadow-md">
                     <span class="text-base md:text-lg relative z-10">(31) 97503-0149</span>
                 </a>
-                <a href="mailto:leahparcode@outlook.com" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-brand-dark/90 backdrop-blur-md text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-blue-900/20 border border-white/20">
+                <a href="mailto:leahparcode@outlook.com" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-brand-dark/90 text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-blue-900/20 border border-white/20">
                     <i data-lucide="mail" class="mr-3 relative z-10 w-5 h-5"></i>
                     <span class="relative z-10 text-sm sm:text-base">leahparcode@outlook.com</span>
                 </a>
@@ -1097,7 +1187,7 @@
         </div>
     </section>
 
-    <footer class="py-10 md:py-12 bg-slate-50/80 backdrop-blur-md md:backdrop-blur-2xl border-t border-slate-200/50">
+    <footer class="py-10 md:py-12 bg-slate-50/80 border-t border-slate-200/50">
         <div class="container mx-auto px-5 md:px-6 flex flex-col md:flex-row justify-between items-center text-slate-500">
             <div class="flex items-center mb-5 md:mb-0">
                 <img src="LeahparCode.png" alt="Logo Leahpar Code" class="h-8 opacity-50 grayscale">
@@ -1618,6 +1708,15 @@
             marqueeWrap.addEventListener('touchstart', pauseMarquee, { passive: true });
             marqueeWrap.addEventListener('touchend', resumeMarquee);
             marqueeWrap.addEventListener('touchcancel', resumeMarquee);
+        }
+
+        // ===== Para o que anima fora da tela =====
+        const pausaveis = document.querySelectorAll('.marquee-wrap, .special-border');
+        if (pausaveis.length) {
+            const pausaObserver = new IntersectionObserver((entries) => {
+                entries.forEach(e => e.target.classList.toggle('offscreen', !e.isIntersecting));
+            }, { threshold: 0 });
+            pausaveis.forEach(el => pausaObserver.observe(el));
         }
 
         // ===== Animações de rolagem no mobile =====
