@@ -265,17 +265,19 @@
 
         /* ===== Item de tecnologia =====
            Sem caixa, sem borda: só o logo num ladrilho claro (as marcas
-           escuras sumiriam no fundo azul) e o nome embaixo. A cor da
-           tecnologia aparece só no hover, como sombra colorida. */
+           escuras sumiriam no fundo azul) e o nome embaixo.
+           No hover nada cresce — o ladrilho branco aumentando ficava duro.
+           No lugar disso acende um halo na cor da tecnologia atrás dele. */
         .tech-item {
             flex-shrink: 0;
             width: 7rem;
             text-align: center;
             opacity: 0.82;
-            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .tech-item:hover { opacity: 1; transform: translateY(-5px); }
+        .tech-item:hover { opacity: 1; transform: translateY(-3px); }
         .tech-tile {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -285,11 +287,16 @@
             border-radius: 1.1rem;
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.6);
-            transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: box-shadow 0.5s ease;
         }
+        /* No hover, o brilho nasce da borda do próprio ladrilho, acompanhando
+           o formato arredondado. A camada clara garante que marcas de tom
+           escuro (o azul do CSS3) também apareçam sobre o fundo azul-marinho. */
         .tech-item:hover .tech-tile {
-            transform: scale(1.06);
-            box-shadow: 0 12px 28px -10px var(--tech);
+            box-shadow:
+                0 10px 26px -14px rgba(0, 0, 0, 0.7),
+                0 0 16px -2px rgba(255, 255, 255, 0.45),
+                0 0 30px 1px var(--tech);
         }
         .tech-tile img {
             width: 2.25rem;
@@ -301,7 +308,9 @@
             font-weight: 600;
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.78);
+            transition: color 0.5s ease;
         }
+        .tech-item:hover .tech-name { color: #fff; }
         @media (min-width: 768px) {
             .tech-item { width: 8.5rem; }
             .tech-tile { width: 4.5rem; height: 4.5rem; margin-bottom: 0.85rem; }
@@ -782,7 +791,7 @@
                         <span class="tech-tile"><img src="github.png" alt="GitHub" loading="lazy"></span>
                         <span class="tech-name">GitHub</span>
                     </div>
-                    <div class="tech-item" style="--tech: #1E90FF">
+                    <div class="tech-item" style="--tech: #38BDF8">
                         <span class="tech-tile"><img src="database.png" alt="NoSQL" loading="lazy"></span>
                         <span class="tech-name">NoSQL</span>
                     </div>
