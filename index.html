@@ -442,8 +442,8 @@
             position: relative;
             display: grid;
             place-items: center;
-            min-height: 132px;
-            padding: 1.5rem;
+            min-height: 196px;
+            padding: 1.75rem;
             border-radius: 1.25rem;
             background: #FFFFFF;
             overflow: hidden;
@@ -462,9 +462,9 @@
             pointer-events: none;
         }
         .partner-logo {
-            max-height: 84px;
-            max-width: 100%;
-            width: auto;
+            width: 72%;
+            height: auto;
+            max-width: 300px;
             object-fit: contain;
             transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -540,7 +540,7 @@
         }
 
         @media (max-width: 767px) {
-            .partner-plate { min-height: 112px; padding: 1.15rem; }
+            .partner-plate { min-height: 156px; padding: 1.25rem; }
             /* Nomes longos (Rede Soma Drogarias) quebravam em duas linhas e
                deixavam um card mais alto que o outro na tela pequena. */
             .partner-info h3 { font-size: 0.92rem; }
