@@ -424,6 +424,134 @@
             border-color: #E2E8F0;
         }
 
+        /* ===== Parcerias de sucesso (clientes) =====
+           A placa é sempre branca para que qualquer logo — colorida ou não —
+           fique legível sobre a faixa escura. */
+        .partner-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            padding: 1.1rem;
+            border-radius: 1.75rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 26px 55px -32px rgba(0, 0, 0, 0.95);
+            transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+        }
+        .partner-plate {
+            position: relative;
+            display: grid;
+            place-items: center;
+            min-height: 132px;
+            padding: 1.5rem;
+            border-radius: 1.25rem;
+            background: #FFFFFF;
+            overflow: hidden;
+        }
+        /* Brilho que atravessa a placa quando o card entra em cena */
+        .partner-plate::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -60%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(var(--brand-blue-rgb), 0.22), transparent);
+            transform: skewX(-18deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .partner-logo {
+            max-height: 84px;
+            max-width: 100%;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .partner-wordmark {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+            text-align: center;
+            font-family: 'Sora', sans-serif;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .partner-wordmark strong {
+            font-size: clamp(1.3rem, 5vw, 1.85rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--brand-dark);
+        }
+        .partner-wordmark em {
+            margin-top: 0.45rem;
+            font-style: normal;
+            font-size: clamp(0.62rem, 2.5vw, 0.78rem);
+            font-weight: 700;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--brand-blue);
+        }
+        .partner-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0 0.35rem 0.25rem;
+        }
+        .partner-info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .partner-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex: none;
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(var(--brand-blue-rgb), 0.16);
+            border: 1px solid rgba(var(--brand-blue-rgb), 0.35);
+            color: #BFDBFE;
+            font-size: 0.66rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .partner-tag svg { width: 13px; height: 13px; }
+
+        @keyframes partner-shine {
+            0% { left: -60%; opacity: 0; }
+            18% { opacity: 1; }
+            100% { left: 120%; opacity: 0; }
+        }
+
+        @media (hover: hover) and (min-width: 768px) {
+            .partner-card:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(var(--brand-blue-rgb), 0.5);
+                box-shadow: 0 30px 60px -30px rgba(var(--brand-blue-rgb), 0.55);
+            }
+            .partner-card:hover .partner-logo,
+            .partner-card:hover .partner-wordmark { transform: scale(1.06); }
+            .partner-card:hover .partner-plate::after { animation: partner-shine 0.9s ease forwards; }
+        }
+
+        @media (max-width: 767px) {
+            .partner-plate { min-height: 112px; padding: 1.15rem; }
+            /* Nomes longos (Rede Soma Drogarias) quebravam em duas linhas e
+               deixavam um card mais alto que o outro na tela pequena. */
+            .partner-info h3 { font-size: 0.92rem; }
+            .partner-tag { font-size: 0.6rem; padding: 0.25rem 0.55rem; letter-spacing: 0.06em; }
+            .partner-card.in-view {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(var(--brand-blue-rgb), 0.45);
+            }
+            .partner-card.in-view .partner-plate::after { animation: partner-shine 1.1s ease forwards; }
+        }
+
         /* Crossfade de imagens (antes / depois) nos projetos */
         .img-swap { position: relative; }
         .img-swap img { transition: opacity 0.6s ease; }
@@ -902,6 +1030,48 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Parcerias de sucesso: clientes atendidos ===== -->
+    <section id="parcerias" class="relative py-16 md:py-24 bg-brand-dark/95 backdrop-blur-md md:backdrop-blur-2xl text-white overflow-hidden border-y border-white/10">
+        <div class="absolute top-[-25%] right-[-12%] w-[42vw] h-[42vw] rounded-full bg-brand-blue/20 blur-[120px]"></div>
+        <div class="absolute bottom-[-30%] left-[-12%] w-[45vw] h-[45vw] rounded-full bg-sky-500/10 blur-[130px]"></div>
+
+        <div class="container relative mx-auto px-5 md:px-6">
+            <div class="text-center mb-10 md:mb-14 reveal">
+                <span class="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-blue-200 text-[11px] md:text-xs font-bold tracking-[0.2em] uppercase">
+                    <i data-lucide="users" class="w-3.5 h-3.5"></i> Clientes
+                </span>
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-3 md:mb-4">Parcerias de <span class="text-brand-blue">Sucesso</span></h2>
+                <p class="text-blue-200 text-sm md:text-base max-w-xl mx-auto">Empresas que confiaram no meu trabalho e no meu código.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-5 md:gap-8 max-w-4xl mx-auto">
+                <div class="reveal" data-m="left">
+                    <article class="partner-card spot spot-dark tilt m-lift" data-inview>
+                        <div class="partner-plate" data-partner-logo="cartao_de_todos.png" data-partner-name="Cartão de Todos">
+                            <span class="partner-wordmark"><strong>Cartão</strong><em>de Todos</em></span>
+                        </div>
+                        <div class="partner-info">
+                            <h3>Cartão de Todos</h3>
+                            <span class="partner-tag"><i data-lucide="badge-check"></i> Parceria</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="reveal" data-m="right" style="transition-delay: 120ms">
+                    <article class="partner-card spot spot-dark tilt m-lift" data-inview>
+                        <div class="partner-plate" data-partner-logo="rede_soma.png" data-partner-name="Rede Soma Drogarias">
+                            <span class="partner-wordmark"><strong>Rede Soma</strong><em>Drogarias</em></span>
+                        </div>
+                        <div class="partner-info">
+                            <h3>Rede Soma Drogarias</h3>
+                            <span class="partner-tag"><i data-lucide="badge-check"></i> Parceria</span>
+                        </div>
+                    </article>
+                </div>
             </div>
         </div>
     </section>
@@ -1474,6 +1644,24 @@
         }
         setupMobileInView();
         mobileQuery.addEventListener('change', setupMobileInView);
+
+        // ===== Parcerias: troca o texto pela logo oficial do cliente =====
+        // Enquanto o PNG do cliente não estiver no repositório a placa mostra a
+        // versão em texto; assim que o arquivo existir, a imagem entra sozinha.
+        document.querySelectorAll('[data-partner-logo]').forEach(plate => {
+            const src = plate.dataset.partnerLogo;
+            const probe = new Image();
+            probe.addEventListener('load', () => {
+                const logo = document.createElement('img');
+                logo.src = src;
+                logo.alt = 'Logo ' + plate.dataset.partnerName;
+                logo.className = 'partner-logo';
+                const wordmark = plate.querySelector('.partner-wordmark');
+                if (wordmark) wordmark.remove();
+                plate.appendChild(logo);
+            });
+            probe.src = src;
+        });
 
         // ===== Visualizador de imagens (galeria + zoom + gestos) =====
         const lightbox = document.getElementById('lightbox');
