@@ -922,6 +922,10 @@
             pointer-events: none;
         }
         .img-swap:hover .img-secondary { opacity: 1; }
+        /* Card com mais de duas telas: no hover só a segunda aparece, senão as
+           quatro empilhadas ficariam todas visíveis e valeria a última. As
+           demais continuam no grupo do visualizador. */
+        .img-swap-multi:hover .img-secondary ~ .img-secondary { opacity: 0; }
         .img-swap:hover .img-primary { opacity: 0; }
 
         /* Nav link ativo */
@@ -1344,6 +1348,14 @@
                         <span class="tech-tile"><img src="css.png" alt="CSS3" loading="lazy"></span>
                         <span class="tech-name">CSS3</span>
                     </div>
+                    <div class="tech-item" style="--tech: #61DAFB">
+                        <span class="tech-tile"><img src="react.png" alt="React" loading="lazy"></span>
+                        <span class="tech-name">React</span>
+                    </div>
+                    <div class="tech-item" style="--tech: #42B883">
+                        <span class="tech-tile"><img src="vue.png" alt="Vue.js" loading="lazy"></span>
+                        <span class="tech-name">Vue.js</span>
+                    </div>
                     <div class="tech-item" style="--tech: #7952B3">
                         <span class="tech-tile"><img src="bootstrap.png" alt="Bootstrap" loading="lazy"></span>
                         <span class="tech-name">Bootstrap</span>
@@ -1374,17 +1386,20 @@
                 <div class="md:col-span-2 reveal" data-m="zoom">
                     <div class="special-border tilt m-lift shadow-2xl group" data-inview>
                         <div class="bg-white/90 rounded-[1.9rem] flex flex-col lg:flex-row overflow-hidden border border-white/60">
-                            <div class="relative lg:w-3/5 h-52 sm:h-72 lg:h-auto overflow-hidden bg-brand-soft">
-                                <img src="https://i.imgur.com/fmWP2Zg.jpeg" alt="Captura de tela do projeto Leahpar Note" loading="lazy" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 cursor-pointer gallery-item mix-blend-multiply" data-src="https://i.imgur.com/fmWP2Zg.jpeg" data-title="Leahpar Note">
+                            <div class="img-swap img-swap-multi relative lg:w-3/5 h-52 sm:h-72 lg:h-auto overflow-hidden bg-brand-soft">
+                                <img src="leahpar_note.png" alt="Tela de login do Leahpar Note" loading="lazy" class="img-primary w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 cursor-pointer gallery-item mix-blend-multiply" data-src="leahpar_note.png" data-title="Leahpar Note">
+                                <img src="leahpar_note2.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                                <img src="leahpar_note3.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                                <img src="leahpar_note4.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
                                 <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
-                                    <i data-lucide="maximize-2" class="w-3 h-3"></i> Toque para ampliar
+                                    <i data-lucide="images" class="w-3 h-3"></i> 4 telas · toque para ampliar
                                 </span>
                             </div>
                             <div class="lg:w-2/5 p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
                                 <span class="text-brand-blue font-bold text-xs md:text-sm tracking-widest uppercase mb-2">Projeto Recente</span>
                                 <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black mb-3 md:mb-6">Leahpar Note</h3>
                                 <p class="text-slate-500 mb-5 md:mb-8 text-base md:text-lg leading-relaxed">
-                                    Leahpar Note é uma aplicação web de monitoria de qualidade voltada para callcenters e contact centers, padronizando e agilizando processo.
+                                    Aplicação web de monitoria de qualidade para call centers e contact centers, padronizando e agilizando processos.
                                 </p>
                                 <div class="flex gap-2 flex-wrap">
                                     <span class="tech-chip chip-js">JavaScript</span>
@@ -1398,14 +1413,14 @@
 
                 <div class="spot tilt m-lift relative flex flex-col bg-white/80 rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 100ms">
                     <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
-                        <img src="intranet.png" alt="Captura de tela de um sistema de intranet" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="intranet.png" data-title="Sites e Landpages">
+                        <img src="intranet.png" alt="Captura de tela de um sistema de intranet" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="intranet.png" data-title="Sites e Landing Pages">
                         <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
                             <i data-lucide="maximize-2" class="w-3 h-3"></i> Toque para ampliar
                         </span>
                     </div>
                     <div class="px-2 pb-3 md:px-4 md:pb-4 flex flex-col flex-1">
-                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Sites e Landpages</h3>
-                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-5">Intranets, sites em geral e landpages, proporcionando maior alcance do seu produto e funcionalidade na interação com o cliente final.</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Sites e Landing Pages</h3>
+                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-5">Intranets, sites em geral e landing pages, ampliando o alcance do seu produto e a funcionalidade na interação com o cliente final.</p>
                         <div class="flex gap-2 flex-wrap mt-auto">
                             <span class="tech-chip chip-html">HTML5</span>
                             <span class="tech-chip chip-css">CSS3</span>
@@ -1425,7 +1440,7 @@
                     </div>
                     <div class="px-2 pb-3 md:px-4 md:pb-4 flex flex-col flex-1">
                         <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Helpdesk Pro</h3>
-                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-5">Sistema de gestão inteligente de chamados, para equipes de TI, e função de organização do ambiente operacional e administrativo</p>
+                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-5">Sistema de gestão inteligente de chamados para equipes de TI, com organização do ambiente operacional e administrativo.</p>
                         <div class="flex gap-2 flex-wrap mt-auto">
                             <span class="tech-chip chip-js">JavaScript</span>
                             <span class="tech-chip chip-python">Python</span>
@@ -1444,7 +1459,7 @@
                     </div>
                     <div class="px-2 pb-3 md:px-4 md:pb-4 flex flex-col flex-1">
                         <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3">Painel de Disparos</h3>
-                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-5">Painéis interativos de acompanhamento produtivo, controle de gastos em tempo real e integrações API</p>
+                        <p class="text-slate-500 text-sm md:text-base mb-4 md:mb-5">Painéis interativos de acompanhamento produtivo, controle de gastos em tempo real e integrações via API.</p>
                         <div class="flex gap-2 flex-wrap mt-auto">
                             <span class="tech-chip chip-js">JavaScript</span>
                             <span class="tech-chip chip-css">CSS3</span>
