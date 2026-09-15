@@ -192,6 +192,359 @@
             100% { background-position: 0% 50%; }
         }
 
+
+        /* ===== Manchas de cor do fundo =====
+           Eram três círculos sólidos com filter: blur(100-120px) e
+           mix-blend-multiply. Essa era a combinação mais cara da página: os
+           orbes têm parallax, então o blur era refeito a cada quadro, e o
+           resultado ainda servia de base para o backdrop-filter de todas as
+           seções por cima — um borrão em cima do outro, quadro a quadro.
+           Gradiente radial já nasce suave e entrega a mesma imagem sem filtro
+           nenhum. As paradas abaixo não foram estimadas no olho: são o perfil
+           radial exato de um disco borrado — alfa(r) = A/2 * erfc((r - R0) /
+           (sigma * raiz(2))) — conferido contra o que o navegador desenhava.
+           A curva é gerada analiticamente em vez de amostrada da tela: ler os
+           pixels dava degraus de 1/255 na cauda e, num elemento deste tamanho,
+           isso virava anel visível. O raio é escrito como raio original (vw)
+           mais 3 sigma (px), mantendo a proporção em qualquer largura.
+           O "closest-side" não é decoração: sem ele o gradiente usa
+           farthest-corner, e 100% viraria a meia-diagonal em vez do raio —
+           o perfil sairia esticado e a borda do elemento cortaria a cauda no
+           meio, deixando um anel visível. */
+        .bg-orb {
+            position: absolute;
+            border-radius: 9999px;
+            will-change: transform;
+        }
+        #bg-orb-1 {
+            top: calc(-10% - 300px);
+            left: calc(-10% - 300px);
+            width: calc(50vw + 600px);
+            height: calc(50vw + 600px);
+            background: radial-gradient(circle closest-side,
+                rgba(147,197,253,0.3999) 0.00%,
+                rgba(147,197,253,0.3999) 2.08%,
+                rgba(147,197,253,0.3998) 4.17%,
+                rgba(147,197,253,0.3997) 6.25%,
+                rgba(147,197,253,0.3995) 8.33%,
+                rgba(147,197,253,0.3993) 10.42%,
+                rgba(147,197,253,0.3989) 12.50%,
+                rgba(147,197,253,0.3983) 14.58%,
+                rgba(147,197,253,0.3975) 16.67%,
+                rgba(147,197,253,0.3964) 18.75%,
+                rgba(147,197,253,0.3948) 20.83%,
+                rgba(147,197,253,0.3926) 22.92%,
+                rgba(147,197,253,0.3898) 25.00%,
+                rgba(147,197,253,0.3860) 27.08%,
+                rgba(147,197,253,0.3812) 29.17%,
+                rgba(147,197,253,0.3752) 31.25%,
+                rgba(147,197,253,0.3677) 33.33%,
+                rgba(147,197,253,0.3586) 35.42%,
+                rgba(147,197,253,0.3479) 37.50%,
+                rgba(147,197,253,0.3353) 39.58%,
+                rgba(147,197,253,0.3209) 41.67%,
+                rgba(147,197,253,0.3048) 43.75%,
+                rgba(147,197,253,0.2869) 45.83%,
+                rgba(147,197,253,0.2677) 47.92%,
+                rgba(147,197,253,0.2472) 50.00%,
+                rgba(147,197,253,0.2258) 52.08%,
+                rgba(147,197,253,0.2040) 54.17%,
+                rgba(147,197,253,0.1821) 56.25%,
+                rgba(147,197,253,0.1605) 58.33%,
+                rgba(147,197,253,0.1397) 60.42%,
+                rgba(147,197,253,0.1199) 62.50%,
+                rgba(147,197,253,0.1015) 64.58%,
+                rgba(147,197,253,0.0847) 66.67%,
+                rgba(147,197,253,0.0697) 68.75%,
+                rgba(147,197,253,0.0565) 70.83%,
+                rgba(147,197,253,0.0451) 72.92%,
+                rgba(147,197,253,0.0354) 75.00%,
+                rgba(147,197,253,0.0274) 77.08%,
+                rgba(147,197,253,0.0208) 79.17%,
+                rgba(147,197,253,0.0156) 81.25%,
+                rgba(147,197,253,0.0115) 83.33%,
+                rgba(147,197,253,0.0083) 85.42%,
+                rgba(147,197,253,0.0059) 87.50%,
+                rgba(147,197,253,0.0042) 89.58%,
+                rgba(147,197,253,0.0029) 91.67%,
+                rgba(147,197,253,0.0019) 93.75%,
+                rgba(147,197,253,0.0013) 95.83%,
+                rgba(147,197,253,0.0008) 97.92%,
+                rgba(147,197,253,0.0005) 100.00%);
+        }
+        #bg-orb-2 {
+            top: calc(30% - 360px);
+            right: calc(-15% - 360px);
+            width: calc(45vw + 720px);
+            height: calc(45vw + 720px);
+            background: radial-gradient(circle closest-side,
+                rgba(30,144,255,0.1993) 0.00%,
+                rgba(30,144,255,0.1990) 2.08%,
+                rgba(30,144,255,0.1986) 4.17%,
+                rgba(30,144,255,0.1981) 6.25%,
+                rgba(30,144,255,0.1974) 8.33%,
+                rgba(30,144,255,0.1965) 10.42%,
+                rgba(30,144,255,0.1953) 12.50%,
+                rgba(30,144,255,0.1938) 14.58%,
+                rgba(30,144,255,0.1920) 16.67%,
+                rgba(30,144,255,0.1897) 18.75%,
+                rgba(30,144,255,0.1870) 20.83%,
+                rgba(30,144,255,0.1837) 22.92%,
+                rgba(30,144,255,0.1798) 25.00%,
+                rgba(30,144,255,0.1752) 27.08%,
+                rgba(30,144,255,0.1700) 29.17%,
+                rgba(30,144,255,0.1642) 31.25%,
+                rgba(30,144,255,0.1576) 33.33%,
+                rgba(30,144,255,0.1504) 35.42%,
+                rgba(30,144,255,0.1426) 37.50%,
+                rgba(30,144,255,0.1343) 39.58%,
+                rgba(30,144,255,0.1255) 41.67%,
+                rgba(30,144,255,0.1163) 43.75%,
+                rgba(30,144,255,0.1070) 45.83%,
+                rgba(30,144,255,0.0975) 47.92%,
+                rgba(30,144,255,0.0881) 50.00%,
+                rgba(30,144,255,0.0788) 52.08%,
+                rgba(30,144,255,0.0698) 54.17%,
+                rgba(30,144,255,0.0613) 56.25%,
+                rgba(30,144,255,0.0532) 58.33%,
+                rgba(30,144,255,0.0457) 60.42%,
+                rgba(30,144,255,0.0388) 62.50%,
+                rgba(30,144,255,0.0326) 64.58%,
+                rgba(30,144,255,0.0271) 66.67%,
+                rgba(30,144,255,0.0223) 68.75%,
+                rgba(30,144,255,0.0181) 70.83%,
+                rgba(30,144,255,0.0145) 72.92%,
+                rgba(30,144,255,0.0115) 75.00%,
+                rgba(30,144,255,0.0090) 77.08%,
+                rgba(30,144,255,0.0070) 79.17%,
+                rgba(30,144,255,0.0053) 81.25%,
+                rgba(30,144,255,0.0040) 83.33%,
+                rgba(30,144,255,0.0030) 85.42%,
+                rgba(30,144,255,0.0022) 87.50%,
+                rgba(30,144,255,0.0016) 89.58%,
+                rgba(30,144,255,0.0012) 91.67%,
+                rgba(30,144,255,0.0008) 93.75%,
+                rgba(30,144,255,0.0006) 95.83%,
+                rgba(30,144,255,0.0000) 97.92%);
+        }
+        #bg-orb-3 {
+            bottom: calc(-20% - 360px);
+            left: calc(10% - 360px);
+            width: calc(60vw + 720px);
+            height: calc(60vw + 720px);
+            background: radial-gradient(circle closest-side,
+                rgba(186,230,253,0.3999) 0.00%,
+                rgba(186,230,253,0.3999) 2.08%,
+                rgba(186,230,253,0.3998) 4.17%,
+                rgba(186,230,253,0.3997) 6.25%,
+                rgba(186,230,253,0.3995) 8.33%,
+                rgba(186,230,253,0.3993) 10.42%,
+                rgba(186,230,253,0.3989) 12.50%,
+                rgba(186,230,253,0.3983) 14.58%,
+                rgba(186,230,253,0.3975) 16.67%,
+                rgba(186,230,253,0.3964) 18.75%,
+                rgba(186,230,253,0.3948) 20.83%,
+                rgba(186,230,253,0.3926) 22.92%,
+                rgba(186,230,253,0.3898) 25.00%,
+                rgba(186,230,253,0.3860) 27.08%,
+                rgba(186,230,253,0.3812) 29.17%,
+                rgba(186,230,253,0.3752) 31.25%,
+                rgba(186,230,253,0.3677) 33.33%,
+                rgba(186,230,253,0.3586) 35.42%,
+                rgba(186,230,253,0.3479) 37.50%,
+                rgba(186,230,253,0.3353) 39.58%,
+                rgba(186,230,253,0.3209) 41.67%,
+                rgba(186,230,253,0.3048) 43.75%,
+                rgba(186,230,253,0.2869) 45.83%,
+                rgba(186,230,253,0.2677) 47.92%,
+                rgba(186,230,253,0.2472) 50.00%,
+                rgba(186,230,253,0.2258) 52.08%,
+                rgba(186,230,253,0.2040) 54.17%,
+                rgba(186,230,253,0.1821) 56.25%,
+                rgba(186,230,253,0.1605) 58.33%,
+                rgba(186,230,253,0.1397) 60.42%,
+                rgba(186,230,253,0.1199) 62.50%,
+                rgba(186,230,253,0.1015) 64.58%,
+                rgba(186,230,253,0.0847) 66.67%,
+                rgba(186,230,253,0.0697) 68.75%,
+                rgba(186,230,253,0.0565) 70.83%,
+                rgba(186,230,253,0.0451) 72.92%,
+                rgba(186,230,253,0.0354) 75.00%,
+                rgba(186,230,253,0.0274) 77.08%,
+                rgba(186,230,253,0.0208) 79.17%,
+                rgba(186,230,253,0.0156) 81.25%,
+                rgba(186,230,253,0.0115) 83.33%,
+                rgba(186,230,253,0.0083) 85.42%,
+                rgba(186,230,253,0.0059) 87.50%,
+                rgba(186,230,253,0.0042) 89.58%,
+                rgba(186,230,253,0.0029) 91.67%,
+                rgba(186,230,253,0.0019) 93.75%,
+                rgba(186,230,253,0.0013) 95.83%,
+                rgba(186,230,253,0.0008) 97.92%,
+                rgba(186,230,253,0.0005) 100.00%);
+        }
+
+        /* O raio do orbe encolhe com a tela (vw) mas o blur era fixo em px,
+           então o perfil normalizado muda bastante no celular: a mesma curva do
+           desktop deixaria a mancha grande demais. Curva própria, gerada com a
+           mesma fórmula para uma tela de 390px. */
+        @media (max-width: 767px) {
+            #bg-orb-1 {
+                background: radial-gradient(circle closest-side,
+                    rgba(147,197,253,0.3341) 0.00%,
+                    rgba(147,197,253,0.3255) 2.08%,
+                    rgba(147,197,253,0.3163) 4.17%,
+                    rgba(147,197,253,0.3065) 6.25%,
+                    rgba(147,197,253,0.2961) 8.33%,
+                    rgba(147,197,253,0.2850) 10.42%,
+                    rgba(147,197,253,0.2735) 12.50%,
+                    rgba(147,197,253,0.2615) 14.58%,
+                    rgba(147,197,253,0.2491) 16.67%,
+                    rgba(147,197,253,0.2363) 18.75%,
+                    rgba(147,197,253,0.2234) 20.83%,
+                    rgba(147,197,253,0.2102) 22.92%,
+                    rgba(147,197,253,0.1970) 25.00%,
+                    rgba(147,197,253,0.1838) 27.08%,
+                    rgba(147,197,253,0.1707) 29.17%,
+                    rgba(147,197,253,0.1579) 31.25%,
+                    rgba(147,197,253,0.1453) 33.33%,
+                    rgba(147,197,253,0.1330) 35.42%,
+                    rgba(147,197,253,0.1212) 37.50%,
+                    rgba(147,197,253,0.1099) 39.58%,
+                    rgba(147,197,253,0.0991) 41.67%,
+                    rgba(147,197,253,0.0890) 43.75%,
+                    rgba(147,197,253,0.0794) 45.83%,
+                    rgba(147,197,253,0.0705) 47.92%,
+                    rgba(147,197,253,0.0623) 50.00%,
+                    rgba(147,197,253,0.0547) 52.08%,
+                    rgba(147,197,253,0.0477) 54.17%,
+                    rgba(147,197,253,0.0415) 56.25%,
+                    rgba(147,197,253,0.0358) 58.33%,
+                    rgba(147,197,253,0.0307) 60.42%,
+                    rgba(147,197,253,0.0262) 62.50%,
+                    rgba(147,197,253,0.0223) 64.58%,
+                    rgba(147,197,253,0.0188) 66.67%,
+                    rgba(147,197,253,0.0158) 68.75%,
+                    rgba(147,197,253,0.0131) 70.83%,
+                    rgba(147,197,253,0.0109) 72.92%,
+                    rgba(147,197,253,0.0090) 75.00%,
+                    rgba(147,197,253,0.0073) 77.08%,
+                    rgba(147,197,253,0.0060) 79.17%,
+                    rgba(147,197,253,0.0048) 81.25%,
+                    rgba(147,197,253,0.0039) 83.33%,
+                    rgba(147,197,253,0.0031) 85.42%,
+                    rgba(147,197,253,0.0025) 87.50%,
+                    rgba(147,197,253,0.0019) 89.58%,
+                    rgba(147,197,253,0.0015) 91.67%,
+                    rgba(147,197,253,0.0012) 93.75%,
+                    rgba(147,197,253,0.0009) 95.83%,
+                    rgba(147,197,253,0.0007) 97.92%,
+                    rgba(147,197,253,0.0005) 100.00%);
+            }
+            #bg-orb-2 {
+                background: radial-gradient(circle closest-side,
+                    rgba(30,144,255,0.1535) 0.00%,
+                    rgba(30,144,255,0.1487) 2.08%,
+                    rgba(30,144,255,0.1435) 4.17%,
+                    rgba(30,144,255,0.1382) 6.25%,
+                    rgba(30,144,255,0.1326) 8.33%,
+                    rgba(30,144,255,0.1268) 10.42%,
+                    rgba(30,144,255,0.1209) 12.50%,
+                    rgba(30,144,255,0.1148) 14.58%,
+                    rgba(30,144,255,0.1087) 16.67%,
+                    rgba(30,144,255,0.1025) 18.75%,
+                    rgba(30,144,255,0.0963) 20.83%,
+                    rgba(30,144,255,0.0901) 22.92%,
+                    rgba(30,144,255,0.0840) 25.00%,
+                    rgba(30,144,255,0.0780) 27.08%,
+                    rgba(30,144,255,0.0721) 29.17%,
+                    rgba(30,144,255,0.0664) 31.25%,
+                    rgba(30,144,255,0.0608) 33.33%,
+                    rgba(30,144,255,0.0555) 35.42%,
+                    rgba(30,144,255,0.0504) 37.50%,
+                    rgba(30,144,255,0.0456) 39.58%,
+                    rgba(30,144,255,0.0410) 41.67%,
+                    rgba(30,144,255,0.0367) 43.75%,
+                    rgba(30,144,255,0.0328) 45.83%,
+                    rgba(30,144,255,0.0291) 47.92%,
+                    rgba(30,144,255,0.0257) 50.00%,
+                    rgba(30,144,255,0.0225) 52.08%,
+                    rgba(30,144,255,0.0197) 54.17%,
+                    rgba(30,144,255,0.0171) 56.25%,
+                    rgba(30,144,255,0.0148) 58.33%,
+                    rgba(30,144,255,0.0128) 60.42%,
+                    rgba(30,144,255,0.0109) 62.50%,
+                    rgba(30,144,255,0.0093) 64.58%,
+                    rgba(30,144,255,0.0079) 66.67%,
+                    rgba(30,144,255,0.0067) 68.75%,
+                    rgba(30,144,255,0.0056) 70.83%,
+                    rgba(30,144,255,0.0047) 72.92%,
+                    rgba(30,144,255,0.0039) 75.00%,
+                    rgba(30,144,255,0.0032) 77.08%,
+                    rgba(30,144,255,0.0026) 79.17%,
+                    rgba(30,144,255,0.0021) 81.25%,
+                    rgba(30,144,255,0.0017) 83.33%,
+                    rgba(30,144,255,0.0014) 85.42%,
+                    rgba(30,144,255,0.0011) 87.50%,
+                    rgba(30,144,255,0.0009) 89.58%,
+                    rgba(30,144,255,0.0007) 91.67%,
+                    rgba(30,144,255,0.0006) 93.75%,
+                    rgba(30,144,255,0.0000) 95.83%);
+            }
+            #bg-orb-3 {
+                background: radial-gradient(circle closest-side,
+                    rgba(186,230,253,0.3341) 0.00%,
+                    rgba(186,230,253,0.3255) 2.08%,
+                    rgba(186,230,253,0.3163) 4.17%,
+                    rgba(186,230,253,0.3065) 6.25%,
+                    rgba(186,230,253,0.2961) 8.33%,
+                    rgba(186,230,253,0.2850) 10.42%,
+                    rgba(186,230,253,0.2735) 12.50%,
+                    rgba(186,230,253,0.2615) 14.58%,
+                    rgba(186,230,253,0.2491) 16.67%,
+                    rgba(186,230,253,0.2363) 18.75%,
+                    rgba(186,230,253,0.2234) 20.83%,
+                    rgba(186,230,253,0.2102) 22.92%,
+                    rgba(186,230,253,0.1970) 25.00%,
+                    rgba(186,230,253,0.1838) 27.08%,
+                    rgba(186,230,253,0.1707) 29.17%,
+                    rgba(186,230,253,0.1579) 31.25%,
+                    rgba(186,230,253,0.1453) 33.33%,
+                    rgba(186,230,253,0.1330) 35.42%,
+                    rgba(186,230,253,0.1212) 37.50%,
+                    rgba(186,230,253,0.1099) 39.58%,
+                    rgba(186,230,253,0.0991) 41.67%,
+                    rgba(186,230,253,0.0890) 43.75%,
+                    rgba(186,230,253,0.0794) 45.83%,
+                    rgba(186,230,253,0.0705) 47.92%,
+                    rgba(186,230,253,0.0623) 50.00%,
+                    rgba(186,230,253,0.0547) 52.08%,
+                    rgba(186,230,253,0.0477) 54.17%,
+                    rgba(186,230,253,0.0415) 56.25%,
+                    rgba(186,230,253,0.0358) 58.33%,
+                    rgba(186,230,253,0.0307) 60.42%,
+                    rgba(186,230,253,0.0262) 62.50%,
+                    rgba(186,230,253,0.0223) 64.58%,
+                    rgba(186,230,253,0.0188) 66.67%,
+                    rgba(186,230,253,0.0158) 68.75%,
+                    rgba(186,230,253,0.0131) 70.83%,
+                    rgba(186,230,253,0.0109) 72.92%,
+                    rgba(186,230,253,0.0090) 75.00%,
+                    rgba(186,230,253,0.0073) 77.08%,
+                    rgba(186,230,253,0.0060) 79.17%,
+                    rgba(186,230,253,0.0048) 81.25%,
+                    rgba(186,230,253,0.0039) 83.33%,
+                    rgba(186,230,253,0.0031) 85.42%,
+                    rgba(186,230,253,0.0025) 87.50%,
+                    rgba(186,230,253,0.0019) 89.58%,
+                    rgba(186,230,253,0.0015) 91.67%,
+                    rgba(186,230,253,0.0012) 93.75%,
+                    rgba(186,230,253,0.0009) 95.83%,
+                    rgba(186,230,253,0.0007) 97.92%,
+                    rgba(186,230,253,0.0005) 100.00%);
+            }
+        }
+
         /* Animações Diversas */
         .reveal {
             opacity: 0;
@@ -266,6 +619,11 @@
         }
         .marquee-wrap:hover .marquee-track,
         .marquee-wrap.paused .marquee-track { animation-play-state: paused; }
+        /* Animação fora da tela continua acordando o compositor a cada quadro.
+           A faixa e a borda giratória do card param quando saem de vista, do
+           mesmo jeito que os pontos do fundo já faziam. */
+        .marquee-wrap.offscreen .marquee-track,
+        .special-border.offscreen::after { animation-play-state: paused; }
         @keyframes marquee-left {
             from { transform: translate3d(0, 0, 0); }
             to { transform: translate3d(calc(var(--marquee-distance, 50%) * -1), 0, 0); }
@@ -760,9 +1118,9 @@
     </div>
 
     <div class="fixed inset-0 z-[-1] overflow-hidden bg-[#fcfcfc]">
-        <div id="bg-orb-1" class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-300/40 blur-[100px] will-change-transform mix-blend-multiply"></div>
-        <div id="bg-orb-2" class="absolute top-[30%] right-[-15%] w-[45vw] h-[45vw] rounded-full bg-brand-blue/20 blur-[120px] will-change-transform mix-blend-multiply"></div>
-        <div id="bg-orb-3" class="absolute bottom-[-20%] left-[10%] w-[60vw] h-[60vw] rounded-full bg-sky-200/40 blur-[120px] will-change-transform mix-blend-multiply"></div>
+        <div id="bg-orb-1" class="bg-orb"></div>
+        <div id="bg-orb-2" class="bg-orb"></div>
+        <div id="bg-orb-3" class="bg-orb"></div>
     </div>
 
     <div id="scroll-progress"></div>
@@ -790,7 +1148,7 @@
                 </button>
             </div>
 
-            <div id="mobile-menu" class="md:hidden mt-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-white/70 shadow-2xl shadow-brand-dark/10">
+            <div id="mobile-menu" class="md:hidden mt-3 rounded-2xl bg-white/95 border border-white/70 shadow-2xl shadow-brand-dark/10">
                 <div class="flex flex-col p-3 gap-1">
                     <a href="#jornada" class="mobile-nav-link tap-press flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-slate-700 active:bg-blue-50 transition-colors">
                         <i data-lucide="user" class="w-[18px] h-[18px] text-brand-blue"></i> Jornada
@@ -854,7 +1212,7 @@
         </div>
     </section>
 
-    <section id="jornada" class="py-16 md:py-24 bg-white/60 backdrop-blur-md md:backdrop-blur-2xl border-t border-white/40 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
+    <section id="jornada" class="py-16 md:py-24 bg-white/60 border-t border-white/40 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
         <div class="container mx-auto px-5 md:px-6">
             <div class="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
                 <div class="reveal" data-m="zoom">
@@ -878,11 +1236,11 @@
                         Não entrego apenas código; entrego soluções que otimizam o tempo humano, unindo simplicidade de interface à complexidade necessária no back-end. Atualmente curso Gestão da Tecnologia da Informação e busco um lugar onde eu possa unir análise de dados e tecnologia para gerar resultado. Fico à disposição para conversarmos.
                     </p>
                     <div class="grid grid-cols-2 gap-3 md:gap-6">
-                        <div class="spot relative p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm" data-inview>
+                        <div class="spot relative p-4 bg-white/50 rounded-xl border border-white/60 shadow-sm" data-inview>
                             <i data-lucide="check-circle" class="text-brand-blue mb-2"></i>
                             <h4 class="font-bold text-sm md:text-base">Foco em UI/UX</h4>
                         </div>
-                        <div class="spot relative p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white/60 shadow-sm" data-inview>
+                        <div class="spot relative p-4 bg-white/50 rounded-xl border border-white/60 shadow-sm" data-inview>
                             <i data-lucide="zap" class="text-brand-blue mb-2"></i>
                             <h4 class="font-bold text-sm md:text-base">Código Limpo</h4>
                         </div>
@@ -892,7 +1250,7 @@
         </div>
     </section>
 
-    <section id="tecnologias" class="relative py-16 md:py-24 bg-brand-dark/95 backdrop-blur-md md:backdrop-blur-2xl text-white overflow-hidden border-y border-white/10">
+    <section id="tecnologias" class="relative py-16 md:py-24 bg-brand-dark/95 text-white overflow-hidden border-y border-white/10">
         <div class="absolute top-[-20%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-brand-blue/20 blur-[120px]"></div>
         <div class="absolute bottom-[-25%] right-[-10%] w-[45vw] h-[45vw] rounded-full bg-sky-500/10 blur-[130px]"></div>
 
@@ -937,7 +1295,7 @@
         </div>
     </section>
 
-    <section id="projetos" class="py-24 bg-slate-50/60 backdrop-blur-xl border-b border-white/40">
+    <section id="projetos" class="py-24 bg-slate-50/60 border-b border-white/40">
         <div class="container mx-auto px-5 md:px-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 reveal">
                 <div>
@@ -949,7 +1307,7 @@
             <div class="grid md:grid-cols-2 gap-6 md:gap-10">
                 <div class="md:col-span-2 reveal" data-m="zoom">
                     <div class="special-border tilt m-lift shadow-2xl group" data-inview>
-                        <div class="bg-white/90 backdrop-blur-md rounded-[1.9rem] flex flex-col lg:flex-row overflow-hidden border border-white/60">
+                        <div class="bg-white/90 rounded-[1.9rem] flex flex-col lg:flex-row overflow-hidden border border-white/60">
                             <div class="relative lg:w-3/5 h-52 sm:h-72 lg:h-auto overflow-hidden bg-brand-soft">
                                 <img src="https://i.imgur.com/fmWP2Zg.jpeg" alt="Captura de tela do projeto Leahpar Note" loading="lazy" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 cursor-pointer gallery-item mix-blend-multiply" data-src="https://i.imgur.com/fmWP2Zg.jpeg" data-title="Leahpar Note">
                                 <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
@@ -972,7 +1330,7 @@
                     </div>
                 </div>
 
-                <div class="spot tilt m-lift relative bg-white/80 backdrop-blur-md md:backdrop-blur-xl rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 100ms">
+                <div class="spot tilt m-lift relative bg-white/80 rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 100ms">
                     <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
                         <img src="intranet.png" alt="Captura de tela do sistema de Intranet" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="intranet.png" data-title="Sistemas de Intranet">
                         <span class="zoom-hint md:hidden pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-dark/80 text-white text-[11px] font-bold backdrop-blur-sm border border-white/20 shadow-lg">
@@ -991,7 +1349,7 @@
                     </div>
                 </div>
 
-                <div class="spot tilt m-lift relative bg-white/80 backdrop-blur-md md:backdrop-blur-xl rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="right" data-inview style="transition-delay: 200ms">
+                <div class="spot tilt m-lift relative bg-white/80 rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="right" data-inview style="transition-delay: 200ms">
                     <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
                         <img src="help_desk.png" alt="Captura de tela do sistema Helpdesk Pro" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="help_desk.png" data-title="Helpdesk Pro">
                         <img src="help_desk2.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 mix-blend-multiply">
@@ -1010,7 +1368,7 @@
                     </div>
                 </div>
 
-                <div class="spot tilt m-lift relative bg-white/80 backdrop-blur-md md:backdrop-blur-xl rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 300ms">
+                <div class="spot tilt m-lift relative bg-white/80 rounded-3xl p-3 md:p-4 shadow-xl hover:shadow-2xl transition-all reveal group border border-white/60" data-m="left" data-inview style="transition-delay: 300ms">
                     <div class="img-swap rounded-2xl overflow-hidden mb-4 md:mb-6 h-52 md:h-64 bg-slate-100">
                         <img src="painel_disparos.png" alt="Captura de tela do Painel de Disparos" loading="lazy" class="img-primary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 cursor-pointer gallery-item mix-blend-multiply" data-src="painel_disparos.png" data-title="Painel de Disparos">
                         <img src="painel_disparos2.png" alt="" loading="lazy" class="img-secondary w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 mix-blend-multiply">
@@ -1035,7 +1393,7 @@
     </section>
 
     <!-- ===== Parcerias de sucesso: clientes atendidos ===== -->
-    <section id="parcerias" class="relative py-16 md:py-24 bg-brand-dark/95 backdrop-blur-md md:backdrop-blur-2xl text-white overflow-hidden border-y border-white/10">
+    <section id="parcerias" class="relative py-16 md:py-24 bg-brand-dark/95 text-white overflow-hidden border-y border-white/10">
         <div class="absolute top-[-25%] right-[-12%] w-[42vw] h-[42vw] rounded-full bg-brand-blue/20 blur-[120px]"></div>
         <div class="absolute bottom-[-30%] left-[-12%] w-[45vw] h-[45vw] rounded-full bg-sky-500/10 blur-[130px]"></div>
 
@@ -1076,7 +1434,7 @@
         </div>
     </section>
 
-    <section id="contato" class="py-16 md:py-24 bg-white/60 backdrop-blur-md md:backdrop-blur-xl relative overflow-hidden">
+    <section id="contato" class="py-16 md:py-24 bg-white/60 relative overflow-hidden">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[70vw] max-w-3xl max-h-3xl rounded-full bg-brand-blue/5 blur-[100px]"></div>
         <div class="container mx-auto px-5 md:px-6 text-center reveal relative z-10">
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-5 md:mb-8 leading-tight text-gradient-animated">Vamos criar o seu <br class="hidden md:inline">próximo sistema?</h2>
@@ -1085,11 +1443,11 @@
             </p>
 
             <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6">
-                <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" rel="noopener" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-[#25D366]/90 backdrop-blur-md text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-green-500/20 border border-white/20">
+                <a href="https://api.whatsapp.com/send?phone=5531975030149" target="_blank" rel="noopener" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-[#25D366]/90 text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-green-500/20 border border-white/20">
                     <img src="https://i.imgur.com/jCQb3Xg.png" alt="Logo WhatsApp" class="h-5 md:h-6 w-auto mr-3 object-contain drop-shadow-md">
                     <span class="text-base md:text-lg relative z-10">(31) 97503-0149</span>
                 </a>
-                <a href="mailto:leahparcode@outlook.com" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-brand-dark/90 backdrop-blur-md text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-blue-900/20 border border-white/20">
+                <a href="mailto:leahparcode@outlook.com" data-inview class="spot spot-dark tap-press relative overflow-hidden w-full md:w-auto bg-brand-dark/90 text-white px-6 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center md:hover:scale-105 transition-transform shadow-xl shadow-blue-900/20 border border-white/20">
                     <i data-lucide="mail" class="mr-3 relative z-10 w-5 h-5"></i>
                     <span class="relative z-10 text-sm sm:text-base">leahparcode@outlook.com</span>
                 </a>
@@ -1097,7 +1455,7 @@
         </div>
     </section>
 
-    <footer class="py-10 md:py-12 bg-slate-50/80 backdrop-blur-md md:backdrop-blur-2xl border-t border-slate-200/50">
+    <footer class="py-10 md:py-12 bg-slate-50/80 border-t border-slate-200/50">
         <div class="container mx-auto px-5 md:px-6 flex flex-col md:flex-row justify-between items-center text-slate-500">
             <div class="flex items-center mb-5 md:mb-0">
                 <img src="LeahparCode.png" alt="Logo Leahpar Code" class="h-8 opacity-50 grayscale">
@@ -1618,6 +1976,15 @@
             marqueeWrap.addEventListener('touchstart', pauseMarquee, { passive: true });
             marqueeWrap.addEventListener('touchend', resumeMarquee);
             marqueeWrap.addEventListener('touchcancel', resumeMarquee);
+        }
+
+        // ===== Para o que anima fora da tela =====
+        const pausaveis = document.querySelectorAll('.marquee-wrap, .special-border');
+        if (pausaveis.length) {
+            const pausaObserver = new IntersectionObserver((entries) => {
+                entries.forEach(e => e.target.classList.toggle('offscreen', !e.isIntersecting));
+            }, { threshold: 0 });
+            pausaveis.forEach(el => pausaObserver.observe(el));
         }
 
         // ===== Animações de rolagem no mobile =====
